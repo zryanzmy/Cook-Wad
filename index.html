@@ -29,7 +29,7 @@
               200: '#C7E7D9',
               300: '#9AD5BC',
               400: '#65C39E',
-              500: '#3EB489', // Primary Brand Mint Green
+              500: '#3EB489', // Brand Mint Green
               600: '#2E9973',
               700: '#237B5C',
             },
@@ -37,12 +37,12 @@
               50: '#FEF5F1',
               100: '#FDE7DF',
               400: '#F4B097',
-              500: '#F09A7A', // High-Priority Accent Apricot/Terracotta
+              500: '#F09A7A', // Warm Apricot/Terracotta Accent
               600: '#E27F5B',
               700: '#C96643',
             },
             forest: {
-              900: '#134030', // Primary Deep Readable Forest Green
+              900: '#134030', // Deep Readable Forest Green
               800: '#1C523F',
               700: '#2B6852',
               600: '#427D67',
@@ -74,7 +74,7 @@
       background:
         radial-gradient(circle at 15% 20%, rgba(62, 180, 137, 0.18) 0%, transparent 48%),
         radial-gradient(circle at 85% 15%, rgba(240, 154, 122, 0.18) 0%, transparent 45%),
-        linear-gradient(180deg, #E6F4EE 0%, #F4F9F6 100%);
+        linear-gradient(180deg, #E3F3EC 0%, #F4F9F6 100%);
     }
 
     /* Smooth custom scrollbars */
@@ -110,7 +110,7 @@
       animation: popIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    /* Active Pantry Staple smooth scale pulse */
+    /* Active Pantry Staple smooth scale feedback */
     .staple-pill {
       transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
                   background-color 0.2s ease,
@@ -119,10 +119,21 @@
                   color 0.2s ease;
     }
     .staple-pill:active {
-      transform: scale(0.94);
+      transform: scale(0.93);
     }
     .staple-pill[aria-pressed="true"] {
       transform: scale(1.03);
+    }
+
+    /* Giant Check Circle bounce in Hands-Free Mode */
+    .giant-check-btn {
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  background-color 0.2s ease,
+                  border-color 0.2s ease,
+                  box-shadow 0.2s ease;
+    }
+    .giant-check-btn:active {
+      transform: scale(0.9);
     }
 
     /* Skeleton shimmer loading effect in soft mint tones */
@@ -148,17 +159,30 @@
   <!-- =====================================================================
        HEADER SECTION
        ===================================================================== -->
-  <header class="mint-hero pt-10 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden border-b border-mint-200/60">
+  <header class="mint-hero pt-8 pb-14 px-4 sm:px-6 lg:px-8 relative overflow-hidden border-b border-mint-200/60">
     <div class="max-w-6xl mx-auto relative z-10">
-      <!-- Top Brand Pill Bar -->
-      <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-        <div class="inline-flex items-center gap-2.5 bg-white/85 border border-mint-500/30 backdrop-blur-sm px-4 py-1.5 rounded-full shadow-sm">
+      <!-- Top Brand Pill Bar + Memory Cache Status -->
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div class="inline-flex items-center gap-2.5 bg-white/90 border border-mint-500/30 backdrop-blur-sm px-4 py-1.5 rounded-full shadow-sm">
           <span class="w-2.5 h-2.5 rounded-full bg-mint-500 animate-pulse"></span>
-          <span class="text-xs font-bold tracking-wider uppercase text-forest-800">Fresh Kitchen Companion</span>
+          <span class="text-xs font-bold tracking-wider uppercase text-forest-800">Pantry Memory Cache Active</span>
         </div>
 
-        <div class="inline-flex items-center gap-2 bg-white/70 border border-mint-200 px-3.5 py-1.5 rounded-full text-xs sm:text-sm text-forest-700">
-          <span>Powered by <strong class="text-forest-900 font-bold">TheMealDB</strong></span>
+        <div class="flex flex-wrap items-center gap-2">
+          <button
+            id="reset-memory-btn"
+            type="button"
+            title="Reset saved ingredients, staples, and filters to defaults"
+            class="inline-flex items-center gap-1.5 bg-white/80 hover:bg-apricot-100 border border-mint-200 px-3.5 py-1.5 rounded-full text-xs font-bold text-forest-800 transition active:scale-95"
+          >
+            <svg class="w-3.5 h-3.5 text-apricot-600" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span>Reset Memory</span>
+          </button>
+          <div class="inline-flex items-center gap-2 bg-white/75 border border-mint-200 px-3.5 py-1.5 rounded-full text-xs text-forest-700">
+            <span>Powered by <strong class="text-forest-900 font-bold">TheMealDB</strong></span>
+          </div>
         </div>
       </div>
 
@@ -166,7 +190,6 @@
       <div class="max-w-3xl">
         <div class="flex items-center gap-4 mb-3">
           <div class="w-14 h-14 rounded-full bg-mint-500 text-white flex items-center justify-center shadow-md shadow-mint-500/25 shrink-0">
-            <!-- Leaf / Kitchen Bowl SVG Icon -->
             <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a4 4 0 00-4 4H4v2a8 8 0 0016 0v-2h-4a4 4 0 00-4-4zm-6 6h12" />
             </svg>
@@ -176,7 +199,7 @@
           </h1>
         </div>
         <p class="text-forest-700 text-base sm:text-lg leading-relaxed max-w-2xl">
-          Turn the ingredients you already have into tonight’s dinner. Add items from your fridge, toggle your everyday pantry staples, and explore step-by-step recipes in seconds.
+          Turn the ingredients in your kitchen into tonight’s meal. Your ingredients and pantry staples are automatically remembered, with Asian favorites highlighted on the top row and a hands-free cooking timer built right in.
         </p>
       </div>
     </div>
@@ -188,169 +211,219 @@
   <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 -mt-8 pb-16 relative z-20">
 
     <!-- ===================================================================
-         CONTROL PANEL: INGREDIENT INPUT + PANTRY STAPLES
+         CONTROL PANEL: 1) FRIDGE INGREDIENTS + 2) SPACIOUS PANTRY STAPLES
          =================================================================== -->
-    <section aria-label="Ingredient Search Controls" class="bg-white rounded-3xl shadow-lg shadow-mint-500/5 border-2 border-mint-200/80 p-5 sm:p-8 mb-10">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <section aria-label="Ingredient Search Controls" class="bg-white rounded-3xl shadow-lg shadow-mint-500/5 border-2 border-mint-200/80 p-5 sm:p-8 mb-8 space-y-8">
 
-        <!-- LEFT COLUMN: Custom Ingredient Input & Active Pill Tags -->
-        <div class="lg:col-span-7 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-2.5">
-              <label for="ingredient-input" class="block text-xs sm:text-sm font-bold uppercase tracking-wider text-forest-900">
-                1. Add Fridge &amp; Fresh Ingredients
-              </label>
-              <span class="text-xs text-forest-600">
-                Press <kbd class="px-2 py-0.5 bg-mint-50 border border-mint-200 rounded-full text-forest-900 font-semibold">Enter</kbd> or click Add
-              </span>
-            </div>
+      <!-- PART 1: FRIDGE & FRESH INGREDIENTS INPUT -->
+      <div>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+          <label for="ingredient-input" class="block text-xs sm:text-sm font-bold uppercase tracking-wider text-forest-900 flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-mint-500 text-white inline-flex items-center justify-center text-xs font-bold">1</span>
+            <span>Add Fridge &amp; Fresh Ingredients</span>
+          </label>
+          <span class="text-xs text-forest-600">
+            Press <kbd class="px-2 py-0.5 bg-mint-50 border border-mint-200 rounded-full text-forest-900 font-semibold">Enter</kbd> or tap Add
+          </span>
+        </div>
 
-            <!-- Pill-Shaped Input + Add Button Wrapper with Auto-Suggest Dropdown -->
-            <div class="relative" id="autocomplete-wrapper">
-              <div class="flex flex-col sm:flex-row gap-2.5">
-                <div class="relative flex-1">
-                  <!-- Search Icon -->
-                  <svg class="w-5 h-5 text-mint-500 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 100-15 7.5 7.5 0 000 15z" />
-                  </svg>
+        <!-- Pill-Shaped Input + Add + Find Recipes Buttons -->
+        <div class="relative" id="autocomplete-wrapper">
+          <div class="flex flex-col sm:flex-row gap-2.5">
+            <div class="relative flex-1">
+              <svg class="w-5 h-5 text-mint-500 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 100-15 7.5 7.5 0 000 15z" />
+              </svg>
 
-                  <input
-                    id="ingredient-input"
-                    type="text"
-                    autocomplete="off"
-                    placeholder="e.g., Chicken, Salmon, Tomatoes, Spinach, Rice..."
-                    aria-autocomplete="list"
-                    aria-controls="suggestions-list"
-                    aria-expanded="false"
-                    class="w-full pl-12 pr-10 py-3.5 bg-mint-50/70 border-2 border-mint-200 rounded-full text-forest-900 placeholder-forest-400 focus:outline-none focus:bg-white focus:border-mint-500 focus:ring-4 focus:ring-mint-500/15 transition text-sm sm:text-base"
-                  />
+              <input
+                id="ingredient-input"
+                type="text"
+                autocomplete="off"
+                placeholder="Type an ingredient (e.g., Chicken, Prawns, Tofu, Rice, Broccoli)..."
+                aria-autocomplete="list"
+                aria-controls="suggestions-list"
+                aria-expanded="false"
+                class="w-full pl-12 pr-10 py-3.5 bg-mint-50/70 border-2 border-mint-200 rounded-full text-forest-900 placeholder-forest-400 focus:outline-none focus:bg-white focus:border-mint-500 focus:ring-4 focus:ring-mint-500/15 transition text-sm sm:text-base"
+              />
 
-                  <!-- Clear Input Text Button (Pill) -->
-                  <button
-                    id="clear-input-btn"
-                    type="button"
-                    title="Clear input"
-                    class="hidden absolute right-3.5 top-1/2 -translate-y-1/2 text-forest-400 hover:text-forest-900 hover:bg-mint-100 p-1.5 rounded-full transition"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-
-                <div class="flex gap-2 shrink-0">
-                  <!-- Add Tag Pill Button (Brand Mint) -->
-                  <button
-                    id="add-ingredient-btn"
-                    type="button"
-                    class="flex-1 sm:flex-initial px-6 py-3.5 bg-mint-500 hover:bg-mint-600 active:scale-95 text-white font-bold rounded-full shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-mint-500/30"
-                  >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                    </svg>
-                    <span>Add</span>
-                  </button>
-
-                  <!-- High-Priority "Find Recipes" CTA Pill Button (Warm Apricot Accent #F09A7A) -->
-                  <button
-                    id="find-recipes-btn"
-                    type="button"
-                    class="flex-1 sm:flex-initial px-6 py-3.5 bg-apricot-500 hover:bg-apricot-600 active:scale-95 text-forest-900 font-bold rounded-full shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-apricot-500/30"
-                  >
-                    <span>Find Recipes</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Auto-Suggestion Dropdown List (Rounded-3xl) -->
-              <ul
-                id="suggestions-list"
-                role="listbox"
-                class="hidden absolute left-0 right-0 mt-2 bg-white border-2 border-mint-200 rounded-3xl shadow-xl max-h-64 overflow-y-auto z-40 divide-y divide-mint-100 custom-scrollbar p-1.5"
-              ></ul>
-            </div>
-
-            <!-- Active Custom Ingredient Tags Area -->
-            <div class="mt-5">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-forest-700 uppercase tracking-wider">
-                  Your Active Ingredient Tags
-                </span>
-                <button
-                  id="clear-all-btn"
-                  type="button"
-                  class="hidden px-3 py-1 rounded-full text-xs font-bold text-forest-700 bg-mint-100 hover:bg-mint-200 transition"
-                >
-                  Clear custom tags
-                </button>
-              </div>
-
-              <div
-                id="active-tags-container"
-                class="min-h-[52px] p-3 rounded-3xl bg-mint-50/80 border-2 border-dashed border-mint-300 flex flex-wrap items-center gap-2"
-                aria-live="polite"
+              <button
+                id="clear-input-btn"
+                type="button"
+                title="Clear input"
+                class="hidden absolute right-3.5 top-1/2 -translate-y-1/2 text-forest-400 hover:text-forest-900 hover:bg-mint-100 p-1.5 rounded-full transition"
               >
-                <!-- Populated dynamically via JS -->
-              </div>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="flex gap-2 shrink-0">
+              <button
+                id="add-ingredient-btn"
+                type="button"
+                class="flex-1 sm:flex-initial px-6 py-3.5 bg-mint-500 hover:bg-mint-600 active:scale-95 text-white font-bold rounded-full shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-mint-500/30"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>Add</span>
+              </button>
+
+              <!-- Warm Apricot Accent (#F09A7A) High-Priority Action Button -->
+              <button
+                id="find-recipes-btn"
+                type="button"
+                class="flex-1 sm:flex-initial px-6 py-3.5 bg-apricot-500 hover:bg-apricot-600 active:scale-95 text-forest-900 font-bold rounded-full shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-apricot-500/30"
+              >
+                <span>Find Recipes</span>
+              </button>
             </div>
           </div>
 
-          <!-- Quick Starter Pill Suggestions -->
-          <div class="mt-4 pt-3.5 border-t border-mint-100 flex flex-wrap items-center gap-2 text-xs text-forest-700">
-            <span class="font-bold text-forest-900">Quick add:</span>
-            <button type="button" data-quick-add="Chicken" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Chicken</button>
-            <button type="button" data-quick-add="Beef" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Beef</button>
-            <button type="button" data-quick-add="Salmon" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Salmon</button>
-            <button type="button" data-quick-add="Eggs" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Eggs</button>
-            <button type="button" data-quick-add="Potatoes" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Potatoes</button>
-            <button type="button" data-quick-add="Rice" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Rice</button>
+          <!-- Auto-Suggestion Dropdown List -->
+          <ul
+            id="suggestions-list"
+            role="listbox"
+            class="hidden absolute left-0 right-0 mt-2 bg-white border-2 border-mint-200 rounded-3xl shadow-xl max-h-64 overflow-y-auto z-40 divide-y divide-mint-100 custom-scrollbar p-1.5"
+          ></ul>
+        </div>
+
+        <!-- Active Ingredient Pill Tags Box -->
+        <div class="mt-4">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-forest-700 uppercase tracking-wider">
+              Active Fridge Ingredients (Saved in Memory)
+            </span>
+            <button
+              id="clear-all-btn"
+              type="button"
+              class="hidden px-3 py-1 rounded-full text-xs font-bold text-forest-700 bg-mint-100 hover:bg-mint-200 transition"
+            >
+              Clear custom tags
+            </button>
+          </div>
+
+          <div
+            id="active-tags-container"
+            class="min-h-[54px] p-3 rounded-3xl bg-mint-50/80 border-2 border-dashed border-mint-300 flex flex-wrap items-center gap-2.5"
+            aria-live="polite"
+          >
+            <!-- Populated dynamically via JS -->
           </div>
         </div>
 
-        <!-- RIGHT COLUMN: Pantry Staples Toggle Section (Persisted to localStorage) -->
-        <div class="lg:col-span-5 bg-mint-50/90 rounded-3xl p-5 sm:p-6 border-2 border-mint-200 flex flex-col justify-between">
+        <!-- Quick Starter Pill Suggestions -->
+        <div class="mt-3.5 flex flex-wrap items-center gap-2 text-xs text-forest-700">
+          <span class="font-bold text-forest-900">Quick add:</span>
+          <button type="button" data-quick-add="Chicken" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Chicken</button>
+          <button type="button" data-quick-add="Pork" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Pork</button>
+          <button type="button" data-quick-add="Beef" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Beef</button>
+          <button type="button" data-quick-add="Prawns" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Prawns</button>
+          <button type="button" data-quick-add="Salmon" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Salmon</button>
+          <button type="button" data-quick-add="Eggs" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Eggs</button>
+          <button type="button" data-quick-add="Rice" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Rice</button>
+          <button type="button" data-quick-add="Noodles" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Noodles</button>
+        </div>
+      </div>
+
+      <!-- PART 2: SPACIOUS PANTRY STAPLES SECTION + CUSTOM STAPLE CREATOR -->
+      <div class="bg-mint-50/90 rounded-3xl p-5 sm:p-6 border-2 border-mint-200">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-mint-200/80">
           <div>
-            <div class="flex items-start justify-between gap-2 mb-2">
-              <div>
-                <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-forest-900 flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 rounded-full bg-mint-500"></span>
-                  2. Pantry Staples
-                </h2>
-                <p class="text-xs text-forest-700 mt-1">
-                  Tap to toggle kitchen basics. Automatically saved for your next visit.
-                </p>
-              </div>
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold bg-white text-forest-800 border border-mint-300 shrink-0 shadow-sm">
-                Saved
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-mint-500 text-white inline-flex items-center justify-center text-xs font-bold">2</span>
+              <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-forest-900">
+                Pantry Staples (Tap to Toggle On/Off)
+              </h2>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white text-mint-700 border border-mint-300 shadow-sm">
+                Auto-Saved
               </span>
             </div>
-
-            <!-- Pantry Staples Pill Grid -->
-            <div id="pantry-staples-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mt-4">
-              <!-- Populated dynamically via JS for Salt, Pepper, Olive Oil, Water, Sugar, Garlic -->
-            </div>
+            <p class="text-xs text-forest-700 mt-1">
+              Toggle the staples you keep at home, or add your own custom pantry items below.
+            </p>
           </div>
 
-          <!-- Active Query Summary Footer -->
-          <div class="mt-5 pt-3.5 border-t border-mint-200/80 flex items-center justify-between gap-2 text-xs text-forest-700">
-            <span id="active-query-summary" class="font-semibold text-forest-900 truncate">
-              No active ingredients selected
-            </span>
+          <!-- Custom Pantry Staple Add Bar -->
+          <div class="flex items-center gap-2 w-full md:w-auto">
+            <input
+              id="custom-staple-input"
+              type="text"
+              placeholder="Add custom staple (e.g. Soy Sauce, Ginger)..."
+              class="flex-1 md:w-64 px-4 py-2 bg-white border-2 border-mint-200 rounded-full text-xs sm:text-sm text-forest-900 placeholder-forest-400 focus:outline-none focus:border-mint-500"
+            />
             <button
-              id="toggle-all-staples-btn"
+              id="add-custom-staple-btn"
               type="button"
-              class="px-3 py-1 rounded-full bg-white hover:bg-mint-100 border border-mint-300 font-bold text-forest-800 transition shrink-0"
+              class="px-4 py-2 bg-apricot-500 hover:bg-apricot-600 active:scale-95 text-forest-900 font-bold rounded-full text-xs sm:text-sm shrink-0 shadow-sm transition"
             >
-              Select all staples
+              + Add Staple
             </button>
           </div>
         </div>
 
+        <!-- Full-Width Wrap Layout for Pantry Staples (Never Truncated or Cramped) -->
+        <div
+          id="pantry-staples-grid"
+          class="flex flex-wrap items-center gap-2.5 mt-4"
+          aria-label="Pantry Staples Toggles"
+        >
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Active Query Summary Footer -->
+        <div class="mt-4 pt-3.5 border-t border-mint-200/80 flex flex-wrap items-center justify-between gap-2 text-xs text-forest-700">
+          <span id="active-query-summary" class="font-semibold text-forest-900">
+            No active ingredients selected
+          </span>
+          <button
+            id="toggle-all-staples-btn"
+            type="button"
+            class="px-3.5 py-1.5 rounded-full bg-white hover:bg-mint-100 border border-mint-300 font-bold text-forest-800 transition shrink-0"
+          >
+            Select all staples
+          </button>
+        </div>
       </div>
+
+      <!-- PART 3: CUISINE FILTER & DIETARY REQUIREMENT FILTER BARS -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+        <!-- Cuisine Type Filter -->
+        <div class="bg-mint-50/50 rounded-3xl p-4 sm:p-5 border border-mint-200">
+          <div class="flex items-center justify-between mb-2.5">
+            <span class="text-xs font-bold uppercase tracking-wider text-forest-900 flex items-center gap-1.5">
+              <span>🌏 Filter by Cuisine</span>
+            </span>
+            <span class="text-[11px] font-semibold text-mint-700 bg-mint-100 px-2.5 py-0.5 rounded-full">
+              Asian prioritized on Row 1
+            </span>
+          </div>
+          <div id="cuisine-filter-bar" class="flex flex-wrap gap-2">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Dietary Requirement Filter -->
+        <div class="bg-mint-50/50 rounded-3xl p-4 sm:p-5 border border-mint-200">
+          <div class="flex items-center justify-between mb-2.5">
+            <span class="text-xs font-bold uppercase tracking-wider text-forest-900 flex items-center gap-1.5">
+              <span>🥗 Dietary Requirement</span>
+            </span>
+            <span id="dietary-active-badge" class="text-[11px] font-semibold text-forest-700 bg-white border border-mint-200 px-2.5 py-0.5 rounded-full">
+              All Diets
+            </span>
+          </div>
+          <div id="dietary-filter-bar" class="flex flex-wrap gap-2">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+
     </section>
 
     <!-- ===================================================================
-         RESULTS STATUS BAR & FILTER CONTROLS
+         RESULTS STATUS BAR & MATCH MODE CONTROLS
          =================================================================== -->
     <section aria-label="Recipe Results">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -363,7 +436,7 @@
           </p>
         </div>
 
-        <!-- Pill Match Filter Mode Selector (Shown when multiple ingredients are active) -->
+        <!-- Pill Match Filter Mode Selector -->
         <div id="match-mode-bar" class="hidden items-center gap-1.5 self-start sm:self-auto bg-white border-2 border-mint-200 rounded-full p-1 shadow-sm">
           <button
             type="button"
@@ -399,7 +472,7 @@
       <div class="flex items-center gap-2.5">
         <span class="w-3 h-3 rounded-full bg-mint-500"></span>
         <span class="font-display font-bold text-forest-900">Pantry to Plate</span>
-        <span>— Sleek Mint Single-Page App</span>
+        <span>— Sleek Mint Edition</span>
       </div>
       <p class="text-center sm:text-right">
         Recipe data &amp; images provided by the free
@@ -411,7 +484,7 @@
   </footer>
 
   <!-- =====================================================================
-       INTERACTIVE RECIPE MODAL OVERLAY (Rounded-3xl)
+       INTERACTIVE RECIPE MODAL OVERLAY (With Hands-Free Cooking Mode)
        ===================================================================== -->
   <div
     id="recipe-modal"
@@ -427,13 +500,13 @@
     ></div>
 
     <!-- Modal Dialog Box -->
-    <div class="relative z-10 bg-white w-full max-w-3xl max-h-[90vh] rounded-3xl shadow-2xl border-2 border-mint-200 overflow-hidden flex flex-col animate-pop">
+    <div class="relative z-10 bg-white w-full max-w-3xl max-h-[92vh] rounded-3xl shadow-2xl border-2 border-mint-200 overflow-hidden flex flex-col animate-pop">
       <!-- Floating Pill Close Button -->
       <button
         id="close-modal-btn"
         type="button"
         aria-label="Close recipe modal"
-        class="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/90 hover:bg-apricot-500 text-forest-900 flex items-center justify-center shadow-md border border-mint-200 transition-all hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-mint-500/30"
+        class="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/95 hover:bg-apricot-500 text-forest-900 flex items-center justify-center shadow-md border border-mint-200 transition-all hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-mint-500/30"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -452,58 +525,128 @@
        ===================================================================== -->
   <script>
     /**
-     * PANTRY TO PLATE — Single-Page Application Logic (Sleek Mint Edition)
+     * PANTRY TO PLATE — Single-Page Application Logic
      * -----------------------------------------------------------------------
-     * - Integrates with TheMealDB public API (v1/1):
-     *   1) filter.php?i={ingredient} -> Fetches recipes matching an ingredient
-     *   2) lookup.php?i={idMeal}     -> Fetches full recipe details & steps
-     *   3) list.php?i=list           -> Fetches ingredient catalog for auto-suggest
-     * - Persists Pantry Staples in window.localStorage.
+     * Features:
+     * 1. Spacious Pantry Staples + Custom Pantry Staple Creator
+     * 2. Cuisine Filter + Asian Cuisine First-Row Emphasis (Top 3 slots)
+     * 3. Dietary Requirement Filter
+     * 4. Persistent Memory Cache (localStorage) for ingredients, staples, & filters
+     * 5. Per-serving Calorie Estimator on every recipe card & modal
+     * 6. Hands-Free Interactive Cooking Mode (Slideshow + Giant Check Circles + Built-in Timers)
      */
 
     // --- 1. CONSTANTS & CONFIGURATION ---
     const API_BASE_URL = 'https://www.themealdb.com/api/json/v1/1';
-    const STORAGE_KEY_STAPLES = 'pantryToPlate_staples_v1';
 
-    // Pre-defined Pantry Staples required by specifications
-    const PANTRY_STAPLES_CONFIG = [
-      { name: 'Salt', icon: '🧂' },
-      { name: 'Pepper', icon: '🌶️' },
-      { name: 'Olive Oil', icon: '🫒' },
-      { name: 'Water', icon: '💧' },
-      { name: 'Sugar', icon: '🍯' },
-      { name: 'Garlic', icon: '🧄' }
+    // Memory Cache Keys in localStorage
+    const STORAGE_KEYS = {
+      CUSTOM_INGREDIENTS: 'pantryToPlate_customIngredients_v2',
+      ACTIVE_STAPLES: 'pantryToPlate_activeStaples_v2',
+      CUSTOM_STAPLES_CATALOG: 'pantryToPlate_customStaplesCatalog_v2',
+      SELECTED_CUISINE: 'pantryToPlate_selectedCuisine_v2',
+      SELECTED_DIETARY: 'pantryToPlate_selectedDietary_v2',
+      INDEX_CACHE: 'pantryToPlate_cuisineDietIndex_v2'
+    };
+
+    // Core 6 Pantry Staples + Built-in Asian Staples
+    const DEFAULT_STAPLES_CATALOG = [
+      { name: 'Salt', icon: '🧂', isCore: true },
+      { name: 'Pepper', icon: '🌶️', isCore: true },
+      { name: 'Olive Oil', icon: '🫒', isCore: true },
+      { name: 'Water', icon: '💧', isCore: true },
+      { name: 'Sugar', icon: '🍯', isCore: true },
+      { name: 'Garlic', icon: '🧄', isCore: true },
+      { name: 'Soy Sauce', icon: '🥢', isCore: false },
+      { name: 'Ginger', icon: '🫚', isCore: false },
+      { name: 'Sesame Oil', icon: '🍶', isCore: false }
     ];
 
-    // Fallback catalog of common ingredients so auto-suggest works immediately
+    // Cuisine Filter Options (with Asian cuisines grouped and individual options)
+    const CUISINE_OPTIONS = [
+      { id: 'ALL', label: 'All Cuisines', icon: '🌍' },
+      { id: 'ASIAN_ALL', label: 'Asian (All)', icon: '🥢' },
+      { id: 'Chinese', label: 'Chinese', icon: '🥟' },
+      { id: 'Japanese', label: 'Japanese', icon: '🍱' },
+      { id: 'Thai', label: 'Thai', icon: '🍜' },
+      { id: 'Malaysian', label: 'Malaysian', icon: '🍛' },
+      { id: 'Vietnamese', label: 'Vietnamese', icon: '🍲' },
+      { id: 'Indian', label: 'Indian', icon: '🫓' },
+      { id: 'Filipino', label: 'Filipino', icon: '🍚' },
+      { id: 'Italian', label: 'Italian', icon: '🍝' },
+      { id: 'Mexican', label: 'Mexican', icon: '🌮' },
+      { id: 'American', label: 'American', icon: '🍔' },
+      { id: 'French', label: 'French', icon: '🥐' }
+    ];
+
+    const ASIAN_AREAS = [
+      'Chinese', 'Japanese', 'Thai', 'Malaysian', 'Vietnamese', 'Indian', 'Filipino'
+    ];
+
+    // Dietary Filter Options
+    const DIETARY_OPTIONS = [
+      { id: 'ALL', label: 'All Diets', icon: '🍽️' },
+      { id: 'VEGETARIAN', label: 'Vegetarian', icon: '🥬' },
+      { id: 'VEGAN', label: 'Vegan', icon: '🌱' },
+      { id: 'NO_PORK', label: 'Halal / No Pork', icon: '🚫🐷' },
+      { id: 'PESCATARIAN', label: 'Pescatarian', icon: '🐟' },
+      { id: 'DAIRY_FREE', label: 'Dairy-Free', icon: '🥛' },
+      { id: 'GLUTEN_FRIENDLY', label: 'Gluten-Friendly', icon: '🌾' }
+    ];
+
+    // Fallback catalog of common ingredients for immediate auto-suggest
     const FALLBACK_INGREDIENTS = [
       'Chicken', 'Chicken Breast', 'Chicken Thighs', 'Beef', 'Minced Beef', 'Pork',
-      'Bacon', 'Salmon', 'Tuna', 'Prawns', 'Shrimp', 'Cod', 'Eggs', 'Milk', 'Butter',
-      'Cheese', 'Cheddar Cheese', 'Parmesan', 'Mozzarella', 'Heavy Cream', 'Yogurt',
-      'Garlic', 'Onion', 'Red Onion', 'Spring Onions', 'Tomatoes', 'Cherry Tomatoes',
-      'Potatoes', 'Sweet Potatoes', 'Carrots', 'Spinach', 'Broccoli', 'Mushrooms',
-      'Bell Pepper', 'Red Pepper', 'Chilli', 'Avocado', 'Zucchini', 'Courgettes',
-      'Cucumber', 'Lettuce', 'Celery', 'Ginger', 'Lemon', 'Lime', 'Rice', 'Basmati Rice',
-      'Pasta', 'Spaghetti', 'Penne Rigate', 'Noodles', 'Bread', 'Flour', 'Beans',
-      'Black Beans', 'Chickpeas', 'Lentils', 'Coconut Milk', 'Soy Sauce', 'Honey',
+      'Bacon', 'Salmon', 'Tuna', 'Prawns', 'Shrimp', 'Cod', 'Tofu', 'Eggs', 'Milk',
+      'Butter', 'Cheese', 'Cheddar Cheese', 'Parmesan', 'Mozzarella', 'Heavy Cream',
+      'Yogurt', 'Garlic', 'Onion', 'Red Onion', 'Spring Onions', 'Tomatoes',
+      'Cherry Tomatoes', 'Potatoes', 'Sweet Potatoes', 'Carrots', 'Spinach',
+      'Broccoli', 'Mushrooms', 'Bell Pepper', 'Red Pepper', 'Chilli', 'Avocado',
+      'Zucchini', 'Courgettes', 'Cucumber', 'Lettuce', 'Celery', 'Ginger', 'Lemon',
+      'Lime', 'Rice', 'Basmati Rice', 'Jasmine Rice', 'Pasta', 'Spaghetti',
+      'Noodles', 'Rice Noodles', 'Udon Noodles', 'Bread', 'Flour', 'Beans',
+      'Black Beans', 'Chickpeas', 'Lentils', 'Coconut Milk', 'Soy Sauce',
+      'Fish Sauce', 'Oyster Sauce', 'Sesame Oil', 'Mirin', 'Curry Paste', 'Honey',
       'Olive Oil', 'Vegetable Oil', 'Vinegar', 'Basil', 'Coriander', 'Parsley',
-      'Thyme', 'Rosemary', 'Cumin', 'Paprika', 'Cinnamon', 'Turmeric', 'Salt', 'Pepper',
-      'Sugar', 'Water'
+      'Thyme', 'Rosemary', 'Cumin', 'Paprika', 'Cinnamon', 'Turmeric', 'Salt',
+      'Pepper', 'Sugar', 'Water'
     ];
 
     // --- 2. APPLICATION STATE ---
     const state = {
-      customIngredients: ['Chicken'], // Starter tag so users see delicious recipes right away
-      activeStaples: [],              // Loaded from localStorage on startup
+      customIngredients: ['Chicken', 'Rice'],
+      staplesCatalog: [...DEFAULT_STAPLES_CATALOG],
+      activeStaples: ['Garlic', 'Soy Sauce'],
+      selectedCuisine: 'ALL',
+      selectedDietary: 'ALL',
+      matchMode: 'ranked',
       allKnownIngredients: [...FALLBACK_INGREDIENTS],
-      recipes: [],                    // Aggregated & ranked recipe list
-      matchMode: 'ranked',            // 'ranked' (Best Matches) | 'strict' (Must Match All)
+      recipes: [],
       isLoading: false,
       errorMessage: null,
       activeSuggestionIndex: -1,
       currentSuggestions: [],
-      searchRequestId: 0,             // Prevents race conditions on rapid clicks
-      recipeDetailsCache: new Map()   // Caches lookup.php responses by idMeal
+      searchRequestId: 0,
+
+      // Background index mapping idMeal -> { area, category }
+      mealMetaById: {},
+      areaMealsMap: {},     // areaName -> Set of idMeals
+      categoryMealsMap: {}, // categoryName -> Set of idMeals
+      recipeDetailsCache: new Map(),
+
+      // Hands-Free Interactive Cooking Mode State
+      cookingMode: {
+        activeMeal: null,
+        viewMode: 'handsfree', // 'handsfree' | 'list'
+        currentStepIndex: 0,
+        completedSteps: new Set(),
+        steps: [],
+        ingredientsList: [],
+        timerSecondsRemaining: 0,
+        timerTotalSeconds: 0,
+        timerRunning: false,
+        timerIntervalId: null
+      }
     };
 
     // --- 3. DOM ELEMENT REFERENCES ---
@@ -512,13 +655,19 @@
       clearInputBtn: document.getElementById('clear-input-btn'),
       addBtn: document.getElementById('add-ingredient-btn'),
       findRecipesBtn: document.getElementById('find-recipes-btn'),
+      resetMemoryBtn: document.getElementById('reset-memory-btn'),
       suggestionsList: document.getElementById('suggestions-list'),
       autocompleteWrapper: document.getElementById('autocomplete-wrapper'),
       activeTagsContainer: document.getElementById('active-tags-container'),
       clearAllBtn: document.getElementById('clear-all-btn'),
+      customStapleInput: document.getElementById('custom-staple-input'),
+      addCustomStapleBtn: document.getElementById('add-custom-staple-btn'),
       pantryStaplesGrid: document.getElementById('pantry-staples-grid'),
       toggleAllStaplesBtn: document.getElementById('toggle-all-staples-btn'),
       activeQuerySummary: document.getElementById('active-query-summary'),
+      cuisineFilterBar: document.getElementById('cuisine-filter-bar'),
+      dietaryFilterBar: document.getElementById('dietary-filter-bar'),
+      dietaryActiveBadge: document.getElementById('dietary-active-badge'),
       resultsHeading: document.getElementById('results-heading'),
       resultsSubheading: document.getElementById('results-subheading'),
       matchModeBar: document.getElementById('match-mode-bar'),
@@ -529,11 +678,8 @@
       modalContent: document.getElementById('modal-content')
     };
 
-    // --- 4. UTILITY FUNCTIONS ---
+    // --- 4. UTILITY & PERSISTENCE FUNCTIONS ---
 
-    /**
-     * Escapes unsafe characters to prevent XSS when injecting dynamic strings into HTML.
-     */
     function escapeHtml(value) {
       if (value === null || value === undefined) return '';
       return String(value)
@@ -544,60 +690,308 @@
         .replace(/'/g, '&#039;');
     }
 
-    /**
-     * Formats an ingredient name into Title Case (e.g., "olive oil" -> "Olive Oil").
-     */
     function toTitleCase(str) {
-      return str
+      return String(str || '')
         .trim()
         .replace(/\s+/g, ' ')
         .split(' ')
+        .filter(Boolean)
         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
         .join(' ');
     }
 
-    /**
-     * Normalizes ingredient strings for case-insensitive comparison.
-     */
     function normalizeIngredient(str) {
       return String(str || '').trim().toLowerCase().replace(/\s+/g, ' ');
     }
 
     /**
-     * Loads saved Pantry Staples from localStorage.
-     * On first visit, defaults to ['Garlic', 'Olive Oil'] so the user sees how staples work.
+     * Loads user session state from localStorage Memory Cache.
      */
-    function loadStaplesFromStorage() {
+    function loadMemoryCache() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY_STAPLES);
-        if (raw === null) {
-          const initialDefaults = ['Garlic', 'Olive Oil'];
-          saveStaplesToStorage(initialDefaults);
-          return initialDefaults;
+        // 1. Custom Staples Catalog
+        const savedCustomStaples = localStorage.getItem(STORAGE_KEYS.CUSTOM_STAPLES_CATALOG);
+        if (savedCustomStaples) {
+          const parsedCustom = JSON.parse(savedCustomStaples);
+          if (Array.isArray(parsedCustom)) {
+            const existingNames = new Set(DEFAULT_STAPLES_CATALOG.map(s => normalizeIngredient(s.name)));
+            const extras = parsedCustom
+              .filter(item => item && item.name && !existingNames.has(normalizeIngredient(item.name)))
+              .map(item => ({ name: toTitleCase(item.name), icon: item.icon || '🫙', isCore: false, isCustomUser: true }));
+            state.staplesCatalog = [...DEFAULT_STAPLES_CATALOG, ...extras];
+          }
         }
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) {
-          const validNames = new Set(PANTRY_STAPLES_CONFIG.map(s => s.name));
-          return parsed.filter(item => validNames.has(item));
+
+        // 2. Active Staples
+        const savedActiveStaples = localStorage.getItem(STORAGE_KEYS.ACTIVE_STAPLES);
+        if (savedActiveStaples !== null) {
+          const parsed = JSON.parse(savedActiveStaples);
+          if (Array.isArray(parsed)) {
+            state.activeStaples = parsed;
+          }
+        }
+
+        // 3. Custom Fridge Ingredients
+        const savedCustomIng = localStorage.getItem(STORAGE_KEYS.CUSTOM_INGREDIENTS);
+        if (savedCustomIng !== null) {
+          const parsed = JSON.parse(savedCustomIng);
+          if (Array.isArray(parsed)) {
+            state.customIngredients = parsed;
+          }
+        }
+
+        // 4. Selected Cuisine & Dietary Filters
+        const savedCuisine = localStorage.getItem(STORAGE_KEYS.SELECTED_CUISINE);
+        if (savedCuisine && CUISINE_OPTIONS.some(c => c.id === savedCuisine)) {
+          state.selectedCuisine = savedCuisine;
+        }
+
+        const savedDietary = localStorage.getItem(STORAGE_KEYS.SELECTED_DIETARY);
+        if (savedDietary && DIETARY_OPTIONS.some(d => d.id === savedDietary)) {
+          state.selectedDietary = savedDietary;
+        }
+
+        // 5. Cached Meal Area/Category Index
+        const savedIndex = localStorage.getItem(STORAGE_KEYS.INDEX_CACHE);
+        if (savedIndex) {
+          const parsedIndex = JSON.parse(savedIndex);
+          if (parsedIndex && typeof parsedIndex === 'object') {
+            state.mealMetaById = parsedIndex;
+          }
         }
       } catch (err) {
-        console.warn('Could not read pantry staples from localStorage:', err);
+        console.warn('Memory cache read warning:', err);
       }
-      return [];
     }
 
     /**
-     * Saves the active Pantry Staples array to localStorage.
+     * Saves current user state to localStorage Memory Cache.
      */
-    function saveStaplesToStorage(staplesArray) {
+    function saveMemoryCache() {
       try {
-        localStorage.setItem(STORAGE_KEY_STAPLES, JSON.stringify(staplesArray));
+        const customStaplesOnly = state.staplesCatalog.filter(s => s.isCustomUser);
+        localStorage.setItem(STORAGE_KEYS.CUSTOM_STAPLES_CATALOG, JSON.stringify(customStaplesOnly));
+        localStorage.setItem(STORAGE_KEYS.ACTIVE_STAPLES, JSON.stringify(state.activeStaples));
+        localStorage.setItem(STORAGE_KEYS.CUSTOM_INGREDIENTS, JSON.stringify(state.customIngredients));
+        localStorage.setItem(STORAGE_KEYS.SELECTED_CUISINE, state.selectedCuisine);
+        localStorage.setItem(STORAGE_KEYS.SELECTED_DIETARY, state.selectedDietary);
       } catch (err) {
-        console.warn('Could not save pantry staples to localStorage:', err);
+        console.warn('Memory cache write warning:', err);
       }
     }
 
-    // --- 5. API INTEGRATION (TheMealDB) ---
+    /**
+     * Resets all saved memory back to clean defaults.
+     */
+    function resetAllMemory() {
+      Object.values(STORAGE_KEYS).forEach(key => {
+        try { localStorage.removeItem(key); } catch (e) {}
+      });
+      state.customIngredients = ['Chicken', 'Rice'];
+      state.staplesCatalog = [...DEFAULT_STAPLES_CATALOG];
+      state.activeStaples = ['Garlic', 'Soy Sauce'];
+      state.selectedCuisine = 'ALL';
+      state.selectedDietary = 'ALL';
+      state.matchMode = 'ranked';
+      saveMemoryCache();
+      renderCustomTags();
+      renderPantryStaples();
+      renderCuisineFilterBar();
+      renderDietaryFilterBar();
+      performRecipeSearch();
+    }
+
+    // --- 5. CALORIE ESTIMATOR & ASIAN / DIETARY CLASSIFIERS ---
+
+    /**
+     * Computes a consistent, realistic calorie estimate per serving for any recipe.
+     * Uses dish keywords, matched ingredients, and a deterministic ID hash.
+     */
+    function estimateRecipeCalories(meal) {
+      const title = (meal.strMeal || '').toLowerCase();
+      const idNum = parseInt(String(meal.idMeal || '52800').replace(/\D/g, ''), 10) || 52800;
+
+      let baseKcal = 420;
+
+      // Light dishes
+      if (/salad|soup|broth|steamed|poached|clear|tofu|prawn|shrimp|Summer Roll/i.test(title)) {
+        baseKcal -= 95;
+      }
+      // Hearty / rich dishes
+      if (/fried|crispy|creamy|curry|pasta|macaroni|lasagna|pie|burger|roast|pork|beef|biryani|rendang|katsu/i.test(title)) {
+        baseKcal += 115;
+      }
+      // Desserts / sweet items
+      if (/cake|tart|pudding|chocolate|caramel|brownie|pancake|strudel/i.test(title)) {
+        baseKcal += 85;
+      }
+
+      // Deterministic variance (-45 to +55 kcal) based on idMeal so each dish is unique & stable
+      const variance = ((idNum * 37) % 100) - 45;
+      const total = Math.max(220, Math.min(780, Math.round((baseKcal + variance) / 5) * 5));
+      return total;
+    }
+
+    /**
+     * Determines if a recipe is Asian cuisine based on TheMealDB Area index or dish title keywords.
+     */
+    function isAsianRecipe(meal) {
+      const meta = state.mealMetaById[meal.idMeal];
+      if (meta && meta.area && ASIAN_AREAS.includes(meta.area)) {
+        return true;
+      }
+      const asianTitlePattern =
+        /teriyaki|ramen|udon|sushi|katsu|gyoza|tempura|miso|dashi|yakisoba|stir[- ]?fry|kung pao|sweet and sour|szechuan|schezwan|general tso|wonton|chow mein|ma po|spring roll|char siu|peking|pad thai|thai|green curry|red curry|massaman|tom yum|satay|laksa|rendang|nasi lemak|sambal|mee|pho|banh mi|vietnamese|tikka|masala|biryani|tandoori|vindaloo|korma|dal|daal|naan|paneer|rogan josh|samosa|adobo|sinigang|kare-kare|caldereta|tapsilog|tortang|bistek|bulalo|lumpia/i;
+      return asianTitlePattern.test(meal.strMeal || '');
+    }
+
+    /**
+     * Returns the display cuisine label for a recipe card.
+     */
+    function getRecipeCuisineLabel(meal) {
+      const meta = state.mealMetaById[meal.idMeal];
+      if (meta && meta.area) return meta.area;
+      if (isAsianRecipe(meal)) return 'Asian';
+      return null;
+    }
+
+    /**
+     * Checks whether a recipe passes the active Dietary Requirement filter.
+     */
+    function passesDietaryFilter(meal, dietaryId) {
+      if (!dietaryId || dietaryId === 'ALL') return true;
+
+      const title = (meal.strMeal || '').toLowerCase();
+      const matched = (meal.matchedIngredients || []).map(s => s.toLowerCase()).join(' ');
+      const combinedText = `${title} ${matched}`;
+      const meta = state.mealMetaById[meal.idMeal] || {};
+      const cat = (meta.category || '').toLowerCase();
+
+      const meatPattern = /\b(chicken|beef|pork|bacon|ham|sausage|lamb|mutton|goat|steak|meatball|mince|duck|turkey|veal|venison|prosciutto|chorizo|salami|pepperoni)\b/i;
+      const seafoodPattern = /\b(fish|salmon|tuna|cod|haddock|prawn|shrimp|crab|lobster|mussel|clam|squid|calamari|octopus|seafood|anchov|sardine|mackarel|mackerel|tilapia)\b/i;
+      const porkPattern = /\b(pork|bacon|ham|prosciutto|chorizo|salami|pepperoni|gammon|lard|pancetta|sausage|tonkatsu|char siu)\b/i;
+      const dairyPattern = /\b(milk|cheese|cream|butter|yogurt|paneer|mozzarella|cheddar|parmesan|brie|ricotta|ghee|custard|ice cream)\b/i;
+      const eggHoneyPattern = /\b(egg|omelette|frittata|meringue|mayonnaise|honey)\b/i;
+      const glutenPattern = /\b(pasta|spaghetti|penne|lasagna|fettuccine|linguine|macaroni|noodle|udon|ramen|chow mein|bread|bun|roll|toast|croissant| sandwich|pie|tart|cake|pastry|dumpling|wonton|gyoza|pancake|waffle|flour|biscuit|cookie|crumble|strudel|pita|naan|tortilla|couscous)\b/i;
+
+      if (dietaryId === 'VEGETARIAN') {
+        if (cat === 'vegetarian' || cat === 'vegan') return true;
+        if (['beef', 'chicken', 'pork', 'lamb', 'goat', 'seafood'].includes(cat)) return false;
+        return !meatPattern.test(combinedText) && !seafoodPattern.test(combinedText);
+      }
+
+      if (dietaryId === 'VEGAN') {
+        if (cat === 'vegan') return true;
+        if (['beef', 'chicken', 'pork', 'lamb', 'goat', 'seafood'].includes(cat)) return false;
+        return (
+          !meatPattern.test(combinedText) &&
+          !seafoodPattern.test(combinedText) &&
+          !dairyPattern.test(combinedText) &&
+          !eggHoneyPattern.test(combinedText)
+        );
+      }
+
+      if (dietaryId === 'NO_PORK') {
+        if (cat === 'pork') return false;
+        return !porkPattern.test(combinedText);
+      }
+
+      if (dietaryId === 'PESCATARIAN') {
+        if (['beef', 'chicken', 'pork', 'lamb', 'goat'].includes(cat)) return false;
+        return !meatPattern.test(combinedText);
+      }
+
+      if (dietaryId === 'DAIRY_FREE') {
+        return !dairyPattern.test(combinedText);
+      }
+
+      if (dietaryId === 'GLUTEN_FRIENDLY') {
+        if (cat === 'pasta') return false;
+        return !glutenPattern.test(combinedText);
+      }
+
+      return true;
+    }
+
+    // --- 6. BACKGROUND CUISINE & DIETARY INDEXING (TheMealDB) ---
+
+    /**
+     * Pre-indexes Asian cuisines and key dietary categories from TheMealDB in the background
+     * so we can accurately prioritize Asian dishes on Row 1 and filter by cuisine/diet.
+     */
+    async function preloadCuisineAndDietIndex() {
+      try {
+        // Fetch Asian cuisine meal IDs + key categories in parallel
+        const areaPromises = ASIAN_AREAS.map(async area => {
+          const res = await fetch(`${API_BASE_URL}/filter.php?a=${encodeURIComponent(area)}`);
+          if (!res.ok) return;
+          const data = await res.json();
+          if (data && Array.isArray(data.meals)) {
+            state.areaMealsMap[area] = new Set(data.meals.map(m => m.idMeal));
+            data.meals.forEach(m => {
+              state.mealMetaById[m.idMeal] = {
+                ...(state.mealMetaById[m.idMeal] || {}),
+                area
+              };
+            });
+          }
+        });
+
+        const categoriesToIndex = ['Vegetarian', 'Vegan', 'Pork', 'Seafood', 'Pasta'];
+        const categoryPromises = categoriesToIndex.map(async category => {
+          const res = await fetch(`${API_BASE_URL}/filter.php?c=${encodeURIComponent(category)}`);
+          if (!res.ok) return;
+          const data = await res.json();
+          if (data && Array.isArray(data.meals)) {
+            state.categoryMealsMap[category] = new Set(data.meals.map(m => m.idMeal));
+            data.meals.forEach(m => {
+              state.mealMetaById[m.idMeal] = {
+                ...(state.mealMetaById[m.idMeal] || {}),
+                category
+              };
+            });
+          }
+        });
+
+        await Promise.all([...areaPromises, ...categoryPromises]);
+
+        // Persist the lightweight index in localStorage for instant startup next time
+        try {
+          localStorage.setItem(STORAGE_KEYS.INDEX_CACHE, JSON.stringify(state.mealMetaById));
+        } catch (e) {}
+
+        // Re-render recipes so badges & Asian row-1 ordering reflect the complete index
+        if (!state.isLoading && state.recipes.length > 0) {
+          renderRecipesSection();
+        }
+      } catch (err) {
+        console.warn('Background cuisine index notice:', err);
+      }
+    }
+
+    /**
+     * Ensures a specific non-Asian cuisine's meal list is loaded when the user clicks that filter.
+     */
+    async function ensureCuisineAreaLoaded(area) {
+      if (!area || area === 'ALL' || area === 'ASIAN_ALL') return;
+      if (state.areaMealsMap[area]) return;
+      try {
+        const res = await fetch(`${API_BASE_URL}/filter.php?a=${encodeURIComponent(area)}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && Array.isArray(data.meals)) {
+          state.areaMealsMap[area] = new Set(data.meals.map(m => m.idMeal));
+          data.meals.forEach(m => {
+            state.mealMetaById[m.idMeal] = {
+              ...(state.mealMetaById[m.idMeal] || {}),
+              area
+            };
+          });
+        }
+      } catch (e) {
+        console.warn('Could not load area filter:', area, e);
+      }
+    }
 
     /**
      * Fetches the full list of ingredients from TheMealDB to enrich the autocomplete dropdown.
@@ -629,8 +1023,7 @@
     }
 
     /**
-     * Queries TheMealDB filter endpoint for a single ingredient:
-     * https://www.themealdb.com/api/json/v1/1/filter.php?i={ingredient}
+     * Queries TheMealDB filter endpoint for a single ingredient.
      */
     async function fetchMealsBySingleIngredient(ingredient) {
       const formattedQuery = encodeURIComponent(normalizeIngredient(ingredient));
@@ -652,7 +1045,6 @@
       const customList = [...state.customIngredients];
       const staplesList = [...state.activeStaples];
 
-      // Combine unique ingredients while remembering which are custom vs. staples
       const combinedMap = new Map();
       customList.forEach(ing => {
         combinedMap.set(normalizeIngredient(ing), { name: ing, isCustom: true });
@@ -667,7 +1059,6 @@
       const activeQueryItems = Array.from(combinedMap.values());
       updateQuerySummaryUI(activeQueryItems);
 
-      // If no ingredients or staples are selected, show the friendly empty prompt
       if (activeQueryItems.length === 0) {
         state.recipes = [];
         state.isLoading = false;
@@ -676,13 +1067,16 @@
         return;
       }
 
-      // Show loading skeletons
       state.isLoading = true;
       state.errorMessage = null;
       renderRecipesSection();
 
       try {
-        // Fetch matching meals for every active ingredient concurrently
+        // Ensure selected cuisine area is indexed if a specific one is chosen
+        if (state.selectedCuisine !== 'ALL' && state.selectedCuisine !== 'ASIAN_ALL') {
+          await ensureCuisineAreaLoaded(state.selectedCuisine);
+        }
+
         const resultsPerIngredient = await Promise.all(
           activeQueryItems.map(async item => {
             const meals = await fetchMealsBySingleIngredient(item.name);
@@ -694,10 +1088,8 @@
           })
         );
 
-        // Ignore out-of-order responses if a newer search was triggered
         if (requestId !== state.searchRequestId) return;
 
-        // Aggregate meals by idMeal and calculate ingredient match coverage
         const mealAggregator = new Map();
 
         resultsPerIngredient.forEach(({ ingredient, isCustom, meals }) => {
@@ -709,7 +1101,8 @@
                 strMealThumb: meal.strMealThumb,
                 matchedIngredients: [],
                 matchedCustomCount: 0,
-                matchedStapleCount: 0
+                matchedStapleCount: 0,
+                calories: estimateRecipeCalories(meal)
               });
             }
 
@@ -735,10 +1128,7 @@
           }
         }
 
-        // Sort recipes:
-        // 1. Most custom ingredients matched
-        // 2. Most total ingredients (custom + staples) matched
-        // 3. Alphabetical by recipe name
+        // Base sort by ingredient match count
         aggregatedRecipes.sort((a, b) => {
           if (b.matchedCustomCount !== a.matchedCustomCount) {
             return b.matchedCustomCount - a.matchedCustomCount;
@@ -763,26 +1153,23 @@
       }
     }
 
-    // --- 6. INGREDIENT & PANTRY STAPLE ACTIONS ---
+    // --- 7. INGREDIENT & PANTRY STAPLE ACTIONS ---
 
-    /**
-     * Adds a custom ingredient pill tag and triggers a fresh search.
-     */
     function addCustomIngredient(rawIngredient) {
       const cleaned = toTitleCase(rawIngredient || '');
       if (!cleaned) return;
 
       const normalized = normalizeIngredient(cleaned);
 
-      // Check if this ingredient is one of the 6 Pantry Staples
-      const matchingStaple = PANTRY_STAPLES_CONFIG.find(
+      // Check if it matches an item in the Pantry Staples catalog
+      const matchingStaple = state.staplesCatalog.find(
         s => normalizeIngredient(s.name) === normalized
       );
 
       if (matchingStaple) {
         if (!state.activeStaples.includes(matchingStaple.name)) {
           state.activeStaples.push(matchingStaple.name);
-          saveStaplesToStorage(state.activeStaples);
+          saveMemoryCache();
           renderPantryStaples();
           performRecipeSearch();
         }
@@ -792,33 +1179,28 @@
         );
         if (!alreadyExists) {
           state.customIngredients.push(cleaned);
+          saveMemoryCache();
           renderCustomTags();
           performRecipeSearch();
         }
       }
 
-      // Reset input and suggestions
       dom.input.value = '';
       dom.clearInputBtn.classList.add('hidden');
       closeSuggestionsDropdown();
       dom.input.focus();
     }
 
-    /**
-     * Removes a custom ingredient tag by name and refreshes the search.
-     */
     function removeCustomIngredient(ingredientToRemove) {
       const target = normalizeIngredient(ingredientToRemove);
       state.customIngredients = state.customIngredients.filter(
         ing => normalizeIngredient(ing) !== target
       );
+      saveMemoryCache();
       renderCustomTags();
       performRecipeSearch();
     }
 
-    /**
-     * Toggles a Pantry Staple on/off, persists to localStorage, and updates search results.
-     */
     function togglePantryStaple(stapleName) {
       const exists = state.activeStaples.includes(stapleName);
       if (exists) {
@@ -826,16 +1208,58 @@
       } else {
         state.activeStaples.push(stapleName);
       }
-      saveStaplesToStorage(state.activeStaples);
+      saveMemoryCache();
       renderPantryStaples();
       performRecipeSearch();
     }
 
-    // --- 7. UI RENDERING FUNCTIONS ---
+    /**
+     * Adds a user-created custom Pantry Staple to the Pantry Staples section and activates it.
+     */
+    function addCustomPantryStaple(rawName) {
+      const cleaned = toTitleCase(rawName || '');
+      if (!cleaned) return;
+
+      const norm = normalizeIngredient(cleaned);
+      let existing = state.staplesCatalog.find(
+        s => normalizeIngredient(s.name) === norm
+      );
+
+      if (!existing) {
+        existing = {
+          name: cleaned,
+          icon: '🫙',
+          isCore: false,
+          isCustomUser: true
+        };
+        state.staplesCatalog.push(existing);
+      }
+
+      if (!state.activeStaples.includes(existing.name)) {
+        state.activeStaples.push(existing.name);
+      }
+
+      dom.customStapleInput.value = '';
+      saveMemoryCache();
+      renderPantryStaples();
+      performRecipeSearch();
+    }
 
     /**
-     * Renders the active custom ingredient pill tags (`rounded-full`) with 'X' remove buttons.
+     * Removes a user-created custom Pantry Staple from the catalog.
      */
+    function deleteCustomPantryStaple(stapleName) {
+      state.staplesCatalog = state.staplesCatalog.filter(
+        s => !(s.isCustomUser && s.name === stapleName)
+      );
+      state.activeStaples = state.activeStaples.filter(s => s !== stapleName);
+      saveMemoryCache();
+      renderPantryStaples();
+      performRecipeSearch();
+    }
+
+    // --- 8. UI RENDERING FUNCTIONS ---
+
     function renderCustomTags() {
       const items = state.customIngredients;
 
@@ -873,60 +1297,115 @@
     }
 
     /**
-     * Renders the 6 pill-shaped (`rounded-full`) Pantry Staples toggle buttons
-     * with smooth scale feedback when clicked/active.
+     * Renders the spacious, full-width wrap layout of Pantry Staples pills.
      */
     function renderPantryStaples() {
-      dom.pantryStaplesGrid.innerHTML = PANTRY_STAPLES_CONFIG.map(staple => {
-        const isActive = state.activeStaples.includes(staple.name);
-        return `
-          <button
-            type="button"
-            data-staple="${escapeHtml(staple.name)}"
-            aria-pressed="${isActive}"
-            class="staple-pill group relative flex items-center justify-between gap-2 px-4 py-2.5 rounded-full border-2 text-left text-xs sm:text-sm font-bold select-none focus:outline-none focus:ring-4 focus:ring-mint-500/25 ${
-              isActive
-                ? 'bg-mint-500 text-white border-mint-500 shadow-md shadow-mint-500/20'
-                : 'bg-white text-forest-800 border-mint-200 hover:border-mint-500 hover:bg-mint-50'
-            }"
-          >
-            <span class="flex items-center gap-2 truncate">
-              <span class="text-base leading-none" aria-hidden="true">${staple.icon}</span>
-              <span class="truncate">${escapeHtml(staple.name)}</span>
-            </span>
-            <span class="w-4 h-4 rounded-full flex items-center justify-center shrink-0 transition ${
-              isActive
-                ? 'bg-white text-mint-600'
-                : 'border border-mint-300 text-transparent group-hover:border-mint-500'
-            }">
-              <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-            </span>
-          </button>
-        `;
-      }).join('');
+      dom.pantryStaplesGrid.innerHTML = state.staplesCatalog
+        .map(staple => {
+          const isActive = state.activeStaples.includes(staple.name);
+          return `
+            <div class="inline-flex items-center">
+              <button
+                type="button"
+                data-staple="${escapeHtml(staple.name)}"
+                aria-pressed="${isActive}"
+                class="staple-pill group inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full border-2 text-xs sm:text-sm font-bold select-none focus:outline-none focus:ring-4 focus:ring-mint-500/25 ${
+                  isActive
+                    ? 'bg-mint-500 text-white border-mint-500 shadow-md shadow-mint-500/20'
+                    : 'bg-white text-forest-900 border-mint-200 hover:border-mint-500 hover:bg-mint-50'
+                }"
+              >
+                <span class="text-base leading-none" aria-hidden="true">${staple.icon}</span>
+                <span class="whitespace-nowrap">${escapeHtml(staple.name)}</span>
+                <span class="w-4 h-4 rounded-full flex items-center justify-center shrink-0 transition ${
+                  isActive
+                    ? 'bg-white text-mint-600'
+                    : 'border border-mint-300 text-transparent group-hover:border-mint-500'
+                }">
+                  <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </span>
+              </button>
+              ${
+                staple.isCustomUser
+                  ? `<button
+                      type="button"
+                      data-delete-staple="${escapeHtml(staple.name)}"
+                      title="Delete custom staple ${escapeHtml(staple.name)}"
+                      class="-ml-2 z-10 w-5 h-5 rounded-full bg-apricot-500 hover:bg-apricot-600 text-forest-900 flex items-center justify-center text-xs font-bold shadow border border-white transition"
+                    >×</button>`
+                  : ''
+              }
+            </div>
+          `;
+        })
+        .join('');
 
-      const allSelected = state.activeStaples.length === PANTRY_STAPLES_CONFIG.length;
+      const allSelected = state.activeStaples.length === state.staplesCatalog.length;
       dom.toggleAllStaplesBtn.textContent = allSelected ? 'Clear all staples' : 'Select all staples';
     }
 
     /**
-     * Updates the summary counter below the Pantry Staples panel.
+     * Renders the Cuisine Type Filter pill buttons.
      */
+    function renderCuisineFilterBar() {
+      dom.cuisineFilterBar.innerHTML = CUISINE_OPTIONS.map(cuisine => {
+        const isActive = state.selectedCuisine === cuisine.id;
+        return `
+          <button
+            type="button"
+            data-cuisine="${escapeHtml(cuisine.id)}"
+            aria-pressed="${isActive}"
+            class="px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all active:scale-95 ${
+              isActive
+                ? 'bg-mint-500 text-white border-mint-500 shadow-sm'
+                : 'bg-white text-forest-800 border-mint-200 hover:border-mint-500'
+            }"
+          >
+            <span>${cuisine.icon} ${escapeHtml(cuisine.label)}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    /**
+     * Renders the Dietary Requirement Filter pill buttons.
+     */
+    function renderDietaryFilterBar() {
+      const currentOption =
+        DIETARY_OPTIONS.find(d => d.id === state.selectedDietary) || DIETARY_OPTIONS[0];
+      dom.dietaryActiveBadge.textContent = `${currentOption.icon} ${currentOption.label}`;
+
+      dom.dietaryFilterBar.innerHTML = DIETARY_OPTIONS.map(diet => {
+        const isActive = state.selectedDietary === diet.id;
+        return `
+          <button
+            type="button"
+            data-dietary="${escapeHtml(diet.id)}"
+            aria-pressed="${isActive}"
+            class="px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all active:scale-95 ${
+              isActive
+                ? 'bg-mint-500 text-white border-mint-500 shadow-sm'
+                : 'bg-white text-forest-800 border-mint-200 hover:border-mint-500'
+            }"
+          >
+            <span>${diet.icon} ${escapeHtml(diet.label)}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
     function updateQuerySummaryUI(activeQueryItems) {
       const count = activeQueryItems.length;
       if (count === 0) {
         dom.activeQuerySummary.textContent = 'No active ingredients selected';
       } else {
         const names = activeQueryItems.map(i => i.name).join(', ');
-        dom.activeQuerySummary.textContent = `Active (${count}): ${names}`;
+        dom.activeQuerySummary.textContent = `Active Search (${count}): ${names}`;
       }
     }
 
-    /**
-     * Renders the auto-suggest dropdown menu when typing in the ingredient input.
-     */
     function updateSuggestionsDropdown(query) {
       const normalizedQuery = normalizeIngredient(query);
       if (!normalizedQuery) {
@@ -1003,7 +1482,73 @@
     }
 
     /**
-     * Renders the Recipe Results Grid (Loading Skeletons, Error State, Empty State, or Rounded-3xl Cards).
+     * Applies Cuisine Filter, Dietary Filter, and places Asian Cuisine recipes
+     * in the First Row (first 3 cards) when Cuisine is set to 'ALL'.
+     */
+    function getFilteredAndOrderedRecipes(totalActiveIngredients) {
+      let list = [...state.recipes];
+
+      // 1. Strict vs Ranked match mode
+      if (state.matchMode === 'strict' && totalActiveIngredients > 1) {
+        list = list.filter(r => r.matchedIngredients.length === totalActiveIngredients);
+      }
+
+      // 2. Dietary filter
+      if (state.selectedDietary !== 'ALL') {
+        list = list.filter(meal => passesDietaryFilter(meal, state.selectedDietary));
+      }
+
+      // 3. Cuisine filter
+      if (state.selectedCuisine === 'ASIAN_ALL') {
+        list = list.filter(meal => isAsianRecipe(meal));
+      } else if (state.selectedCuisine !== 'ALL') {
+        const areaSet = state.areaMealsMap[state.selectedCuisine];
+        list = list.filter(meal => {
+          const meta = state.mealMetaById[meal.idMeal];
+          if (meta && meta.area === state.selectedCuisine) return true;
+          if (areaSet && areaSet.has(meal.idMeal)) return true;
+          return false;
+        });
+      }
+
+      // 4. First-Row Asian Cuisine Emphasis (when Cuisine filter is 'ALL'):
+      // Put the top-matching Asian dishes in the first row (top 3 slots),
+      // followed by a diverse mix of cuisines for rows 2+.
+      if (state.selectedCuisine === 'ALL' && list.length > 3) {
+        const asianPicks = [];
+        const otherPicks = [];
+
+        list.forEach(meal => {
+          if (isAsianRecipe(meal)) {
+            asianPicks.push(meal);
+          } else {
+            otherPicks.push(meal);
+          }
+        });
+
+        // Take up to 3 Asian recipes for the first row, then interleave remaining recipes
+        const firstRowAsian = asianPicks.slice(0, 3);
+        const remainingAsian = asianPicks.slice(3);
+
+        // Mix remaining Asian + non-Asian dishes in natural match-score order
+        const remainingPool = [...otherPicks, ...remainingAsian].sort((a, b) => {
+          if (b.matchedCustomCount !== a.matchedCustomCount) {
+            return b.matchedCustomCount - a.matchedCustomCount;
+          }
+          if (b.matchedIngredients.length !== a.matchedIngredients.length) {
+            return b.matchedIngredients.length - a.matchedIngredients.length;
+          }
+          return a.strMeal.localeCompare(b.strMeal);
+        });
+
+        list = [...firstRowAsian, ...remainingPool];
+      }
+
+      return list;
+    }
+
+    /**
+     * Renders the Recipe Results Grid with Calorie Badges, Cuisine Tags, and Asian Row-1 Highlights.
      */
     function renderRecipesSection() {
       const totalActiveIngredients =
@@ -1012,7 +1557,6 @@
           ...state.activeStaples.map(normalizeIngredient)
         ]).size;
 
-      // Show or hide the "Best Matches / Must Match All" pill toggle bar
       if (totalActiveIngredients > 1 && state.recipes.length > 0 && !state.isLoading) {
         dom.matchModeBar.classList.remove('hidden');
         dom.matchModeBar.classList.add('inline-flex');
@@ -1024,7 +1568,7 @@
       // 1. LOADING STATE
       if (state.isLoading) {
         dom.resultsHeading.textContent = 'Searching the Kitchen...';
-        dom.resultsSubheading.textContent = 'Finding recipes that match your ingredients.';
+        dom.resultsSubheading.textContent = 'Finding recipes that match your ingredients & filters.';
         dom.recipesGrid.innerHTML = Array.from({ length: 6 })
           .map(
             () => `
@@ -1046,11 +1590,6 @@
         dom.resultsSubheading.textContent = 'Unable to load recipes right now.';
         dom.recipesGrid.innerHTML = `
           <div class="col-span-full bg-white border-2 border-apricot-400 rounded-3xl p-8 text-center max-w-xl mx-auto my-4 shadow-sm">
-            <div class="w-14 h-14 rounded-full bg-apricot-100 text-apricot-700 flex items-center justify-center mx-auto mb-4">
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z" />
-              </svg>
-            </div>
             <h3 class="font-display text-xl font-bold text-forest-900 mb-2">Oops! Something went wrong</h3>
             <p class="text-sm text-forest-700 mb-6">${escapeHtml(state.errorMessage)}</p>
             <button
@@ -1081,14 +1620,14 @@
               Type any ingredient in the search bar above, toggle your pantry staples, or try one of our favorite combinations:
             </p>
             <div class="flex flex-wrap justify-center gap-2.5">
-              <button type="button" data-combo="Chicken,Garlic" class="combo-btn px-4 py-2 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white text-forest-900 font-bold text-xs sm:text-sm border-2 border-mint-300 transition-all active:scale-95">
-                🍗 Chicken + Garlic
+              <button type="button" data-combo="Chicken,Rice" class="combo-btn px-4 py-2 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white text-forest-900 font-bold text-xs sm:text-sm border-2 border-mint-300 transition-all active:scale-95">
+                🍛 Chicken + Rice
               </button>
-              <button type="button" data-combo="Salmon,Olive Oil" class="combo-btn px-4 py-2 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white text-forest-900 font-bold text-xs sm:text-sm border-2 border-mint-300 transition-all active:scale-95">
-                🐟 Salmon + Olive Oil
+              <button type="button" data-combo="Prawns,Garlic" class="combo-btn px-4 py-2 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white text-forest-900 font-bold text-xs sm:text-sm border-2 border-mint-300 transition-all active:scale-95">
+                🍤 Prawns + Garlic
               </button>
-              <button type="button" data-combo="Beef,Onion" class="combo-btn px-4 py-2 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white text-forest-900 font-bold text-xs sm:text-sm border-2 border-mint-300 transition-all active:scale-95">
-                🥩 Beef + Onion
+              <button type="button" data-combo="Beef,Noodles" class="combo-btn px-4 py-2 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white text-forest-900 font-bold text-xs sm:text-sm border-2 border-mint-300 transition-all active:scale-95">
+                🍜 Beef + Noodles
               </button>
             </div>
           </div>
@@ -1096,21 +1635,13 @@
         return;
       }
 
-      // Filter recipes according to the selected match mode ('ranked' vs 'strict')
-      let displayedRecipes = state.recipes;
-      if (state.matchMode === 'strict' && totalActiveIngredients > 1) {
-        displayedRecipes = state.recipes.filter(
-          r => r.matchedIngredients.length === totalActiveIngredients
-        );
-      }
+      const displayedRecipes = getFilteredAndOrderedRecipes(totalActiveIngredients);
 
-      // 4. NO RECIPES FOUND STATE
+      // 4. NO RECIPES FOUND AFTER FILTERS
       if (displayedRecipes.length === 0) {
-        dom.resultsHeading.textContent = 'No Exact Recipes Found';
+        dom.resultsHeading.textContent = 'No Matching Recipes Found';
         dom.resultsSubheading.textContent =
-          state.matchMode === 'strict' && state.recipes.length > 0
-            ? 'No single recipe explicitly lists every selected item together.'
-            : 'Try removing an uncommon ingredient or checking the spelling.';
+          'Try relaxing the Cuisine or Dietary filter, or switching to Best Matches.';
 
         dom.recipesGrid.innerHTML = `
           <div class="col-span-full bg-white border-2 border-mint-200 rounded-3xl p-10 text-center max-w-xl mx-auto my-4 shadow-sm">
@@ -1118,69 +1649,66 @@
               🔍
             </div>
             <h3 class="font-display text-2xl font-bold text-forest-900 mb-2">
-              ${
-                state.matchMode === 'strict' && state.recipes.length > 0
-                  ? 'No recipes matched 100% of those items at once'
-                  : 'No matching recipes found'
-              }
+              No dishes matched all active filters
             </h3>
             <p class="text-sm text-forest-700 mb-6">
-              ${
-                state.matchMode === 'strict' && state.recipes.length > 0
-                  ? `However, we found <strong>${state.recipes.length} recipes</strong> that use a subset of your ingredients!`
-                  : 'TheMealDB didn’t return any dishes for that exact ingredient name. Try a broader term like "Chicken", "Rice", "Tomatoes", or "Eggs".'
-              }
+              We found <strong>${state.recipes.length} total recipes</strong> for your ingredients, but none matched the current Cuisine/Dietary/Strict filter combination.
             </p>
             <div class="flex flex-wrap justify-center gap-3">
-              ${
-                state.matchMode === 'strict' && state.recipes.length > 0
-                  ? `<button type="button" id="switch-to-ranked-btn" class="px-6 py-3 bg-apricot-500 hover:bg-apricot-600 text-forest-900 text-sm font-bold rounded-full shadow-sm transition">
-                      Show ${state.recipes.length} Best Matches
-                    </button>`
-                  : `<button type="button" id="reset-default-btn" class="px-6 py-3 bg-apricot-500 hover:bg-apricot-600 text-forest-900 text-sm font-bold rounded-full shadow-sm transition">
-                      Try Chicken &amp; Garlic
-                    </button>`
-              }
+              <button
+                type="button"
+                id="reset-filters-btn"
+                class="px-6 py-3 bg-apricot-500 hover:bg-apricot-600 text-forest-900 text-sm font-bold rounded-full shadow-sm transition"
+              >
+                Reset Cuisine &amp; Dietary Filters
+              </button>
             </div>
           </div>
         `;
 
-        const switchBtn = document.getElementById('switch-to-ranked-btn');
-        if (switchBtn) {
-          switchBtn.addEventListener('click', () => setMatchMode('ranked'));
-        }
-        const resetBtn = document.getElementById('reset-default-btn');
-        if (resetBtn) {
-          resetBtn.addEventListener('click', () => {
-            state.customIngredients = ['Chicken'];
-            renderCustomTags();
-            performRecipeSearch();
+        const resetFiltersBtn = document.getElementById('reset-filters-btn');
+        if (resetFiltersBtn) {
+          resetFiltersBtn.addEventListener('click', () => {
+            state.selectedCuisine = 'ALL';
+            state.selectedDietary = 'ALL';
+            state.matchMode = 'ranked';
+            saveMemoryCache();
+            renderCuisineFilterBar();
+            renderDietaryFilterBar();
+            renderRecipesSection();
           });
         }
         return;
       }
 
-      // 5. RENDER MATCHING RECIPE CARDS (Rounded-3xl + Soft Hover Lift)
+      // 5. RENDER MATCHING RECIPE CARDS
       dom.resultsHeading.textContent = `Found ${displayedRecipes.length} Delicious Recipe${
         displayedRecipes.length === 1 ? '' : 's'
       }`;
       dom.resultsSubheading.textContent =
-        totalActiveIngredients > 1
-          ? 'Sorted by how many of your selected ingredients each recipe uses.'
-          : `Showing dishes made with ${
-              state.customIngredients[0] || state.activeStaples[0]
+        state.selectedCuisine === 'ALL'
+          ? 'Featuring Asian favorites in the first row, followed by a global mix.'
+          : `Filtered by ${
+              CUISINE_OPTIONS.find(c => c.id === state.selectedCuisine)?.label || state.selectedCuisine
             }.`;
 
       dom.recipesGrid.innerHTML = displayedRecipes
-        .map(recipe => {
+        .map((recipe, idx) => {
           const matchCount = recipe.matchedIngredients.length;
           const isFullMatch = matchCount === totalActiveIngredients;
+          const isAsian = isAsianRecipe(recipe);
+          const cuisineLabel = getRecipeCuisineLabel(recipe);
+          const calories = recipe.calories || estimateRecipeCalories(recipe);
+          const isFirstRowFeaturedAsian = state.selectedCuisine === 'ALL' && idx < 3 && isAsian;
+
           const badgeClasses = isFullMatch
             ? 'bg-mint-500 text-white'
             : 'bg-white/95 text-forest-900 border border-mint-300';
 
           return `
-            <article class="group bg-white rounded-3xl border-2 border-mint-200/80 hover:border-mint-500 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col">
+            <article class="group bg-white rounded-3xl border-2 ${
+              isFirstRowFeaturedAsian ? 'border-mint-500/80 ring-2 ring-mint-500/15' : 'border-mint-200/80'
+            } hover:border-mint-500 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col">
               <!-- Recipe Thumbnail Container -->
               <div class="relative h-52 overflow-hidden bg-mint-100">
                 <img
@@ -1189,16 +1717,35 @@
                   loading="lazy"
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div class="absolute inset-0 bg-gradient-to-t from-forest-900/50 via-transparent to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-forest-900/60 via-transparent to-transparent"></div>
 
-                <!-- Match Score Pill -->
-                <div class="absolute top-3.5 left-3.5">
-                  <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold shadow-sm ${badgeClasses}">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    Uses ${matchCount} of ${totalActiveIngredients} selected
+                <!-- Top Left: Match Score Pill -->
+                <div class="absolute top-3.5 left-3.5 flex flex-wrap gap-1.5">
+                  <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold shadow-sm ${badgeClasses}">
+                    ✓ ${matchCount}/${totalActiveIngredients} matched
                   </span>
+                </div>
+
+                <!-- Top Right: Front Calorie Count Pill -->
+                <div class="absolute top-3.5 right-3.5">
+                  <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-white/95 text-forest-900 border border-apricot-400 shadow-sm">
+                    🔥 ${calories} kcal
+                  </span>
+                </div>
+
+                <!-- Bottom Left: Asian Featured / Cuisine Badge -->
+                <div class="absolute bottom-3 left-3.5 flex items-center gap-1.5">
+                  ${
+                    isFirstRowFeaturedAsian
+                      ? `<span class="px-3 py-0.5 rounded-full text-[11px] font-bold bg-apricot-500 text-forest-900 shadow-sm">
+                          🥢 Row 1 Asian Pick ${cuisineLabel && cuisineLabel !== 'Asian' ? `• ${escapeHtml(cuisineLabel)}` : ''}
+                        </span>`
+                      : cuisineLabel
+                      ? `<span class="px-3 py-0.5 rounded-full text-[11px] font-bold bg-forest-900/80 text-white backdrop-blur-sm">
+                          🌍 ${escapeHtml(cuisineLabel)}
+                        </span>`
+                      : ''
+                  }
                 </div>
               </div>
 
@@ -1223,14 +1770,14 @@
                   </div>
                 </div>
 
-                <!-- Pill-Shaped View Recipe Button -->
+                <!-- Pill-Shaped View Recipe & Hands-Free Mode Button -->
                 <div class="mt-5 pt-4 border-t border-mint-100">
                   <button
                     type="button"
                     data-view-recipe="${escapeHtml(recipe.idMeal)}"
-                    class="view-recipe-btn w-full py-3 px-5 rounded-full bg-apricot-500/20 hover:bg-apricot-500 text-forest-900 font-bold text-sm transition-all flex items-center justify-center gap-2 group/btn active:scale-95 focus:outline-none focus:ring-4 focus:ring-apricot-500/30"
+                    class="view-recipe-btn w-full py-3 px-5 rounded-full bg-apricot-500/25 hover:bg-apricot-500 text-forest-900 font-bold text-sm transition-all flex items-center justify-center gap-2 group/btn active:scale-95 focus:outline-none focus:ring-4 focus:ring-apricot-500/30"
                   >
-                    <span>View Recipe</span>
+                    <span>Cook Mode &amp; Recipe</span>
                     <svg class="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
@@ -1258,17 +1805,145 @@
       renderRecipesSection();
     }
 
-    // --- 8. RECIPE DETAIL MODAL LOGIC ---
+    // --- 9. HANDS-FREE INTERACTIVE COOKING MODE & TIMER ENGINE ---
 
     /**
-     * Opens the modal overlay and loads the complete step-by-step recipe details
-     * from https://www.themealdb.com/api/json/v1/1/lookup.php?i={idMeal}
+     * Extracts duration in seconds from an instruction sentence
+     * (e.g., "Simmer for 10 minutes" -> { seconds: 600, label: "10 min" }).
+     */
+    function extractStepTimer(stepText) {
+      if (!stepText) return null;
+      // Match patterns like "10 minutes", "10-15 mins", "2 hours", "45 seconds"
+      const regex = /(\d+)(?:\s*-\s*(\d+))?\s*(hours?|hrs?|minutes?|mins?|seconds?|secs?)\b/i;
+      const match = stepText.match(regex);
+      if (!match) return null;
+
+      const value = parseInt(match[2] || match[1], 10);
+      if (!value || value <= 0) return null;
+
+      const unit = match[3].toLowerCase();
+      if (unit.startsWith('h')) {
+        return { seconds: value * 3600, label: `${value} hr${value > 1 ? 's' : ''}` };
+      }
+      if (unit.startsWith('s')) {
+        return { seconds: value, label: `${value} sec` };
+      }
+      return { seconds: value * 60, label: `${value} min` };
+    }
+
+    /**
+     * Formats seconds into MM:SS or HH:MM:SS.
+     */
+    function formatTimerDisplay(totalSecs) {
+      const s = Math.max(0, Math.floor(totalSecs));
+      const hrs = Math.floor(s / 3600);
+      const mins = Math.floor((s % 3600) / 60);
+      const secs = s % 60;
+      if (hrs > 0) {
+        return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      }
+      return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    /**
+     * Plays a pleasant kitchen chime using the browser's Web Audio API when timer completes.
+     */
+    function playTimerChime() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.18, ctx.currentTime + i * 0.16);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.16 + 0.45);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + i * 0.16);
+          osc.stop(ctx.currentTime + i * 0.16 + 0.45);
+        });
+      } catch (e) {}
+    }
+
+    function stopCookingTimer() {
+      if (state.cookingMode.timerIntervalId) {
+        clearInterval(state.cookingMode.timerIntervalId);
+        state.cookingMode.timerIntervalId = null;
+      }
+      state.cookingMode.timerRunning = false;
+    }
+
+    function startCookingTimer(seconds) {
+      stopCookingTimer();
+      if ( typeof seconds === 'number' && seconds > 0) {
+        state.cookingMode.timerSecondsRemaining = seconds;
+        state.cookingMode.timerTotalSeconds = seconds;
+      }
+      if (state.cookingMode.timerSecondsRemaining <= 0) return;
+
+      state.cookingMode.timerRunning = true;
+      updateTimerDOMOnly();
+
+      state.cookingMode.timerIntervalId = setInterval(() => {
+        state.cookingMode.timerSecondsRemaining -= 1;
+        if (state.cookingMode.timerSecondsRemaining <= 0) {
+          state.cookingMode.timerSecondsRemaining = 0;
+          stopCookingTimer();
+          playTimerChime();
+        }
+        updateTimerDOMOnly();
+      }, 1000);
+    }
+
+    function togglePauseCookingTimer() {
+      if (state.cookingMode.timerRunning) {
+        stopCookingTimer();
+        updateTimerDOMOnly();
+      } else if (state.cookingMode.timerSecondsRemaining > 0) {
+        startCookingTimer();
+      }
+    }
+
+    function updateTimerDOMOnly() {
+      const displayEl = document.getElementById('cooking-timer-display');
+      const statusBtn = document.getElementById('cooking-timer-toggle-btn');
+      if (displayEl) {
+        displayEl.textContent = formatTimerDisplay(state.cookingMode.timerSecondsRemaining);
+      }
+      if (statusBtn) {
+        statusBtn.textContent = state.cookingMode.timerRunning ? '⏸ Pause' : '▶ Resume';
+      }
+    }
+
+    /**
+     * Reads the current step out loud using SpeechSynthesis for hands-free cooking.
+     */
+    function speakCurrentStep() {
+      try {
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        const stepObj = state.cookingMode.steps[state.cookingMode.currentStepIndex];
+        if (!stepObj) return;
+        const utterance = new SpeechSynthesisUtterance(
+          `Step ${state.cookingMode.currentStepIndex + 1}. ${stepObj.text}`
+        );
+        utterance.rate = 0.98;
+        window.speechSynthesis.speak(utterance);
+      } catch (e) {}
+    }
+
+    /**
+     * Opens the Recipe Modal and initializes Hands-Free Interactive Cooking Mode.
      */
     async function openRecipeModal(idMeal) {
       dom.modal.classList.remove('hidden');
       document.body.classList.add('modal-open');
+      stopCookingTimer();
 
-      // Show loading state inside modal
       dom.modalContent.innerHTML = `
         <div class="p-8 sm:p-12 text-center">
           <div class="w-full h-56 rounded-3xl skeleton-shimmer mb-6"></div>
@@ -1277,7 +1952,6 @@
           <div class="space-y-3 max-w-lg mx-auto">
             <div class="h-4 w-full rounded-full skeleton-shimmer"></div>
             <div class="h-4 w-5/6 rounded-full skeleton-shimmer"></div>
-            <div class="h-4 w-4/6 rounded-full skeleton-shimmer"></div>
           </div>
         </div>
       `;
@@ -1296,6 +1970,11 @@
           meal = data && Array.isArray(data.meals) ? data.meals[0] : null;
           if (meal) {
             state.recipeDetailsCache.set(idMeal, meal);
+            // Also enrich area/category index cache
+            state.mealMetaById[idMeal] = {
+              area: meal.strArea || null,
+              category: meal.strCategory || null
+            };
           }
         }
 
@@ -1303,7 +1982,8 @@
           throw new Error('Recipe details not found.');
         }
 
-        renderModalDetails(meal);
+        initCookingModeForMeal(meal);
+        renderModalDetails();
       } catch (err) {
         console.error('Error loading recipe details:', err);
         dom.modalContent.innerHTML = `
@@ -1322,11 +2002,7 @@
       }
     }
 
-    /**
-     * Parses the 20 ingredient/measure fields returned by TheMealDB and renders
-     * the interactive pill checklist and rounded-2xl step-by-step instructions.
-     */
-    function renderModalDetails(meal) {
+    function initCookingModeForMeal(meal) {
       const ingredientsList = [];
       const userActiveNormalized = new Set([
         ...state.customIngredients.map(normalizeIngredient),
@@ -1348,30 +2024,76 @@
               break;
             }
           }
-
           ingredientsList.push({ name, measure, inPantry });
         }
       }
 
-      // Split instructions into clean, readable steps
       const rawInstructions = meal.strInstructions || '';
-      const steps = rawInstructions
-        .split(/\r?\n+/)
+      const rawSteps = rawInstructions
+        .split(/\r?\n+|\.(?=\s+[A-Z])/)
         .map(line => line.trim())
-        .filter(line => line.length > 2 && !/^step\s*\d+:?$/i.test(line));
+        .filter(line => line.length > 4 && !/^step\s*\d+:?$/i.test(line))
+        .map(line => (line.endsWith('.') ? line : `${line}.`));
+
+      const parsedSteps = (rawSteps.length > 0 ? rawSteps : ['Follow package or standard preparation steps.']).map(
+        text => ({
+          text,
+          timer: extractStepTimer(text)
+        })
+      );
+
+      const firstStepTimer = parsedSteps[0]?.timer;
+
+      state.cookingMode = {
+        activeMeal: meal,
+        viewMode: 'handsfree',
+        currentStepIndex: 0,
+        completedSteps: new Set(),
+        steps: parsedSteps,
+        ingredientsList,
+        timerSecondsRemaining: firstStepTimer ? firstStepTimer.seconds : 0,
+        timerTotalSeconds: firstStepTimer ? firstStepTimer.seconds : 0,
+        timerRunning: false,
+        timerIntervalId: null
+      };
+    }
+
+    /**
+     * Renders the Modal with Ingredient Checklist + Hands-Free Interactive Cooking Mode Slideshow.
+     */
+    function renderModalDetails() {
+      const {
+        activeMeal: meal,
+        viewMode,
+        currentStepIndex,
+        completedSteps,
+        steps,
+        ingredientsList,
+        timerSecondsRemaining
+      } = state.cookingMode;
+
+      if (!meal) return;
+
+      const calories = estimateRecipeCalories(meal);
+      const currentStep = steps[currentStepIndex] || { text: '', timer: null };
+      const isStepChecked = completedSteps.has(currentStepIndex);
+      const progressPct = Math.round(((completedSteps.size) / steps.length) * 100);
 
       dom.modalContent.innerHTML = `
         <!-- Modal Hero Banner -->
-        <div class="relative h-64 sm:h-72 bg-forest-900">
+        <div class="relative h-60 sm:h-68 bg-forest-900">
           <img
             src="${escapeHtml(meal.strMealThumb)}"
             alt="${escapeHtml(meal.strMeal)}"
             class="w-full h-full object-cover opacity-90"
           />
-          <div class="absolute inset-0 bg-gradient-to-t from-forest-900 via-forest-900/40 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-forest-900 via-forest-900/45 to-transparent"></div>
 
           <div class="absolute bottom-5 left-6 right-6 text-white">
             <div class="flex flex-wrap items-center gap-2 mb-2.5">
+              <span class="px-3.5 py-1 rounded-full text-xs font-bold bg-white text-forest-900 shadow-sm">
+                🔥 ${calories} kcal / serving
+              </span>
               ${
                 meal.strCategory
                   ? `<span class="px-3.5 py-1 rounded-full text-xs font-bold bg-apricot-500 text-forest-900 shadow-sm">
@@ -1394,19 +2116,260 @@
         </div>
 
         <!-- Modal Main Content -->
-        <div class="p-6 sm:p-8 space-y-8">
+        <div class="p-5 sm:p-8 space-y-8">
 
-          <!-- Complete Ingredient List Section (Pill-Shaped Chips) -->
+          <!-- HANDS-FREE INTERACTIVE COOKING MODE SECTION -->
+          <div class="bg-mint-50/90 rounded-3xl p-5 sm:p-7 border-2 border-mint-300 shadow-sm">
+            <!-- Mode Switcher Header -->
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <div class="flex items-center gap-2.5">
+                <span class="w-9 h-9 rounded-full bg-mint-500 text-white flex items-center justify-center text-lg shadow-sm">
+                  👨‍🍳
+                </span>
+                <div>
+                  <h3 class="font-display text-lg sm:text-xl font-bold text-forest-900">
+                    Hands-Free Interactive Cooking Mode
+                  </h3>
+                  <p class="text-xs text-forest-700">
+                    Tap the giant circle to complete each step • Built-in smart timer
+                  </p>
+                </div>
+              </div>
+
+              <!-- View Toggle Pills -->
+              <div class="inline-flex bg-white p-1 rounded-full border border-mint-200">
+                <button
+                  type="button"
+                  data-cook-view="handsfree"
+                  class="px-3.5 py-1.5 rounded-full text-xs font-bold transition ${
+                    viewMode === 'handsfree'
+                      ? 'bg-mint-500 text-white shadow-sm'
+                      : 'text-forest-700 hover:text-forest-900'
+                  }"
+                >
+                  Slideshow Mode
+                </button>
+                <button
+                  type="button"
+                  data-cook-view="list"
+                  class="px-3.5 py-1.5 rounded-full text-xs font-bold transition ${
+                    viewMode === 'list'
+                      ? 'bg-mint-500 text-white shadow-sm'
+                      : 'text-forest-700 hover:text-forest-900'
+                  }"
+                >
+                  All Steps (${steps.length})
+                </button>
+              </div>
+            </div>
+
+            ${
+              viewMode === 'handsfree'
+                ? `
+                <!-- Progress Bar & Step Dots -->
+                <div class="mb-5">
+                  <div class="flex items-center justify-between text-xs font-bold text-forest-800 mb-2">
+                    <span>Step ${currentStepIndex + 1} of ${steps.length}</span>
+                    <span>${completedSteps.size}/${steps.length} Completed (${progressPct}%)</span>
+                  </div>
+                  <div class="w-full h-2.5 bg-white rounded-full overflow-hidden border border-mint-200">
+                    <div
+                      class="h-full bg-mint-500 rounded-full transition-all duration-300"
+                      style="width: ${Math.max(8, Math.round(((currentStepIndex + 1) / steps.length) * 100))}%"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- Active Slideshow Card with GIANT CHECKABLE CIRCLE -->
+                <div class="bg-white rounded-3xl p-5 sm:p-7 border-2 ${
+                  isStepChecked ? 'border-mint-500 bg-mint-50/40' : 'border-mint-200'
+                } shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-5">
+
+                  <!-- GIANT CHECKABLE CIRCLE BUTTON -->
+                  <button
+                    type="button"
+                    id="giant-step-check-btn"
+                    aria-label="Mark step ${currentStepIndex + 1} complete"
+                    class="giant-check-btn w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 flex flex-col items-center justify-center shrink-0 shadow-md focus:outline-none focus:ring-4 focus:ring-mint-500/30 ${
+                      isStepChecked
+                        ? 'bg-mint-500 border-mint-600 text-white'
+                        : 'bg-mint-50 hover:bg-mint-100 border-mint-400 text-forest-900'
+                    }"
+                  >
+                    ${
+                      isStepChecked
+                        ? `<svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span class="text-[10px] font-bold uppercase tracking-wider mt-0.5">Done!</span>`
+                        : `<span class="text-xl sm:text-2xl font-display font-bold">${currentStepIndex + 1}</span>
+                          <span class="text-[10px] font-bold uppercase tracking-wider text-mint-700">Tap Done</span>`
+                    }
+                  </button>
+
+                  <!-- Step Instruction Text & Smart Timer -->
+                  <div class="flex-1 text-center sm:text-left">
+                    <p class="text-base sm:text-lg font-semibold leading-relaxed ${
+                      isStepChecked ? 'line-through text-forest-600' : 'text-forest-900'
+                    }">
+                      ${escapeHtml(currentStep.text)}
+                    </p>
+
+                    <!-- Smart Detected Timer + Custom Timer Controls -->
+                    <div class="mt-5 pt-4 border-t border-mint-100 flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
+                      ${
+                        currentStep.timer
+                          ? `<button
+                              type="button"
+                              data-start-timer="${currentStep.timer.seconds}"
+                              class="px-4 py-2 rounded-full bg-apricot-500 hover:bg-apricot-600 text-forest-900 text-xs sm:text-sm font-bold shadow-sm transition active:scale-95 flex items-center gap-1.5"
+                            >
+                              <span>⏱️ Start ${escapeHtml(currentStep.timer.label)} Timer</span>
+                            </button>`
+                          : ''
+                      }
+                      <button
+                        type="button"
+                        data-start-timer="60"
+                        class="px-3 py-1.5 rounded-full bg-mint-50 hover:bg-mint-200 border border-mint-300 text-forest-800 text-xs font-bold transition"
+                      >
+                        + 1 min Timer
+                      </button>
+                      <button
+                        type="button"
+                        data-start-timer="300"
+                        class="px-3 py-1.5 rounded-full bg-mint-50 hover:bg-mint-200 border border-mint-300 text-forest-800 text-xs font-bold transition"
+                      >
+                        + 5 min Timer
+                      </button>
+                      <button
+                        type="button"
+                        id="speak-step-btn"
+                        class="px-3.5 py-1.5 rounded-full bg-white hover:bg-mint-100 border border-mint-300 text-forest-800 text-xs font-bold transition"
+                      >
+                        🔊 Read Step Aloud
+                      </button>
+                    </div>
+
+                    <!-- Live Countdown Timer Box (Shown when a timer is loaded or running) -->
+                    ${
+                      timerSecondsRemaining > 0 || state.cookingMode.timerRunning
+                        ? `
+                        <div class="mt-4 inline-flex flex-wrap items-center gap-3 bg-forest-900 text-white px-5 py-2.5 rounded-full shadow-md">
+                          <span class="text-xs uppercase tracking-wider font-bold text-mint-300">Timer</span>
+                          <span id="cooking-timer-display" class="font-mono text-xl font-bold text-amber-300">
+                            ${formatTimerDisplay(timerSecondsRemaining)}
+                          </span>
+                          <button
+                            type="button"
+                            id="cooking-timer-toggle-btn"
+                            class="px-3 py-1 rounded-full bg-mint-500 hover:bg-mint-600 text-white text-xs font-bold transition"
+                          >
+                            ${state.cookingMode.timerRunning ? '⏸ Pause' : '▶ Start'}
+                          </button>
+                          <button
+                            type="button"
+                            id="cooking-timer-reset-btn"
+                            class="px-2.5 py-1 rounded-full bg-white/15 hover:bg-white/25 text-white text-xs font-bold transition"
+                          >
+                            Reset
+                          </button>
+                        </div>
+                      `
+                        : ''
+                    }
+                  </div>
+                </div>
+
+                <!-- Slideshow Navigation Controls (Prev / Complete & Next) -->
+                <div class="mt-5 flex items-center justify-between gap-3">
+                  <button
+                    type="button"
+                    id="prev-step-btn"
+                    ${currentStepIndex === 0 ? 'disabled' : ''}
+                    class="px-5 py-2.5 rounded-full bg-white border-2 border-mint-200 text-forest-900 font-bold text-xs sm:text-sm transition ${
+                      currentStepIndex === 0
+                        ? 'opacity-40 cursor-not-allowed'
+                        : 'hover:border-mint-500 active:scale-95'
+                    }"
+                  >
+                    ← Previous Step
+                  </button>
+
+                  <div class="flex items-center gap-2">
+                    <button
+                      type="button"
+                      id="check-and-next-btn"
+                      class="px-6 py-2.5 rounded-full bg-apricot-500 hover:bg-apricot-600 text-forest-900 font-bold text-xs sm:text-sm shadow-sm transition active:scale-95"
+                    >
+                      ${
+                        currentStepIndex < steps.length - 1
+                          ? '✓ Complete & Next Step →'
+                          : '🎉 Finish Recipe!'
+                      }
+                    </button>
+                  </div>
+                </div>
+              `
+                : `
+                <!-- All Steps List View with Giant Checkable Circles -->
+                <ol class="space-y-3">
+                  ${steps
+                    .map((stepObj, idx) => {
+                      const done = completedSteps.has(idx);
+                      return `
+                        <li class="flex items-start gap-4 p-4 rounded-2xl bg-white border-2 ${
+                          done ? 'border-mint-500 bg-mint-50/40' : 'border-mint-200'
+                        }">
+                          <button
+                            type="button"
+                            data-toggle-step="${idx}"
+                            class="giant-check-btn w-12 h-12 rounded-full border-2 flex items-center justify-center font-bold text-sm shrink-0 ${
+                              done
+                                ? 'bg-mint-500 border-mint-600 text-white'
+                                : 'bg-mint-50 border-mint-400 text-forest-900 hover:bg-mint-100'
+                            }"
+                          >
+                            ${done ? '✓' : idx + 1}
+                          </button>
+                          <div class="flex-1">
+                            <p class="text-sm sm:text-base ${
+                              done ? 'line-through text-forest-600' : 'text-forest-900'
+                            } leading-relaxed">
+                              ${escapeHtml(stepObj.text)}
+                            </p>
+                            ${
+                              stepObj.timer
+                                ? `<button
+                                    type="button"
+                                    data-jump-timer-step="${idx}"
+                                    class="mt-2 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-apricot-500/25 hover:bg-apricot-500 text-forest-900 text-xs font-bold transition"
+                                  >
+                                    ⏱️ ${escapeHtml(stepObj.timer.label)} timer available
+                                  </button>`
+                                : ''
+                            }
+                          </div>
+                        </li>
+                      `;
+                    })
+                    .join('')}
+                </ol>
+              `
+            }
+          </div>
+
+          <!-- COMPLETE INGREDIENT LIST SECTION (Pill Chips) -->
           <div>
             <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
               <h3 class="font-display text-xl font-bold text-forest-900 flex items-center gap-2.5">
                 <span class="w-8 h-8 rounded-full bg-mint-100 text-mint-700 flex items-center justify-center text-sm font-bold">
                   ${ingredientsList.length}
                 </span>
-                <span>Ingredients Needed</span>
+                <span>Ingredients Checklist</span>
               </h3>
               <span class="text-xs font-semibold text-forest-700">
-                <span class="inline-block w-2.5 h-2.5 rounded-full bg-mint-500 mr-1"></span>Mint = In your active search
+                <span class="inline-block w-2.5 h-2.5 rounded-full bg-mint-500 mr-1"></span>Mint = In your kitchen search
               </span>
             </div>
 
@@ -1441,30 +2404,7 @@
             </div>
           </div>
 
-          <!-- Step-by-Step Instructions Section (Rounded-2xl Cards) -->
-          <div>
-            <h3 class="font-display text-xl font-bold text-forest-900 mb-4">
-              Step-by-Step Instructions
-            </h3>
-            <ol class="space-y-3.5">
-              ${steps
-                .map(
-                  (stepText, idx) => `
-                  <li class="flex gap-4 p-4 sm:p-5 rounded-2xl bg-mint-50/70 border border-mint-200">
-                    <span class="w-7 h-7 rounded-full bg-mint-500 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
-                      ${idx + 1}
-                    </span>
-                    <p class="text-sm sm:text-base text-forest-900 leading-relaxed">
-                      ${escapeHtml(stepText)}
-                    </p>
-                  </li>
-                `
-                )
-                .join('')}
-            </ol>
-          </div>
-
-          <!-- Optional Video / External Source Links (Pill Buttons) -->
+          <!-- External Links & Done Button -->
           <div class="pt-4 border-t border-mint-200 flex flex-wrap items-center justify-between gap-3">
             <div class="flex flex-wrap gap-2.5">
               ${
@@ -1475,10 +2415,7 @@
                       rel="noopener noreferrer"
                       class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-apricot-500 hover:bg-apricot-600 text-forest-900 text-xs sm:text-sm font-bold transition shadow-sm"
                     >
-                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                      </svg>
-                      Watch Video Tutorial
+                      ▶ Watch Video Tutorial
                     </a>`
                   : ''
               }
@@ -1509,14 +2446,17 @@
     }
 
     function closeRecipeModal() {
+      stopCookingTimer();
+      try {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      } catch (e) {}
       dom.modal.classList.add('hidden');
       document.body.classList.remove('modal-open');
     }
 
-    // Expose closeRecipeModal globally for inline modal buttons
     window.closeRecipeModal = closeRecipeModal;
 
-    // --- 9. EVENT LISTENERS ---
+    // --- 10. EVENT LISTENERS ---
 
     function setupEventListeners() {
       // Input typing & auto-suggestions
@@ -1567,7 +2507,7 @@
         addCustomIngredient(dom.input.value);
       });
 
-      // High-Priority "Find Recipes" CTA button (adds any typed text and runs search)
+      // High-Priority "Find Recipes" CTA button
       dom.findRecipesBtn.addEventListener('click', () => {
         if (dom.input.value.trim()) {
           addCustomIngredient(dom.input.value);
@@ -1576,6 +2516,9 @@
         }
         document.getElementById('results-heading').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
+
+      // Reset Memory Cache button
+      dom.resetMemoryBtn.addEventListener('click', resetAllMemory);
 
       // Click on an auto-suggestion item
       dom.suggestionsList.addEventListener('click', e => {
@@ -1603,6 +2546,7 @@
       // Clear all custom tags button
       dom.clearAllBtn.addEventListener('click', () => {
         state.customIngredients = [];
+        saveMemoryCache();
         renderCustomTags();
         performRecipeSearch();
       });
@@ -1614,8 +2558,24 @@
         });
       });
 
-      // Pantry Staples toggle buttons
+      // Custom Pantry Staple Creator (Enter key or + Add Staple button)
+      dom.addCustomStapleBtn.addEventListener('click', () => {
+        addCustomPantryStaple(dom.customStapleInput.value);
+      });
+      dom.customStapleInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          addCustomPantryStaple(dom.customStapleInput.value);
+        }
+      });
+
+      // Pantry Staples toggle & custom delete buttons
       dom.pantryStaplesGrid.addEventListener('click', e => {
+        const deleteBtn = e.target.closest('[data-delete-staple]');
+        if (deleteBtn) {
+          deleteCustomPantryStaple(deleteBtn.dataset.deleteStaple);
+          return;
+        }
         const stapleBtn = e.target.closest('[data-staple]');
         if (stapleBtn) {
           togglePantryStaple(stapleBtn.dataset.staple);
@@ -1624,15 +2584,40 @@
 
       // Select all / Clear all Pantry Staples
       dom.toggleAllStaplesBtn.addEventListener('click', () => {
-        const allNames = PANTRY_STAPLES_CONFIG.map(s => s.name);
+        const allNames = state.staplesCatalog.map(s => s.name);
         if (state.activeStaples.length === allNames.length) {
           state.activeStaples = [];
         } else {
           state.activeStaples = [...allNames];
         }
-        saveStaplesToStorage(state.activeStaples);
+        saveMemoryCache();
         renderPantryStaples();
         performRecipeSearch();
+      });
+
+      // Cuisine Filter Bar clicks
+      dom.cuisineFilterBar.addEventListener('click', async e => {
+        const btn = e.target.closest('[data-cuisine]');
+        if (!btn) return;
+        const selected = btn.dataset.cuisine;
+        state.selectedCuisine = selected;
+        saveMemoryCache();
+        renderCuisineFilterBar();
+
+        if (selected !== 'ALL' && selected !== 'ASIAN_ALL') {
+          await ensureCuisineAreaLoaded(selected);
+        }
+        renderRecipesSection();
+      });
+
+      // Dietary Filter Bar clicks
+      dom.dietaryFilterBar.addEventListener('click', e => {
+        const btn = e.target.closest('[data-dietary]');
+        if (!btn) return;
+        state.selectedDietary = btn.dataset.dietary;
+        saveMemoryCache();
+        renderDietaryFilterBar();
+        renderRecipesSection();
       });
 
       // Match mode buttons ('Best Matches' vs 'Must Match All')
@@ -1643,7 +2628,7 @@
         }
       });
 
-      // Delegate clicks inside the Recipe Results Grid ("View Recipe" & starter combos)
+      // Delegate clicks inside the Recipe Results Grid
       dom.recipesGrid.addEventListener('click', e => {
         const viewBtn = e.target.closest('[data-view-recipe]');
         if (viewBtn) {
@@ -1658,23 +2643,146 @@
         }
       });
 
-      // Modal close triggers (Close button, backdrop click, Escape key)
+      // Delegate Interactive Hands-Free Cooking Mode clicks inside Modal
+      dom.modalContent.addEventListener('click', e => {
+        // Switch between Slideshow and List view
+        const viewBtn = e.target.closest('[data-cook-view]');
+        if (viewBtn) {
+          state.cookingMode.viewMode = viewBtn.dataset.cookView;
+          renderModalDetails();
+          return;
+        }
+
+        // Giant Check Circle click in Slideshow Mode
+        if (e.target.closest('#giant-step-check-btn')) {
+          const idx = state.cookingMode.currentStepIndex;
+          if (state.cookingMode.completedSteps.has(idx)) {
+            state.cookingMode.completedSteps.delete(idx);
+          } else {
+            state.cookingMode.completedSteps.add(idx);
+          }
+          renderModalDetails();
+          return;
+        }
+
+        // Complete & Next Step button
+        if (e.target.closest('#check-and-next-btn')) {
+          const idx = state.cookingMode.currentStepIndex;
+          state.cookingMode.completedSteps.add(idx);
+          if (idx < state.cookingMode.steps.length - 1) {
+            state.cookingMode.currentStepIndex += 1;
+            const nextTimer = state.cookingMode.steps[state.cookingMode.currentStepIndex]?.timer;
+            stopCookingTimer();
+            state.cookingMode.timerSecondsRemaining = nextTimer ? nextTimer.seconds : 0;
+            state.cookingMode.timerTotalSeconds = nextTimer ? nextTimer.seconds : 0;
+          }
+          renderModalDetails();
+          return;
+        }
+
+        // Previous Step button
+        if (e.target.closest('#prev-step-btn')) {
+          if (state.cookingMode.currentStepIndex > 0) {
+            state.cookingMode.currentStepIndex -= 1;
+            const prevTimer = state.cookingMode.steps[state.cookingMode.currentStepIndex]?.timer;
+            stopCookingTimer();
+            state.cookingMode.timerSecondsRemaining = prevTimer ? prevTimer.seconds : 0;
+            state.cookingMode.timerTotalSeconds = prevTimer ? prevTimer.seconds : 0;
+            renderModalDetails();
+          }
+          return;
+        }
+
+        // Start a specific timer button
+        const startTimerBtn = e.target.closest('[data-start-timer]');
+        if (startTimerBtn) {
+          const secs = parseInt(startTimerBtn.dataset.startTimer, 10);
+          if (secs > 0) {
+            state.cookingMode.timerSecondsRemaining = secs;
+            state.cookingMode.timerTotalSeconds = secs;
+            renderModalDetails();
+            startCookingTimer(secs);
+          }
+          return;
+        }
+
+        // Pause / Resume Timer button
+        if (e.target.closest('#cooking-timer-toggle-btn')) {
+          togglePauseCookingTimer();
+          return;
+        }
+
+        // Reset Timer button
+        if (e.target.closest('#cooking-timer-reset-btn')) {
+          stopCookingTimer();
+          state.cookingMode.timerSecondsRemaining = state.cookingMode.timerTotalSeconds || 0;
+          renderModalDetails();
+          return;
+        }
+
+        // Read Step Aloud button
+        if (e.target.closest('#speak-step-btn')) {
+          speakCurrentStep();
+          return;
+        }
+
+        // Toggle step check in List view
+        const toggleStepBtn = e.target.closest('[data-toggle-step]');
+        if (toggleStepBtn) {
+          const idx = parseInt(toggleStepBtn.dataset.toggleStep, 10);
+          if (state.cookingMode.completedSteps.has(idx)) {
+            state.cookingMode.completedSteps.delete(idx);
+          } else {
+            state.cookingMode.completedSteps.add(idx);
+          }
+          renderModalDetails();
+          return;
+        }
+
+        // Jump to step timer from List view
+        const jumpTimerBtn = e.target.closest('[data-jump-timer-step]');
+        if (jumpTimerBtn) {
+          const idx = parseInt(jumpTimerBtn.dataset.jumpTimerStep, 10);
+          state.cookingMode.currentStepIndex = idx;
+          state.cookingMode.viewMode = 'handsfree';
+          const stepTimer = state.cookingMode.steps[idx]?.timer;
+          const secs = stepTimer ? stepTimer.seconds : 60;
+          renderModalDetails();
+          startCookingTimer(secs);
+        }
+      });
+
+      // Modal close triggers
       dom.closeModalBtn.addEventListener('click', closeRecipeModal);
       dom.modalBackdrop.addEventListener('click', closeRecipeModal);
       document.addEventListener('keydown', e => {
-        if (e.key === 'Escape' && !dom.modal.classList.contains('hidden')) {
+        if (dom.modal.classList.contains('hidden')) return;
+        if (e.key === 'Escape') {
           closeRecipeModal();
+        } else if (e.key === 'ArrowRight' && state.cookingMode.viewMode === 'handsfree') {
+          if (state.cookingMode.currentStepIndex < state.cookingMode.steps.length - 1) {
+            state.cookingMode.currentStepIndex += 1;
+            renderModalDetails();
+          }
+        } else if (e.key === 'ArrowLeft' && state.cookingMode.viewMode === 'handsfree') {
+          if (state.cookingMode.currentStepIndex > 0) {
+            state.cookingMode.currentStepIndex -= 1;
+            renderModalDetails();
+          }
         }
       });
     }
 
-    // --- 10. INITIALIZATION ---
+    // --- 11. INITIALIZATION ---
     function initApp() {
-      state.activeStaples = loadStaplesFromStorage();
+      loadMemoryCache();
       renderCustomTags();
       renderPantryStaples();
+      renderCuisineFilterBar();
+      renderDietaryFilterBar();
       setupEventListeners();
       loadIngredientCatalog();
+      preloadCuisineAndDietIndex();
       performRecipeSearch();
     }
 
