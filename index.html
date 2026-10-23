@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pantry to Plate — Sleek Mint Recipe Finder</title>
+  <meta name="description" content="Discover delicious recipes you can cook right now with the ingredients in your kitchen." />
+
+  <!-- Google Fonts: Plus Jakarta Sans (Clean UI) & Fraunces (Soft Editorial Display) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via Official CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            display: ['"Fraunces"', 'Georgia', 'serif'],
+          },
+          colors: {
+            canvas: '#F4F9F6',
+            mint: {
+              50: '#F4F9F6',
+              100: '#E4F3EC',
+              200: '#C7E7D9',
+              300: '#9AD5BC',
+              400: '#65C39E',
+              500: '#3EB489', // Primary Brand Mint Green
+              600: '#2E9973',
+              700: '#237B5C',
+            },
+            apricot: {
+              50: '#FEF5F1',
+              100: '#FDE7DF',
+              400: '#F4B097',
+              500: '#F09A7A', // High-Priority Accent Apricot/Terracotta
+              600: '#E27F5B',
+              700: '#C96643',
+            },
+            forest: {
+              900: '#134030', // Primary Deep Readable Forest Green
+              800: '#1C523F',
+              700: '#2B6852',
+              600: '#427D67',
+              400: '#76A593',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Embedded Custom Styles -->
+  <style>
+    :root {
+      --bg-canvas: #F4F9F6;
+      --brand-mint: #3EB489;
+      --accent-apricot: #F09A7A;
+      --text-forest: #134030;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-forest);
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    /* Soft Mint Header Atmosphere */
+    .mint-hero {
+      background:
+        radial-gradient(circle at 15% 20%, rgba(62, 180, 137, 0.18) 0%, transparent 48%),
+        radial-gradient(circle at 85% 15%, rgba(240, 154, 122, 0.18) 0%, transparent 45%),
+        linear-gradient(180deg, #E6F4EE 0%, #F4F9F6 100%);
+    }
+
+    /* Smooth custom scrollbars */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #E4F3EC;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #9AD5BC;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #3EB489;
+    }
+
+    /* Tag and modal entrance micro-animation */
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.92) translateY(4px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .animate-pop {
+      animation: popIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Active Pantry Staple smooth scale pulse */
+    .staple-pill {
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  background-color 0.2s ease,
+                  border-color 0.2s ease,
+                  box-shadow 0.2s ease,
+                  color 0.2s ease;
+    }
+    .staple-pill:active {
+      transform: scale(0.94);
+    }
+    .staple-pill[aria-pressed="true"] {
+      transform: scale(1.03);
+    }
+
+    /* Skeleton shimmer loading effect in soft mint tones */
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .skeleton-shimmer {
+      background: linear-gradient(90deg, #E4F3EC 25%, #F4F9F6 50%, #E4F3EC 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.6s infinite linear;
+    }
+
+    /* Prevent background scroll when modal is open */
+    body.modal-open {
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-canvas text-forest-900 selection:bg-mint-200 selection:text-forest-900">
+
+  <!-- =====================================================================
+       HEADER SECTION
+       ===================================================================== -->
+  <header class="mint-hero pt-10 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden border-b border-mint-200/60">
+    <div class="max-w-6xl mx-auto relative z-10">
+      <!-- Top Brand Pill Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <div class="inline-flex items-center gap-2.5 bg-white/85 border border-mint-500/30 backdrop-blur-sm px-4 py-1.5 rounded-full shadow-sm">
+          <span class="w-2.5 h-2.5 rounded-full bg-mint-500 animate-pulse"></span>
+          <span class="text-xs font-bold tracking-wider uppercase text-forest-800">Fresh Kitchen Companion</span>
+        </div>
+
+        <div class="inline-flex items-center gap-2 bg-white/70 border border-mint-200 px-3.5 py-1.5 rounded-full text-xs sm:text-sm text-forest-700">
+          <span>Powered by <strong class="text-forest-900 font-bold">TheMealDB</strong></span>
+        </div>
+      </div>
+
+      <!-- Main Title & Subtitle -->
+      <div class="max-w-3xl">
+        <div class="flex items-center gap-4 mb-3">
+          <div class="w-14 h-14 rounded-full bg-mint-500 text-white flex items-center justify-center shadow-md shadow-mint-500/25 shrink-0">
+            <!-- Leaf / Kitchen Bowl SVG Icon -->
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a4 4 0 00-4 4H4v2a8 8 0 0016 0v-2h-4a4 4 0 00-4-4zm-6 6h12" />
+            </svg>
+          </div>
+          <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight text-forest-900">
+            Pantry to <span class="text-mint-500">Plate</span>
+          </h1>
+        </div>
+        <p class="text-forest-700 text-base sm:text-lg leading-relaxed max-w-2xl">
+          Turn the ingredients you already have into tonight’s dinner. Add items from your fridge, toggle your everyday pantry staples, and explore step-by-step recipes in seconds.
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       MAIN CONTENT CONTAINER
+       ===================================================================== -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 -mt-8 pb-16 relative z-20">
+
+    <!-- ===================================================================
+         CONTROL PANEL: INGREDIENT INPUT + PANTRY STAPLES
+         =================================================================== -->
+    <section aria-label="Ingredient Search Controls" class="bg-white rounded-3xl shadow-lg shadow-mint-500/5 border-2 border-mint-200/80 p-5 sm:p-8 mb-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <!-- LEFT COLUMN: Custom Ingredient Input & Active Pill Tags -->
+        <div class="lg:col-span-7 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2.5">
+              <label for="ingredient-input" class="block text-xs sm:text-sm font-bold uppercase tracking-wider text-forest-900">
+                1. Add Fridge &amp; Fresh Ingredients
+              </label>
+              <span class="text-xs text-forest-600">
+                Press <kbd class="px-2 py-0.5 bg-mint-50 border border-mint-200 rounded-full text-forest-900 font-semibold">Enter</kbd> or click Add
+              </span>
+            </div>
+
+            <!-- Pill-Shaped Input + Add Button Wrapper with Auto-Suggest Dropdown -->
+            <div class="relative" id="autocomplete-wrapper">
+              <div class="flex flex-col sm:flex-row gap-2.5">
+                <div class="relative flex-1">
+                  <!-- Search Icon -->
+                  <svg class="w-5 h-5 text-mint-500 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 100-15 7.5 7.5 0 000 15z" />
+                  </svg>
+
+                  <input
+                    id="ingredient-input"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="e.g., Chicken, Salmon, Tomatoes, Spinach, Rice..."
+                    aria-autocomplete="list"
+                    aria-controls="suggestions-list"
+                    aria-expanded="false"
+                    class="w-full pl-12 pr-10 py-3.5 bg-mint-50/70 border-2 border-mint-200 rounded-full text-forest-900 placeholder-forest-400 focus:outline-none focus:bg-white focus:border-mint-500 focus:ring-4 focus:ring-mint-500/15 transition text-sm sm:text-base"
+                  />
+
+                  <!-- Clear Input Text Button (Pill) -->
+                  <button
+                    id="clear-input-btn"
+                    type="button"
+                    title="Clear input"
+                    class="hidden absolute right-3.5 top-1/2 -translate-y-1/2 text-forest-400 hover:text-forest-900 hover:bg-mint-100 p-1.5 rounded-full transition"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="flex gap-2 shrink-0">
+                  <!-- Add Tag Pill Button (Brand Mint) -->
+                  <button
+                    id="add-ingredient-btn"
+                    type="button"
+                    class="flex-1 sm:flex-initial px-6 py-3.5 bg-mint-500 hover:bg-mint-600 active:scale-95 text-white font-bold rounded-full shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-mint-500/30"
+                  >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span>Add</span>
+                  </button>
+
+                  <!-- High-Priority "Find Recipes" CTA Pill Button (Warm Apricot Accent #F09A7A) -->
+                  <button
+                    id="find-recipes-btn"
+                    type="button"
+                    class="flex-1 sm:flex-initial px-6 py-3.5 bg-apricot-500 hover:bg-apricot-600 active:scale-95 text-forest-900 font-bold rounded-full shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-apricot-500/30"
+                  >
+                    <span>Find Recipes</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Auto-Suggestion Dropdown List (Rounded-3xl) -->
+              <ul
+                id="suggestions-list"
+                role="listbox"
+                class="hidden absolute left-0 right-0 mt-2 bg-white border-2 border-mint-200 rounded-3xl shadow-xl max-h-64 overflow-y-auto z-40 divide-y divide-mint-100 custom-scrollbar p-1.5"
+              ></ul>
+            </div>
+
+            <!-- Active Custom Ingredient Tags Area -->
+            <div class="mt-5">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-forest-700 uppercase tracking-wider">
+                  Your Active Ingredient Tags
+                </span>
+                <button
+                  id="clear-all-btn"
+                  type="button"
+                  class="hidden px-3 py-1 rounded-full text-xs font-bold text-forest-700 bg-mint-100 hover:bg-mint-200 transition"
+                >
+                  Clear custom tags
+                </button>
+              </div>
+
+              <div
+                id="active-tags-container"
+                class="min-h-[52px] p-3 rounded-3xl bg-mint-50/80 border-2 border-dashed border-mint-300 flex flex-wrap items-center gap-2"
+                aria-live="polite"
+              >
+                <!-- Populated dynamically via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Starter Pill Suggestions -->
+          <div class="mt-4 pt-3.5 border-t border-mint-100 flex flex-wrap items-center gap-2 text-xs text-forest-700">
+            <span class="font-bold text-forest-900">Quick add:</span>
+            <button type="button" data-quick-add="Chicken" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Chicken</button>
+            <button type="button" data-quick-add="Beef" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Beef</button>
+            <button type="button" data-quick-add="Salmon" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Salmon</button>
+            <button type="button" data-quick-add="Eggs" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Eggs</button>
+            <button type="button" data-quick-add="Potatoes" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Potatoes</button>
+            <button type="button" data-quick-add="Rice" class="quick-add-btn px-3.5 py-1.5 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white border border-mint-200 text-forest-800 font-semibold transition-all active:scale-95">+ Rice</button>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Pantry Staples Toggle Section (Persisted to localStorage) -->
+        <div class="lg:col-span-5 bg-mint-50/90 rounded-3xl p-5 sm:p-6 border-2 border-mint-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div>
+                <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-forest-900 flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-mint-500"></span>
+                  2. Pantry Staples
+                </h2>
+                <p class="text-xs text-forest-700 mt-1">
+                  Tap to toggle kitchen basics. Automatically saved for your next visit.
+                </p>
+              </div>
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold bg-white text-forest-800 border border-mint-300 shrink-0 shadow-sm">
+                Saved
+              </span>
+            </div>
+
+            <!-- Pantry Staples Pill Grid -->
+            <div id="pantry-staples-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mt-4">
+              <!-- Populated dynamically via JS for Salt, Pepper, Olive Oil, Water, Sugar, Garlic -->
+            </div>
+          </div>
+
+          <!-- Active Query Summary Footer -->
+          <div class="mt-5 pt-3.5 border-t border-mint-200/80 flex items-center justify-between gap-2 text-xs text-forest-700">
+            <span id="active-query-summary" class="font-semibold text-forest-900 truncate">
+              No active ingredients selected
+            </span>
+            <button
+              id="toggle-all-staples-btn"
+              type="button"
+              class="px-3 py-1 rounded-full bg-white hover:bg-mint-100 border border-mint-300 font-bold text-forest-800 transition shrink-0"
+            >
+              Select all staples
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         RESULTS STATUS BAR & FILTER CONTROLS
+         =================================================================== -->
+    <section aria-label="Recipe Results">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <h2 id="results-heading" class="font-display text-2xl sm:text-3xl font-bold text-forest-900">
+            Matching Recipes
+          </h2>
+          <p id="results-subheading" class="text-sm text-forest-700 mt-0.5">
+            Select or enter ingredients above to discover meals you can make.
+          </p>
+        </div>
+
+        <!-- Pill Match Filter Mode Selector (Shown when multiple ingredients are active) -->
+        <div id="match-mode-bar" class="hidden items-center gap-1.5 self-start sm:self-auto bg-white border-2 border-mint-200 rounded-full p-1 shadow-sm">
+          <button
+            type="button"
+            data-mode="ranked"
+            class="match-mode-btn px-4 py-1.5 rounded-full text-xs font-bold transition bg-mint-500 text-white shadow-sm"
+          >
+            Best Matches
+          </button>
+          <button
+            type="button"
+            data-mode="strict"
+            class="match-mode-btn px-4 py-1.5 rounded-full text-xs font-bold transition text-forest-700 hover:text-forest-900"
+          >
+            Must Match All
+          </button>
+        </div>
+      </div>
+
+      <!-- =================================================================
+           DYNAMIC RECIPE GRID / LOADING / EMPTY / ERROR STATES
+           ================================================================= -->
+      <div id="recipes-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Recipe Cards or State Screens injected here via JavaScript -->
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================================
+       FOOTER
+       ===================================================================== -->
+  <footer class="bg-white text-forest-700 py-8 px-4 sm:px-6 lg:px-8 border-t border-mint-200 mt-auto">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm">
+      <div class="flex items-center gap-2.5">
+        <span class="w-3 h-3 rounded-full bg-mint-500"></span>
+        <span class="font-display font-bold text-forest-900">Pantry to Plate</span>
+        <span>— Sleek Mint Single-Page App</span>
+      </div>
+      <p class="text-center sm:text-right">
+        Recipe data &amp; images provided by the free
+        <a href="https://www.themealdb.com/" target="_blank" rel="noopener noreferrer" class="font-bold text-mint-600 hover:text-forest-900 underline underline-offset-2">
+          TheMealDB API
+        </a>.
+      </p>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       INTERACTIVE RECIPE MODAL OVERLAY (Rounded-3xl)
+       ===================================================================== -->
+  <div
+    id="recipe-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-recipe-title"
+    class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6"
+  >
+    <!-- Soft Forest Backdrop -->
+    <div
+      id="modal-backdrop"
+      class="fixed inset-0 bg-forest-900/60 backdrop-blur-sm transition-opacity"
+    ></div>
+
+    <!-- Modal Dialog Box -->
+    <div class="relative z-10 bg-white w-full max-w-3xl max-h-[90vh] rounded-3xl shadow-2xl border-2 border-mint-200 overflow-hidden flex flex-col animate-pop">
+      <!-- Floating Pill Close Button -->
+      <button
+        id="close-modal-btn"
+        type="button"
+        aria-label="Close recipe modal"
+        class="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/90 hover:bg-apricot-500 text-forest-900 flex items-center justify-center shadow-md border border-mint-200 transition-all hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-mint-500/30"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Scrollable Modal Body -->
+      <div id="modal-content" class="overflow-y-auto custom-scrollbar flex-1">
+        <!-- Dynamically populated when a user clicks "View Recipe" -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       APPLICATION JAVASCRIPT
+       ===================================================================== -->
+  <script>
+    /**
+     * PANTRY TO PLATE — Single-Page Application Logic (Sleek Mint Edition)
+     * -----------------------------------------------------------------------
+     * - Integrates with TheMealDB public API (v1/1):
+     *   1) filter.php?i={ingredient} -> Fetches recipes matching an ingredient
+     *   2) lookup.php?i={idMeal}     -> Fetches full recipe details & steps
+     *   3) list.php?i=list           -> Fetches ingredient catalog for auto-suggest
+     * - Persists Pantry Staples in window.localStorage.
+     */
+
+    // --- 1. CONSTANTS & CONFIGURATION ---
+    const API_BASE_URL = 'https://www.themealdb.com/api/json/v1/1';
+    const STORAGE_KEY_STAPLES = 'pantryToPlate_staples_v1';
+
+    // Pre-defined Pantry Staples required by specifications
+    const PANTRY_STAPLES_CONFIG = [
+      { name: 'Salt', icon: '🧂' },
+      { name: 'Pepper', icon: '🌶️' },
+      { name: 'Olive Oil', icon: '🫒' },
+      { name: 'Water', icon: '💧' },
+      { name: 'Sugar', icon: '🍯' },
+      { name: 'Garlic', icon: '🧄' }
+    ];
+
+    // Fallback catalog of common ingredients so auto-suggest works immediately
+    const FALLBACK_INGREDIENTS = [
+      'Chicken', 'Chicken Breast', 'Chicken Thighs', 'Beef', 'Minced Beef', 'Pork',
+      'Bacon', 'Salmon', 'Tuna', 'Prawns', 'Shrimp', 'Cod', 'Eggs', 'Milk', 'Butter',
+      'Cheese', 'Cheddar Cheese', 'Parmesan', 'Mozzarella', 'Heavy Cream', 'Yogurt',
+      'Garlic', 'Onion', 'Red Onion', 'Spring Onions', 'Tomatoes', 'Cherry Tomatoes',
+      'Potatoes', 'Sweet Potatoes', 'Carrots', 'Spinach', 'Broccoli', 'Mushrooms',
+      'Bell Pepper', 'Red Pepper', 'Chilli', 'Avocado', 'Zucchini', 'Courgettes',
+      'Cucumber', 'Lettuce', 'Celery', 'Ginger', 'Lemon', 'Lime', 'Rice', 'Basmati Rice',
+      'Pasta', 'Spaghetti', 'Penne Rigate', 'Noodles', 'Bread', 'Flour', 'Beans',
+      'Black Beans', 'Chickpeas', 'Lentils', 'Coconut Milk', 'Soy Sauce', 'Honey',
+      'Olive Oil', 'Vegetable Oil', 'Vinegar', 'Basil', 'Coriander', 'Parsley',
+      'Thyme', 'Rosemary', 'Cumin', 'Paprika', 'Cinnamon', 'Turmeric', 'Salt', 'Pepper',
+      'Sugar', 'Water'
+    ];
+
+    // --- 2. APPLICATION STATE ---
+    const state = {
+      customIngredients: ['Chicken'], // Starter tag so users see delicious recipes right away
+      activeStaples: [],              // Loaded from localStorage on startup
+      allKnownIngredients: [...FALLBACK_INGREDIENTS],
+      recipes: [],                    // Aggregated & ranked recipe list
+      matchMode: 'ranked',            // 'ranked' (Best Matches) | 'strict' (Must Match All)
+      isLoading: false,
+      errorMessage: null,
+      activeSuggestionIndex: -1,
+      currentSuggestions: [],
+      searchRequestId: 0,             // Prevents race conditions on rapid clicks
+      recipeDetailsCache: new Map()   // Caches lookup.php responses by idMeal
+    };
+
+    // --- 3. DOM ELEMENT REFERENCES ---
+    const dom = {
+      input: document.getElementById('ingredient-input'),
+      clearInputBtn: document.getElementById('clear-input-btn'),
+      addBtn: document.getElementById('add-ingredient-btn'),
+      findRecipesBtn: document.getElementById('find-recipes-btn'),
+      suggestionsList: document.getElementById('suggestions-list'),
+      autocompleteWrapper: document.getElementById('autocomplete-wrapper'),
+      activeTagsContainer: document.getElementById('active-tags-container'),
+      clearAllBtn: document.getElementById('clear-all-btn'),
+      pantryStaplesGrid: document.getElementById('pantry-staples-grid'),
+      toggleAllStaplesBtn: document.getElementById('toggle-all-staples-btn'),
+      activeQuerySummary: document.getElementById('active-query-summary'),
+      resultsHeading: document.getElementById('results-heading'),
+      resultsSubheading: document.getElementById('results-subheading'),
+      matchModeBar: document.getElementById('match-mode-bar'),
+      recipesGrid: document.getElementById('recipes-grid'),
+      modal: document.getElementById('recipe-modal'),
+      modalBackdrop: document.getElementById('modal-backdrop'),
+      closeModalBtn: document.getElementById('close-modal-btn'),
+      modalContent: document.getElementById('modal-content')
+    };
+
+    // --- 4. UTILITY FUNCTIONS ---
+
+    /**
+     * Escapes unsafe characters to prevent XSS when injecting dynamic strings into HTML.
+     */
+    function escapeHtml(value) {
+      if (value === null || value === undefined) return '';
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    /**
+     * Formats an ingredient name into Title Case (e.g., "olive oil" -> "Olive Oil").
+     */
+    function toTitleCase(str) {
+      return str
+        .trim()
+        .replace(/\s+/g, ' ')
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+    }
+
+    /**
+     * Normalizes ingredient strings for case-insensitive comparison.
+     */
+    function normalizeIngredient(str) {
+      return String(str || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    }
+
+    /**
+     * Loads saved Pantry Staples from localStorage.
+     * On first visit, defaults to ['Garlic', 'Olive Oil'] so the user sees how staples work.
+     */
+    function loadStaplesFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_STAPLES);
+        if (raw === null) {
+          const initialDefaults = ['Garlic', 'Olive Oil'];
+          saveStaplesToStorage(initialDefaults);
+          return initialDefaults;
+        }
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          const validNames = new Set(PANTRY_STAPLES_CONFIG.map(s => s.name));
+          return parsed.filter(item => validNames.has(item));
+        }
+      } catch (err) {
+        console.warn('Could not read pantry staples from localStorage:', err);
+      }
+      return [];
+    }
+
+    /**
+     * Saves the active Pantry Staples array to localStorage.
+     */
+    function saveStaplesToStorage(staplesArray) {
+      try {
+        localStorage.setItem(STORAGE_KEY_STAPLES, JSON.stringify(staplesArray));
+      } catch (err) {
+        console.warn('Could not save pantry staples to localStorage:', err);
+      }
+    }
+
+    // --- 5. API INTEGRATION (TheMealDB) ---
+
+    /**
+     * Fetches the full list of ingredients from TheMealDB to enrich the autocomplete dropdown.
+     */
+    async function loadIngredientCatalog() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/list.php?i=list`);
+        if (!response.ok) return;
+        const data = await response.json();
+        if (data && Array.isArray(data.meals)) {
+          const apiIngredients = data.meals
+            .map(item => item.strIngredient && item.strIngredient.trim())
+            .filter(Boolean);
+
+          const mergedSet = new Map();
+          [...FALLBACK_INGREDIENTS, ...apiIngredients].forEach(ing => {
+            const key = normalizeIngredient(ing);
+            if (!mergedSet.has(key)) {
+              mergedSet.set(key, toTitleCase(ing));
+            }
+          });
+          state.allKnownIngredients = Array.from(mergedSet.values()).sort((a, b) =>
+            a.localeCompare(b)
+          );
+        }
+      } catch (err) {
+        console.warn('Using built-in ingredient suggestions:', err);
+      }
+    }
+
+    /**
+     * Queries TheMealDB filter endpoint for a single ingredient:
+     * https://www.themealdb.com/api/json/v1/1/filter.php?i={ingredient}
+     */
+    async function fetchMealsBySingleIngredient(ingredient) {
+      const formattedQuery = encodeURIComponent(normalizeIngredient(ingredient));
+      const url = `${API_BASE_URL}/filter.php?i=${formattedQuery}`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`API returned status ${response.status}`);
+      }
+      const data = await response.json();
+      return Array.isArray(data.meals) ? data.meals : [];
+    }
+
+    /**
+     * Searches recipes dynamically across all active custom ingredients and pantry staples.
+     */
+    async function performRecipeSearch() {
+      const requestId = ++state.searchRequestId;
+
+      const customList = [...state.customIngredients];
+      const staplesList = [...state.activeStaples];
+
+      // Combine unique ingredients while remembering which are custom vs. staples
+      const combinedMap = new Map();
+      customList.forEach(ing => {
+        combinedMap.set(normalizeIngredient(ing), { name: ing, isCustom: true });
+      });
+      staplesList.forEach(ing => {
+        const key = normalizeIngredient(ing);
+        if (!combinedMap.has(key)) {
+          combinedMap.set(key, { name: ing, isCustom: false });
+        }
+      });
+
+      const activeQueryItems = Array.from(combinedMap.values());
+      updateQuerySummaryUI(activeQueryItems);
+
+      // If no ingredients or staples are selected, show the friendly empty prompt
+      if (activeQueryItems.length === 0) {
+        state.recipes = [];
+        state.isLoading = false;
+        state.errorMessage = null;
+        renderRecipesSection();
+        return;
+      }
+
+      // Show loading skeletons
+      state.isLoading = true;
+      state.errorMessage = null;
+      renderRecipesSection();
+
+      try {
+        // Fetch matching meals for every active ingredient concurrently
+        const resultsPerIngredient = await Promise.all(
+          activeQueryItems.map(async item => {
+            const meals = await fetchMealsBySingleIngredient(item.name);
+            return {
+              ingredient: item.name,
+              isCustom: item.isCustom,
+              meals
+            };
+          })
+        );
+
+        // Ignore out-of-order responses if a newer search was triggered
+        if (requestId !== state.searchRequestId) return;
+
+        // Aggregate meals by idMeal and calculate ingredient match coverage
+        const mealAggregator = new Map();
+
+        resultsPerIngredient.forEach(({ ingredient, isCustom, meals }) => {
+          meals.forEach(meal => {
+            if (!mealAggregator.has(meal.idMeal)) {
+              mealAggregator.set(meal.idMeal, {
+                idMeal: meal.idMeal,
+                strMeal: meal.strMeal,
+                strMealThumb: meal.strMealThumb,
+                matchedIngredients: [],
+                matchedCustomCount: 0,
+                matchedStapleCount: 0
+              });
+            }
+
+            const entry = mealAggregator.get(meal.idMeal);
+            if (!entry.matchedIngredients.includes(ingredient)) {
+              entry.matchedIngredients.push(ingredient);
+              if (isCustom) {
+                entry.matchedCustomCount += 1;
+              } else {
+                entry.matchedStapleCount += 1;
+              }
+            }
+          });
+        });
+
+        let aggregatedRecipes = Array.from(mealAggregator.values());
+
+        // When custom ingredients are entered, prioritize dishes that match at least 1 custom ingredient
+        if (customList.length > 0) {
+          const withCustomMatches = aggregatedRecipes.filter(r => r.matchedCustomCount > 0);
+          if (withCustomMatches.length > 0) {
+            aggregatedRecipes = withCustomMatches;
+          }
+        }
+
+        // Sort recipes:
+        // 1. Most custom ingredients matched
+        // 2. Most total ingredients (custom + staples) matched
+        // 3. Alphabetical by recipe name
+        aggregatedRecipes.sort((a, b) => {
+          if (b.matchedCustomCount !== a.matchedCustomCount) {
+            return b.matchedCustomCount - a.matchedCustomCount;
+          }
+          if (b.matchedIngredients.length !== a.matchedIngredients.length) {
+            return b.matchedIngredients.length - a.matchedIngredients.length;
+          }
+          return a.strMeal.localeCompare(b.strMeal);
+        });
+
+        state.recipes = aggregatedRecipes;
+        state.isLoading = false;
+        state.errorMessage = null;
+        renderRecipesSection();
+      } catch (err) {
+        if (requestId !== state.searchRequestId) return;
+        console.error('Recipe search error:', err);
+        state.isLoading = false;
+        state.errorMessage =
+          'We had trouble reaching TheMealDB recipe server. Please check your internet connection and try again.';
+        renderRecipesSection();
+      }
+    }
+
+    // --- 6. INGREDIENT & PANTRY STAPLE ACTIONS ---
+
+    /**
+     * Adds a custom ingredient pill tag and triggers a fresh search.
+     */
+    function addCustomIngredient(rawIngredient) {
+      const cleaned = toTitleCase(rawIngredient || '');
+      if (!cleaned) return;
+
+      const normalized = normalizeIngredient(cleaned);
+
+      // Check if this ingredient is one of the 6 Pantry Staples
+      const matchingStaple = PANTRY_STAPLES_CONFIG.find(
+        s => normalizeIngredient(s.name) === normalized
+      );
+
+      if (matchingStaple) {
+        if (!state.activeStaples.includes(matchingStaple.name)) {
+          state.activeStaples.push(matchingStaple.name);
+          saveStaplesToStorage(state.activeStaples);
+          renderPantryStaples();
+          performRecipeSearch();
+        }
+      } else {
+        const alreadyExists = state.customIngredients.some(
+          ing => normalizeIngredient(ing) === normalized
+        );
+        if (!alreadyExists) {
+          state.customIngredients.push(cleaned);
+          renderCustomTags();
+          performRecipeSearch();
+        }
+      }
+
+      // Reset input and suggestions
+      dom.input.value = '';
+      dom.clearInputBtn.classList.add('hidden');
+      closeSuggestionsDropdown();
+      dom.input.focus();
+    }
+
+    /**
+     * Removes a custom ingredient tag by name and refreshes the search.
+     */
+    function removeCustomIngredient(ingredientToRemove) {
+      const target = normalizeIngredient(ingredientToRemove);
+      state.customIngredients = state.customIngredients.filter(
+        ing => normalizeIngredient(ing) !== target
+      );
+      renderCustomTags();
+      performRecipeSearch();
+    }
+
+    /**
+     * Toggles a Pantry Staple on/off, persists to localStorage, and updates search results.
+     */
+    function togglePantryStaple(stapleName) {
+      const exists = state.activeStaples.includes(stapleName);
+      if (exists) {
+        state.activeStaples = state.activeStaples.filter(item => item !== stapleName);
+      } else {
+        state.activeStaples.push(stapleName);
+      }
+      saveStaplesToStorage(state.activeStaples);
+      renderPantryStaples();
+      performRecipeSearch();
+    }
+
+    // --- 7. UI RENDERING FUNCTIONS ---
+
+    /**
+     * Renders the active custom ingredient pill tags (`rounded-full`) with 'X' remove buttons.
+     */
+    function renderCustomTags() {
+      const items = state.customIngredients;
+
+      if (items.length === 0) {
+        dom.clearAllBtn.classList.add('hidden');
+        dom.activeTagsContainer.innerHTML = `
+          <span class="text-xs sm:text-sm text-forest-600 italic px-2">
+            No custom ingredients added yet. Type an ingredient above or tap a quick-add chip below.
+          </span>
+        `;
+        return;
+      }
+
+      dom.clearAllBtn.classList.remove('hidden');
+
+      dom.activeTagsContainer.innerHTML = items
+        .map(
+          ing => `
+          <span class="animate-pop inline-flex items-center gap-2 pl-4 pr-2 py-1.5 rounded-full bg-mint-500 text-white text-xs sm:text-sm font-bold shadow-sm">
+            <span>${escapeHtml(ing)}</span>
+            <button
+              type="button"
+              data-remove-tag="${escapeHtml(ing)}"
+              aria-label="Remove ${escapeHtml(ing)}"
+              class="w-5 h-5 rounded-full bg-forest-900/25 hover:bg-apricot-500 hover:text-forest-900 flex items-center justify-center transition focus:outline-none"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </span>
+        `
+        )
+        .join('');
+    }
+
+    /**
+     * Renders the 6 pill-shaped (`rounded-full`) Pantry Staples toggle buttons
+     * with smooth scale feedback when clicked/active.
+     */
+    function renderPantryStaples() {
+      dom.pantryStaplesGrid.innerHTML = PANTRY_STAPLES_CONFIG.map(staple => {
+        const isActive = state.activeStaples.includes(staple.name);
+        return `
+          <button
+            type="button"
+            data-staple="${escapeHtml(staple.name)}"
+            aria-pressed="${isActive}"
+            class="staple-pill group relative flex items-center justify-between gap-2 px-4 py-2.5 rounded-full border-2 text-left text-xs sm:text-sm font-bold select-none focus:outline-none focus:ring-4 focus:ring-mint-500/25 ${
+              isActive
+                ? 'bg-mint-500 text-white border-mint-500 shadow-md shadow-mint-500/20'
+                : 'bg-white text-forest-800 border-mint-200 hover:border-mint-500 hover:bg-mint-50'
+            }"
+          >
+            <span class="flex items-center gap-2 truncate">
+              <span class="text-base leading-none" aria-hidden="true">${staple.icon}</span>
+              <span class="truncate">${escapeHtml(staple.name)}</span>
+            </span>
+            <span class="w-4 h-4 rounded-full flex items-center justify-center shrink-0 transition ${
+              isActive
+                ? 'bg-white text-mint-600'
+                : 'border border-mint-300 text-transparent group-hover:border-mint-500'
+            }">
+              <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+          </button>
+        `;
+      }).join('');
+
+      const allSelected = state.activeStaples.length === PANTRY_STAPLES_CONFIG.length;
+      dom.toggleAllStaplesBtn.textContent = allSelected ? 'Clear all staples' : 'Select all staples';
+    }
+
+    /**
+     * Updates the summary counter below the Pantry Staples panel.
+     */
+    function updateQuerySummaryUI(activeQueryItems) {
+      const count = activeQueryItems.length;
+      if (count === 0) {
+        dom.activeQuerySummary.textContent = 'No active ingredients selected';
+      } else {
+        const names = activeQueryItems.map(i => i.name).join(', ');
+        dom.activeQuerySummary.textContent = `Active (${count}): ${names}`;
+      }
+    }
+
+    /**
+     * Renders the auto-suggest dropdown menu when typing in the ingredient input.
+     */
+    function updateSuggestionsDropdown(query) {
+      const normalizedQuery = normalizeIngredient(query);
+      if (!normalizedQuery) {
+        closeSuggestionsDropdown();
+        return;
+      }
+
+      const activeSet = new Set([
+        ...state.customIngredients.map(normalizeIngredient),
+        ...state.activeStaples.map(normalizeIngredient)
+      ]);
+
+      const startsWithMatches = [];
+      const includesMatches = [];
+
+      for (const ing of state.allKnownIngredients) {
+        const normIng = normalizeIngredient(ing);
+        if (activeSet.has(normIng)) continue;
+
+        if (normIng.startsWith(normalizedQuery)) {
+          startsWithMatches.push(ing);
+        } else if (normIng.includes(normalizedQuery)) {
+          includesMatches.push(ing);
+        }
+      }
+
+      const combined = [...startsWithMatches, ...includesMatches].slice(0, 8);
+      state.currentSuggestions = combined;
+      state.activeSuggestionIndex = -1;
+
+      if (combined.length === 0) {
+        closeSuggestionsDropdown();
+        return;
+      }
+
+      dom.suggestionsList.innerHTML = combined
+        .map(
+          (item, index) => `
+          <li
+            role="option"
+            data-suggestion-index="${index}"
+            data-suggestion-value="${escapeHtml(item)}"
+            class="suggestion-item px-4 py-2.5 rounded-full text-sm text-forest-900 hover:bg-mint-100 cursor-pointer flex items-center justify-between transition"
+          >
+            <span class="font-semibold">${escapeHtml(item)}</span>
+            <span class="text-xs px-2.5 py-0.5 rounded-full bg-mint-500 text-white font-bold">+ Add</span>
+          </li>
+        `
+        )
+        .join('');
+
+      dom.suggestionsList.classList.remove('hidden');
+      dom.input.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeSuggestionsDropdown() {
+      dom.suggestionsList.classList.add('hidden');
+      dom.suggestionsList.innerHTML = '';
+      dom.input.setAttribute('aria-expanded', 'false');
+      state.currentSuggestions = [];
+      state.activeSuggestionIndex = -1;
+    }
+
+    function highlightSuggestionItem() {
+      const items = dom.suggestionsList.querySelectorAll('.suggestion-item');
+      items.forEach((el, idx) => {
+        if (idx === state.activeSuggestionIndex) {
+          el.classList.add('bg-mint-100');
+          el.scrollIntoView({ block: 'nearest' });
+        } else {
+          el.classList.remove('bg-mint-100');
+        }
+      });
+    }
+
+    /**
+     * Renders the Recipe Results Grid (Loading Skeletons, Error State, Empty State, or Rounded-3xl Cards).
+     */
+    function renderRecipesSection() {
+      const totalActiveIngredients =
+        new Set([
+          ...state.customIngredients.map(normalizeIngredient),
+          ...state.activeStaples.map(normalizeIngredient)
+        ]).size;
+
+      // Show or hide the "Best Matches / Must Match All" pill toggle bar
+      if (totalActiveIngredients > 1 && state.recipes.length > 0 && !state.isLoading) {
+        dom.matchModeBar.classList.remove('hidden');
+        dom.matchModeBar.classList.add('inline-flex');
+      } else {
+        dom.matchModeBar.classList.add('hidden');
+        dom.matchModeBar.classList.remove('inline-flex');
+      }
+
+      // 1. LOADING STATE
+      if (state.isLoading) {
+        dom.resultsHeading.textContent = 'Searching the Kitchen...';
+        dom.resultsSubheading.textContent = 'Finding recipes that match your ingredients.';
+        dom.recipesGrid.innerHTML = Array.from({ length: 6 })
+          .map(
+            () => `
+            <div class="bg-white rounded-3xl border-2 border-mint-100 overflow-hidden shadow-sm p-5 flex flex-col gap-4">
+              <div class="w-full h-48 rounded-2xl skeleton-shimmer"></div>
+              <div class="h-6 w-3/4 rounded-full skeleton-shimmer"></div>
+              <div class="h-4 w-1/2 rounded-full skeleton-shimmer"></div>
+              <div class="h-11 w-full rounded-full skeleton-shimmer mt-2"></div>
+            </div>
+          `
+          )
+          .join('');
+        return;
+      }
+
+      // 2. ERROR STATE
+      if (state.errorMessage) {
+        dom.resultsHeading.textContent = 'Connection Hiccup';
+        dom.resultsSubheading.textContent = 'Unable to load recipes right now.';
+        dom.recipesGrid.innerHTML = `
+          <div class="col-span-full bg-white border-2 border-apricot-400 rounded-3xl p-8 text-center max-w-xl mx-auto my-4 shadow-sm">
+            <div class="w-14 h-14 rounded-full bg-apricot-100 text-apricot-700 flex items-center justify-center mx-auto mb-4">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z" />
+              </svg>
+            </div>
+            <h3 class="font-display text-xl font-bold text-forest-900 mb-2">Oops! Something went wrong</h3>
+            <p class="text-sm text-forest-700 mb-6">${escapeHtml(state.errorMessage)}</p>
+            <button
+              type="button"
+              id="retry-search-btn"
+              class="px-6 py-3 bg-apricot-500 hover:bg-apricot-600 text-forest-900 text-sm font-bold rounded-full shadow-sm transition"
+            >
+              Try Again
+            </button>
+          </div>
+        `;
+        const retryBtn = document.getElementById('retry-search-btn');
+        if (retryBtn) retryBtn.addEventListener('click', performRecipeSearch);
+        return;
+      }
+
+      // 3. NO ACTIVE INGREDIENTS SELECTED STATE
+      if (totalActiveIngredients === 0) {
+        dom.resultsHeading.textContent = 'Your Plate is Waiting';
+        dom.resultsSubheading.textContent = 'Add an ingredient or toggle a pantry staple above to start exploring.';
+        dom.recipesGrid.innerHTML = `
+          <div class="col-span-full bg-white border-2 border-mint-200 rounded-3xl p-10 text-center max-w-xl mx-auto my-4 shadow-sm">
+            <div class="w-16 h-16 rounded-full bg-mint-100 text-mint-600 flex items-center justify-center mx-auto mb-4 text-3xl">
+              🥗
+            </div>
+            <h3 class="font-display text-2xl font-bold text-forest-900 mb-2">Start with what’s in your kitchen</h3>
+            <p class="text-sm text-forest-700 mb-6">
+              Type any ingredient in the search bar above, toggle your pantry staples, or try one of our favorite combinations:
+            </p>
+            <div class="flex flex-wrap justify-center gap-2.5">
+              <button type="button" data-combo="Chicken,Garlic" class="combo-btn px-4 py-2 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white text-forest-900 font-bold text-xs sm:text-sm border-2 border-mint-300 transition-all active:scale-95">
+                🍗 Chicken + Garlic
+              </button>
+              <button type="button" data-combo="Salmon,Olive Oil" class="combo-btn px-4 py-2 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white text-forest-900 font-bold text-xs sm:text-sm border-2 border-mint-300 transition-all active:scale-95">
+                🐟 Salmon + Olive Oil
+              </button>
+              <button type="button" data-combo="Beef,Onion" class="combo-btn px-4 py-2 rounded-full bg-mint-50 hover:bg-mint-500 hover:text-white text-forest-900 font-bold text-xs sm:text-sm border-2 border-mint-300 transition-all active:scale-95">
+                🥩 Beef + Onion
+              </button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // Filter recipes according to the selected match mode ('ranked' vs 'strict')
+      let displayedRecipes = state.recipes;
+      if (state.matchMode === 'strict' && totalActiveIngredients > 1) {
+        displayedRecipes = state.recipes.filter(
+          r => r.matchedIngredients.length === totalActiveIngredients
+        );
+      }
+
+      // 4. NO RECIPES FOUND STATE
+      if (displayedRecipes.length === 0) {
+        dom.resultsHeading.textContent = 'No Exact Recipes Found';
+        dom.resultsSubheading.textContent =
+          state.matchMode === 'strict' && state.recipes.length > 0
+            ? 'No single recipe explicitly lists every selected item together.'
+            : 'Try removing an uncommon ingredient or checking the spelling.';
+
+        dom.recipesGrid.innerHTML = `
+          <div class="col-span-full bg-white border-2 border-mint-200 rounded-3xl p-10 text-center max-w-xl mx-auto my-4 shadow-sm">
+            <div class="w-16 h-16 rounded-full bg-apricot-100 text-apricot-700 flex items-center justify-center mx-auto mb-4 text-3xl">
+              🔍
+            </div>
+            <h3 class="font-display text-2xl font-bold text-forest-900 mb-2">
+              ${
+                state.matchMode === 'strict' && state.recipes.length > 0
+                  ? 'No recipes matched 100% of those items at once'
+                  : 'No matching recipes found'
+              }
+            </h3>
+            <p class="text-sm text-forest-700 mb-6">
+              ${
+                state.matchMode === 'strict' && state.recipes.length > 0
+                  ? `However, we found <strong>${state.recipes.length} recipes</strong> that use a subset of your ingredients!`
+                  : 'TheMealDB didn’t return any dishes for that exact ingredient name. Try a broader term like "Chicken", "Rice", "Tomatoes", or "Eggs".'
+              }
+            </p>
+            <div class="flex flex-wrap justify-center gap-3">
+              ${
+                state.matchMode === 'strict' && state.recipes.length > 0
+                  ? `<button type="button" id="switch-to-ranked-btn" class="px-6 py-3 bg-apricot-500 hover:bg-apricot-600 text-forest-900 text-sm font-bold rounded-full shadow-sm transition">
+                      Show ${state.recipes.length} Best Matches
+                    </button>`
+                  : `<button type="button" id="reset-default-btn" class="px-6 py-3 bg-apricot-500 hover:bg-apricot-600 text-forest-900 text-sm font-bold rounded-full shadow-sm transition">
+                      Try Chicken &amp; Garlic
+                    </button>`
+              }
+            </div>
+          </div>
+        `;
+
+        const switchBtn = document.getElementById('switch-to-ranked-btn');
+        if (switchBtn) {
+          switchBtn.addEventListener('click', () => setMatchMode('ranked'));
+        }
+        const resetBtn = document.getElementById('reset-default-btn');
+        if (resetBtn) {
+          resetBtn.addEventListener('click', () => {
+            state.customIngredients = ['Chicken'];
+            renderCustomTags();
+            performRecipeSearch();
+          });
+        }
+        return;
+      }
+
+      // 5. RENDER MATCHING RECIPE CARDS (Rounded-3xl + Soft Hover Lift)
+      dom.resultsHeading.textContent = `Found ${displayedRecipes.length} Delicious Recipe${
+        displayedRecipes.length === 1 ? '' : 's'
+      }`;
+      dom.resultsSubheading.textContent =
+        totalActiveIngredients > 1
+          ? 'Sorted by how many of your selected ingredients each recipe uses.'
+          : `Showing dishes made with ${
+              state.customIngredients[0] || state.activeStaples[0]
+            }.`;
+
+      dom.recipesGrid.innerHTML = displayedRecipes
+        .map(recipe => {
+          const matchCount = recipe.matchedIngredients.length;
+          const isFullMatch = matchCount === totalActiveIngredients;
+          const badgeClasses = isFullMatch
+            ? 'bg-mint-500 text-white'
+            : 'bg-white/95 text-forest-900 border border-mint-300';
+
+          return `
+            <article class="group bg-white rounded-3xl border-2 border-mint-200/80 hover:border-mint-500 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col">
+              <!-- Recipe Thumbnail Container -->
+              <div class="relative h-52 overflow-hidden bg-mint-100">
+                <img
+                  src="${escapeHtml(recipe.strMealThumb)}"
+                  alt="${escapeHtml(recipe.strMeal)}"
+                  loading="lazy"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-forest-900/50 via-transparent to-transparent"></div>
+
+                <!-- Match Score Pill -->
+                <div class="absolute top-3.5 left-3.5">
+                  <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold shadow-sm ${badgeClasses}">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Uses ${matchCount} of ${totalActiveIngredients} selected
+                  </span>
+                </div>
+              </div>
+
+              <!-- Card Body -->
+              <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 class="font-display text-lg sm:text-xl font-bold text-forest-900 group-hover:text-mint-600 transition line-clamp-2">
+                    ${escapeHtml(recipe.strMeal)}
+                  </h3>
+
+                  <!-- Matched Ingredient Pill Chips -->
+                  <div class="mt-3.5 flex flex-wrap gap-1.5">
+                    ${recipe.matchedIngredients
+                      .map(
+                        ing => `
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold bg-mint-50 text-forest-800 border border-mint-300">
+                          ✓ ${escapeHtml(ing)}
+                        </span>
+                      `
+                      )
+                      .join('')}
+                  </div>
+                </div>
+
+                <!-- Pill-Shaped View Recipe Button -->
+                <div class="mt-5 pt-4 border-t border-mint-100">
+                  <button
+                    type="button"
+                    data-view-recipe="${escapeHtml(recipe.idMeal)}"
+                    class="view-recipe-btn w-full py-3 px-5 rounded-full bg-apricot-500/20 hover:bg-apricot-500 text-forest-900 font-bold text-sm transition-all flex items-center justify-center gap-2 group/btn active:scale-95 focus:outline-none focus:ring-4 focus:ring-apricot-500/30"
+                  >
+                    <span>View Recipe</span>
+                    <svg class="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </article>
+          `;
+        })
+        .join('');
+    }
+
+    function setMatchMode(mode) {
+      state.matchMode = mode;
+      const buttons = dom.matchModeBar.querySelectorAll('.match-mode-btn');
+      buttons.forEach(btn => {
+        if (btn.dataset.mode === mode) {
+          btn.classList.add('bg-mint-500', 'text-white', 'shadow-sm');
+          btn.classList.remove('text-forest-700');
+        } else {
+          btn.classList.remove('bg-mint-500', 'text-white', 'shadow-sm');
+          btn.classList.add('text-forest-700');
+        }
+      });
+      renderRecipesSection();
+    }
+
+    // --- 8. RECIPE DETAIL MODAL LOGIC ---
+
+    /**
+     * Opens the modal overlay and loads the complete step-by-step recipe details
+     * from https://www.themealdb.com/api/json/v1/1/lookup.php?i={idMeal}
+     */
+    async function openRecipeModal(idMeal) {
+      dom.modal.classList.remove('hidden');
+      document.body.classList.add('modal-open');
+
+      // Show loading state inside modal
+      dom.modalContent.innerHTML = `
+        <div class="p-8 sm:p-12 text-center">
+          <div class="w-full h-56 rounded-3xl skeleton-shimmer mb-6"></div>
+          <div class="h-8 w-2/3 mx-auto rounded-full skeleton-shimmer mb-3"></div>
+          <div class="h-4 w-1/3 mx-auto rounded-full skeleton-shimmer mb-8"></div>
+          <div class="space-y-3 max-w-lg mx-auto">
+            <div class="h-4 w-full rounded-full skeleton-shimmer"></div>
+            <div class="h-4 w-5/6 rounded-full skeleton-shimmer"></div>
+            <div class="h-4 w-4/6 rounded-full skeleton-shimmer"></div>
+          </div>
+        </div>
+      `;
+
+      try {
+        let meal = state.recipeDetailsCache.get(idMeal);
+
+        if (!meal) {
+          const response = await fetch(
+            `${API_BASE_URL}/lookup.php?i=${encodeURIComponent(idMeal)}`
+          );
+          if (!response.ok) {
+            throw new Error(`Status ${response.status}`);
+          }
+          const data = await response.json();
+          meal = data && Array.isArray(data.meals) ? data.meals[0] : null;
+          if (meal) {
+            state.recipeDetailsCache.set(idMeal, meal);
+          }
+        }
+
+        if (!meal) {
+          throw new Error('Recipe details not found.');
+        }
+
+        renderModalDetails(meal);
+      } catch (err) {
+        console.error('Error loading recipe details:', err);
+        dom.modalContent.innerHTML = `
+          <div class="p-10 text-center">
+            <h3 class="font-display text-2xl font-bold text-forest-900 mb-2">Unable to Load Recipe</h3>
+            <p class="text-sm text-forest-700 mb-6">We couldn’t retrieve the full instructions for this dish. Please try again.</p>
+            <button
+              type="button"
+              onclick="closeRecipeModal()"
+              class="px-6 py-2.5 bg-mint-500 text-white rounded-full text-sm font-bold"
+            >
+              Close
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    /**
+     * Parses the 20 ingredient/measure fields returned by TheMealDB and renders
+     * the interactive pill checklist and rounded-2xl step-by-step instructions.
+     */
+    function renderModalDetails(meal) {
+      const ingredientsList = [];
+      const userActiveNormalized = new Set([
+        ...state.customIngredients.map(normalizeIngredient),
+        ...state.activeStaples.map(normalizeIngredient)
+      ]);
+
+      for (let i = 1; i <= 20; i++) {
+        const rawIng = meal[`strIngredient${i}`];
+        const rawMeasure = meal[`strMeasure${i}`];
+        if (rawIng && rawIng.trim()) {
+          const name = rawIng.trim();
+          const measure = rawMeasure ? rawMeasure.trim() : '';
+          const normName = normalizeIngredient(name);
+
+          let inPantry = false;
+          for (const activeIng of userActiveNormalized) {
+            if (normName.includes(activeIng) || activeIng.includes(normName)) {
+              inPantry = true;
+              break;
+            }
+          }
+
+          ingredientsList.push({ name, measure, inPantry });
+        }
+      }
+
+      // Split instructions into clean, readable steps
+      const rawInstructions = meal.strInstructions || '';
+      const steps = rawInstructions
+        .split(/\r?\n+/)
+        .map(line => line.trim())
+        .filter(line => line.length > 2 && !/^step\s*\d+:?$/i.test(line));
+
+      dom.modalContent.innerHTML = `
+        <!-- Modal Hero Banner -->
+        <div class="relative h-64 sm:h-72 bg-forest-900">
+          <img
+            src="${escapeHtml(meal.strMealThumb)}"
+            alt="${escapeHtml(meal.strMeal)}"
+            class="w-full h-full object-cover opacity-90"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-forest-900 via-forest-900/40 to-transparent"></div>
+
+          <div class="absolute bottom-5 left-6 right-6 text-white">
+            <div class="flex flex-wrap items-center gap-2 mb-2.5">
+              ${
+                meal.strCategory
+                  ? `<span class="px-3.5 py-1 rounded-full text-xs font-bold bg-apricot-500 text-forest-900 shadow-sm">
+                      ${escapeHtml(meal.strCategory)}
+                    </span>`
+                  : ''
+              }
+              ${
+                meal.strArea
+                  ? `<span class="px-3.5 py-1 rounded-full text-xs font-bold bg-mint-500 text-white shadow-sm">
+                      🌍 ${escapeHtml(meal.strArea)} Cuisine
+                    </span>`
+                  : ''
+              }
+            </div>
+            <h2 id="modal-recipe-title" class="font-display text-2xl sm:text-3xl font-bold leading-tight">
+              ${escapeHtml(meal.strMeal)}
+            </h2>
+          </div>
+        </div>
+
+        <!-- Modal Main Content -->
+        <div class="p-6 sm:p-8 space-y-8">
+
+          <!-- Complete Ingredient List Section (Pill-Shaped Chips) -->
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <h3 class="font-display text-xl font-bold text-forest-900 flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-full bg-mint-100 text-mint-700 flex items-center justify-center text-sm font-bold">
+                  ${ingredientsList.length}
+                </span>
+                <span>Ingredients Needed</span>
+              </h3>
+              <span class="text-xs font-semibold text-forest-700">
+                <span class="inline-block w-2.5 h-2.5 rounded-full bg-mint-500 mr-1"></span>Mint = In your active search
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              ${ingredientsList
+                .map(
+                  item => `
+                  <label class="flex items-center justify-between gap-3 px-4 py-2.5 rounded-full border-2 cursor-pointer transition select-none ${
+                    item.inPantry
+                      ? 'bg-mint-50 border-mint-500 text-forest-900'
+                      : 'bg-canvas border-mint-100 text-forest-800 hover:border-mint-300'
+                  }">
+                    <span class="flex items-center gap-2.5 text-sm font-bold truncate">
+                      <input
+                        type="checkbox"
+                        ${item.inPantry ? 'checked' : ''}
+                        class="w-4 h-4 rounded-full text-mint-500 focus:ring-mint-500 border-mint-300"
+                      />
+                      <span class="truncate">${escapeHtml(item.name)}</span>
+                    </span>
+                    <span class="text-xs font-bold px-3 py-1 rounded-full shrink-0 ${
+                      item.inPantry
+                        ? 'bg-mint-500 text-white'
+                        : 'bg-white text-forest-700 border border-mint-200'
+                    }">
+                      ${escapeHtml(item.measure || 'To taste')}
+                    </span>
+                  </label>
+                `
+                )
+                .join('')}
+            </div>
+          </div>
+
+          <!-- Step-by-Step Instructions Section (Rounded-2xl Cards) -->
+          <div>
+            <h3 class="font-display text-xl font-bold text-forest-900 mb-4">
+              Step-by-Step Instructions
+            </h3>
+            <ol class="space-y-3.5">
+              ${steps
+                .map(
+                  (stepText, idx) => `
+                  <li class="flex gap-4 p-4 sm:p-5 rounded-2xl bg-mint-50/70 border border-mint-200">
+                    <span class="w-7 h-7 rounded-full bg-mint-500 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+                      ${idx + 1}
+                    </span>
+                    <p class="text-sm sm:text-base text-forest-900 leading-relaxed">
+                      ${escapeHtml(stepText)}
+                    </p>
+                  </li>
+                `
+                )
+                .join('')}
+            </ol>
+          </div>
+
+          <!-- Optional Video / External Source Links (Pill Buttons) -->
+          <div class="pt-4 border-t border-mint-200 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex flex-wrap gap-2.5">
+              ${
+                meal.strYoutube
+                  ? `<a
+                      href="${escapeHtml(meal.strYoutube)}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-apricot-500 hover:bg-apricot-600 text-forest-900 text-xs sm:text-sm font-bold transition shadow-sm"
+                    >
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                      </svg>
+                      Watch Video Tutorial
+                    </a>`
+                  : ''
+              }
+              ${
+                meal.strSource
+                  ? `<a
+                      href="${escapeHtml(meal.strSource)}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-mint-50 hover:bg-mint-100 border border-mint-300 text-forest-900 text-xs sm:text-sm font-bold transition"
+                    >
+                      Original Recipe Source ↗
+                    </a>`
+                  : ''
+              }
+            </div>
+
+            <button
+              type="button"
+              onclick="closeRecipeModal()"
+              class="px-6 py-2.5 rounded-full bg-mint-500 hover:bg-mint-600 text-white text-xs sm:text-sm font-bold transition shadow-sm"
+            >
+              Done Cooking
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function closeRecipeModal() {
+      dom.modal.classList.add('hidden');
+      document.body.classList.remove('modal-open');
+    }
+
+    // Expose closeRecipeModal globally for inline modal buttons
+    window.closeRecipeModal = closeRecipeModal;
+
+    // --- 9. EVENT LISTENERS ---
+
+    function setupEventListeners() {
+      // Input typing & auto-suggestions
+      dom.input.addEventListener('input', e => {
+        const val = e.target.value;
+        dom.clearInputBtn.classList.toggle('hidden', val.length === 0);
+        updateSuggestionsDropdown(val);
+      });
+
+      // Keyboard navigation for input & autocomplete list
+      dom.input.addEventListener('keydown', e => {
+        const count = state.currentSuggestions.length;
+
+        if (e.key === 'ArrowDown' && count > 0) {
+          e.preventDefault();
+          state.activeSuggestionIndex = (state.activeSuggestionIndex + 1) % count;
+          highlightSuggestionItem();
+        } else if (e.key === 'ArrowUp' && count > 0) {
+          e.preventDefault();
+          state.activeSuggestionIndex =
+            (state.activeSuggestionIndex - 1 + count) % count;
+          highlightSuggestionItem();
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          if (
+            state.activeSuggestionIndex >= 0 &&
+            state.currentSuggestions[state.activeSuggestionIndex]
+          ) {
+            addCustomIngredient(state.currentSuggestions[state.activeSuggestionIndex]);
+          } else {
+            addCustomIngredient(dom.input.value);
+          }
+        } else if (e.key === 'Escape') {
+          closeSuggestionsDropdown();
+        }
+      });
+
+      // Clear text button inside input
+      dom.clearInputBtn.addEventListener('click', () => {
+        dom.input.value = '';
+        dom.clearInputBtn.classList.add('hidden');
+        closeSuggestionsDropdown();
+        dom.input.focus();
+      });
+
+      // Add Ingredient button click
+      dom.addBtn.addEventListener('click', () => {
+        addCustomIngredient(dom.input.value);
+      });
+
+      // High-Priority "Find Recipes" CTA button (adds any typed text and runs search)
+      dom.findRecipesBtn.addEventListener('click', () => {
+        if (dom.input.value.trim()) {
+          addCustomIngredient(dom.input.value);
+        } else {
+          performRecipeSearch();
+        }
+        document.getElementById('results-heading').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      // Click on an auto-suggestion item
+      dom.suggestionsList.addEventListener('click', e => {
+        const option = e.target.closest('[data-suggestion-value]');
+        if (option) {
+          addCustomIngredient(option.dataset.suggestionValue);
+        }
+      });
+
+      // Close auto-suggest dropdown when clicking outside
+      document.addEventListener('click', e => {
+        if (!dom.autocompleteWrapper.contains(e.target)) {
+          closeSuggestionsDropdown();
+        }
+      });
+
+      // Remove individual custom ingredient tag ('X' button)
+      dom.activeTagsContainer.addEventListener('click', e => {
+        const removeBtn = e.target.closest('[data-remove-tag]');
+        if (removeBtn) {
+          removeCustomIngredient(removeBtn.dataset.removeTag);
+        }
+      });
+
+      // Clear all custom tags button
+      dom.clearAllBtn.addEventListener('click', () => {
+        state.customIngredients = [];
+        renderCustomTags();
+        performRecipeSearch();
+      });
+
+      // Quick-add popular ingredient buttons
+      document.querySelectorAll('.quick-add-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          addCustomIngredient(btn.dataset.quickAdd);
+        });
+      });
+
+      // Pantry Staples toggle buttons
+      dom.pantryStaplesGrid.addEventListener('click', e => {
+        const stapleBtn = e.target.closest('[data-staple]');
+        if (stapleBtn) {
+          togglePantryStaple(stapleBtn.dataset.staple);
+        }
+      });
+
+      // Select all / Clear all Pantry Staples
+      dom.toggleAllStaplesBtn.addEventListener('click', () => {
+        const allNames = PANTRY_STAPLES_CONFIG.map(s => s.name);
+        if (state.activeStaples.length === allNames.length) {
+          state.activeStaples = [];
+        } else {
+          state.activeStaples = [...allNames];
+        }
+        saveStaplesToStorage(state.activeStaples);
+        renderPantryStaples();
+        performRecipeSearch();
+      });
+
+      // Match mode buttons ('Best Matches' vs 'Must Match All')
+      dom.matchModeBar.addEventListener('click', e => {
+        const modeBtn = e.target.closest('.match-mode-btn');
+        if (modeBtn) {
+          setMatchMode(modeBtn.dataset.mode);
+        }
+      });
+
+      // Delegate clicks inside the Recipe Results Grid ("View Recipe" & starter combos)
+      dom.recipesGrid.addEventListener('click', e => {
+        const viewBtn = e.target.closest('[data-view-recipe]');
+        if (viewBtn) {
+          openRecipeModal(viewBtn.dataset.viewRecipe);
+          return;
+        }
+
+        const comboBtn = e.target.closest('[data-combo]');
+        if (comboBtn) {
+          const items = comboBtn.dataset.combo.split(',').map(s => s.trim());
+          items.forEach(item => addCustomIngredient(item));
+        }
+      });
+
+      // Modal close triggers (Close button, backdrop click, Escape key)
+      dom.closeModalBtn.addEventListener('click', closeRecipeModal);
+      dom.modalBackdrop.addEventListener('click', closeRecipeModal);
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && !dom.modal.classList.contains('hidden')) {
+          closeRecipeModal();
+        }
+      });
+    }
+
+    // --- 10. INITIALIZATION ---
+    function initApp() {
+      state.activeStaples = loadStaplesFromStorage();
+      renderCustomTags();
+      renderPantryStaples();
+      setupEventListeners();
+      loadIngredientCatalog();
+      performRecipeSearch();
+    }
+
+    document.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
