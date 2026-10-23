@@ -135,9 +135,9 @@
       opacity: 0;
       filter: blur(10px);
       transform: scale(1.03);
-      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-                  filter 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .recipe-img-fade.loaded {
       opacity: 1;
@@ -175,7 +175,7 @@
       <div class="absolute -top-12 -left-12 w-64 h-64 bg-mint-200/40 rounded-full blur-3xl pointer-events-none"></div>
       <div class="absolute -top-8 right-4 w-64 h-64 bg-apricot-100/60 rounded-full blur-3xl pointer-events-none"></div>
 
-      <!-- Top Utility Bar: Saved Bookmarks Toggle, Reset Memory & Surprise Me Button -->
+      <!-- Top Utility Bar: Saved Bookmarks Toggle, 42-Site Directory, Reset Memory & Surprise Me Button -->
       <div class="relative z-10 flex flex-wrap items-center justify-between gap-3 mb-6">
         <div class="flex flex-wrap items-center gap-2.5">
           <!-- Saved Bookmarks Toggle Button -->
@@ -334,7 +334,7 @@
               </span>
             </div>
             <p class="text-xs text-forest-600 mb-3.5 leading-relaxed">
-              Toggle your everyday staples to include them in recipe matching and web searches.
+              Toggle your everyday staples to include them in recipe matching.
             </p>
 
             <!-- Responsive Mobile-First Staples Grid (Never clips or shrinks) -->
@@ -399,7 +399,7 @@
             </span>
           </div>
 
-          <!-- Full Pill Bar with ALL Cuisines (Malaysian, Vietnamese, Korean, Thai, Chinese, Japanese, Filipino, Indian, etc.) -->
+          <!-- Full Pill Bar with ALL Cuisines -->
           <div id="cuisine-pills-container" class="flex flex-wrap gap-2 items-center">
             <!-- Populated by JS with all 14+ cuisines -->
           </div>
@@ -540,7 +540,7 @@
               Curated Global Recipe Hub
             </h2>
             <p class="text-sm text-forest-600 mt-1 max-w-2xl">
-              Every link below dynamically embeds your active ingredients (<span id="hub-active-query-preview" class="font-bold text-mint-600">Chicken + Garlic</span>) directly into each culinary site’s search engine. Click any site to launch a live search or bookmark it for later!
+              Open any culinary website’s signature dish directly, or click <strong>Search Ingredients</strong> (<span id="hub-active-query-preview" class="font-bold text-mint-600">Chicken</span>) to query your active fridge items on that site.
             </p>
           </div>
 
@@ -650,9 +650,10 @@
   <script>
     /**
      * PANTRY TO PLATE — COMPLETE SINGLE-FILE SPA
+     * - External "Site" & "View Full Recipe on [Host Website]" links now query the ACTUAL DISH NAME (never raw ingredients)
      * - Zero country flag emojis (clean typography & icons on all OS/browsers)
      * - All 14 Cuisines visible directly in the top Cuisine Filter pill bar
-     * - Curated Web Recipes & 42-Site Deep-Link Cards shown directly inside "Recommended Recipes"
+     * - Curated Web Recipes shown directly inside "Recommended Recipes" alongside TheMealDB
      */
 
     // --- 1. CONSTANTS & STORAGE KEYS ---
@@ -667,13 +668,16 @@
       BOOKMARKS: 'pantryToPlate_bookmarks_v6'
     };
 
+    // Fallback SVG if any external recipe thumbnail fails to load
+    const FALLBACK_RECIPE_SVG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><rect width='600' height='400' fill='%23D5F0E5'/><circle cx='300' cy='180' r='64' fill='%233EB489' opacity='0.2'/><text x='50%25' y='52%25' dominant-baseline='middle' text-anchor='middle' font-size='26' fill='%23134030' font-family='sans-serif' font-weight='bold'>Pantry to Plate Recipe</text></svg>";
+
     // 6 Core Pantry Staples
     const DEFAULT_STAPLES = ['Salt', 'Pepper', 'Sugar', 'Olive Oil', 'Garlic', 'Water'];
 
     // Asian Cuisines for Row 1 Spotlight & Regional Grouping
     const ASIAN_AREAS = ['Chinese', 'Japanese', 'Korean', 'Thai', 'Vietnamese', 'Malaysian', 'Indian', 'Filipino'];
 
-    // ALL 14+ Cuisines from the Curated Recipe Websites shown on top (No flag emojis!)
+    // ALL 14+ Cuisines from the Curated Recipe Websites shown on top (No flag emojis)
     const CUISINE_OPTIONS = [
       { id: 'All', label: 'All Cuisines' },
       { id: 'Asian', label: 'Asian (All)' },
@@ -704,8 +708,11 @@
     ];
 
     /**
-     * 42 CURATED GLOBAL RECIPE WEBSITES ACROSS 14 CUISINES (No Flag Emojis)
-     * Each cuisine group has 3 top recipe websites AND signature curated dishes that appear directly in "Recommended Recipes"!
+     * 42 CURATED GLOBAL RECIPE WEBSITES ACROSS 14 CUISINES
+     * Every site has:
+     * - `featuredTitle`: Exact name of the dish displayed on the card & modal
+     * - `dishQuery`: Exact dish search query sent to `site.searchUrl` when clicking "Site" or "View Full Recipe on [Host Website]"
+     * - Authentic `defaultIngredients` (with measures) so dietary filters ("No Pork / Halal", "Vegetarian", etc.) work accurately
      */
     const GLOBAL_RECIPE_HUB = [
       {
@@ -719,13 +726,22 @@
             searchUrl: 'https://thewoksoflife.com/?s=',
             tag: 'Family Wok Classics',
             thumb: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Cantonese Ginger Scallion Wok Stir-Fry',
+            featuredTitle: 'Cantonese Ginger Scallion Chicken Stir-Fry',
+            dishQuery: 'ginger scallion chicken',
             calories: 430,
-            defaultIngredients: ['Chicken', 'Pork', 'Garlic', 'Ginger', 'Soy Sauce', 'Rice', 'Olive Oil', 'Salt', 'Sugar'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '500g sliced' },
+              { ingredient: 'Ginger', measure: '2 tbspjulienned' },
+              { ingredient: 'Garlic', measure: '3 cloves minced' },
+              { ingredient: 'Soy Sauce', measure: '2 tbsp' },
+              { ingredient: 'Rice', measure: '2 cups cooked' },
+              { ingredient: 'Sugar', measure: '1 tsp' },
+              { ingredient: 'Salt', measure: '1/2 tsp' }
+            ],
             steps: [
-              'Slice protein thinly against the grain and marinate with soy sauce, a pinch of sugar, and oil for 10 minutes.',
-              'Heat a wok over high heat until smoking, sear the protein for 4 minutes until golden on the edges.',
-              'Toss in minced garlic, ginger, and scallions; stir-fry for 2 minutes and serve piping hot over steamed rice.'
+              'Slice chicken thinly against the grain and marinate with soy sauce, a pinch of sugar, and 1 tsp oil for 10 minutes.',
+              'Heat a wok over high heat until smoking, then sear the chicken for 4 minutes until golden on the edges.',
+              'Toss in minced garlic, fresh ginger, and scallions; stir-fry briskly for 2 minutes and serve piping hot over steamed rice.'
             ]
           },
           {
@@ -733,13 +749,21 @@
             searchUrl: 'https://omnivorescookbook.com/?s=',
             tag: 'Modern Chinese',
             thumb: 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Crispy Garlic & Savory Brown Sauce Skillet',
-            calories: 460,
-            defaultIngredients: ['Chicken', 'Beef', 'Tofu', 'Garlic', 'Soy Sauce', 'Sugar', 'Olive Oil', 'Pepper'],
+            featuredTitle: 'Crispy Garlic Tofu & Broccoli in Savory Brown Sauce',
+            dishQuery: 'garlic tofu broccoli',
+            calories: 390,
+            defaultIngredients: [
+              { ingredient: 'Tofu', measure: '400g firm cubed' },
+              { ingredient: 'Garlic', measure: '4 cloves minced' },
+              { ingredient: 'Soy Sauce', measure: '2 tbsp' },
+              { ingredient: 'Sugar', measure: '1 tsp' },
+              { ingredient: 'Rice', measure: '2 cups steamed' },
+              { ingredient: 'Pepper', measure: '1/4 tsp white pepper' }
+            ],
             steps: [
               'Whisk soy sauce, water, sugar, and minced garlic in a small bowl to create the glossy savory glaze.',
-              'Pan-sear your main protein or tofu cubes in oil for 5 minutes until crisp.',
-              'Pour in the garlic sauce and simmer for 2 minutes until thickened and glossy.'
+              'Pan-sear cubed tofu in a nonstick skillet for 6 minutes until golden and crisp on all sides.',
+              'Pour in the garlic brown sauce and simmer for 2 minutes until thickened and glossy.'
             ]
           },
           {
@@ -747,13 +771,21 @@
             searchUrl: 'https://www.chinasichuanfood.com/?s=',
             tag: 'Sichuan & Spicy',
             thumb: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Sichuan Chili Garlic Wok-Tossed Bowl',
+            featuredTitle: 'Kung Pao Chicken (Sichuan Chili & Peanut Wok)',
+            dishQuery: 'kung pao chicken',
             calories: 490,
-            defaultIngredients: ['Pork', 'Chicken', 'Tofu', 'Garlic', 'Chili', 'Soy Sauce', 'Sugar', 'Salt'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '450g diced' },
+              { ingredient: 'Garlic', measure: '4 cloves sliced' },
+              { ingredient: 'Chili', measure: '6 dried chilies' },
+              { ingredient: 'Soy Sauce', measure: '2 tbsp' },
+              { ingredient: 'Sugar', measure: '1 tbsp' },
+              { ingredient: 'Rice', measure: '2 cups' }
+            ],
             steps: [
-              'Sauté aromatic minced garlic and chilies in warm oil for 1 minute until fragrant.',
-              'Add diced protein or tofu and stir-fry over brisk heat for 6 minutes.',
-              'Season with soy sauce, a touch of sugar, and crushed pepper before serving.'
+              'Sauté aromatic sliced garlic, ginger, and dried chilies in warm oil for 1 minute until fragrant.',
+              'Add diced chicken and stir-fry over brisk heat for 5 minutes until lightly golden.',
+              'Toss with the sweet-savory Kung Pao sauce and roasted peanuts for 1 minute before serving.'
             ]
           }
         ]
@@ -769,13 +801,21 @@
             searchUrl: 'https://www.justonecookbook.com/?s=',
             tag: 'Authentic Japanese',
             thumb: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Golden Crispy Tonkatsu / Torikatsu Cutlet',
+            featuredTitle: 'Crispy Tonkatsu (Japanese Breaded Pork Cutlet)',
+            dishQuery: 'tonkatsu',
             calories: 520,
-            defaultIngredients: ['Pork', 'Chicken', 'Breadcrumbs', 'Egg', 'Flour', 'Salt', 'Pepper', 'Olive Oil'],
+            defaultIngredients: [
+              { ingredient: 'Pork', measure: '2 loin cutlets' },
+              { ingredient: 'Breadcrumbs', measure: '1.5 cups panko' },
+              { ingredient: 'Egg', measure: '1 beaten' },
+              { ingredient: 'Flour', measure: '1/3 cup' },
+              { ingredient: 'Salt', measure: '1/2 tsp' },
+              { ingredient: 'Pepper', measure: '1/4 tsp' }
+            ],
             steps: [
-              'Season pork loin or chicken breast with salt and pepper, then coat in flour, beaten egg, and airy panko breadcrumbs.',
+              'Season pork loin cutlets with salt and pepper, then dredge in flour, dip in beaten egg, and press into airy panko breadcrumbs.',
               'Shallow-fry in hot oil at 340°F for 4 minutes per side until deep golden and extra-crunchy.',
-              'Rest on a wire rack for 2 minutes, slice into strips, and serve with shredded cabbage and katsu sauce.'
+              'Rest on a wire rack for 2 minutes, slice into strips, and serve with shredded cabbage and tonkatsu sauce.'
             ]
           },
           {
@@ -783,13 +823,20 @@
             searchUrl: 'https://www.chopstickchronicles.com/?s=',
             tag: 'Home Comforts',
             thumb: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Savory Teriyaki Garlic Donburi Rice Bowl',
+            featuredTitle: 'Teriyaki Chicken Donburi Rice Bowl',
+            dishQuery: 'teriyaki chicken',
             calories: 450,
-            defaultIngredients: ['Chicken', 'Salmon', 'Tofu', 'Rice', 'Soy Sauce', 'Sugar', 'Garlic'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '450g thighs' },
+              { ingredient: 'Rice', measure: '2 cups Japanese rice' },
+              { ingredient: 'Soy Sauce', measure: '3 tbsp' },
+              { ingredient: 'Sugar', measure: '1.5 tbsp' },
+              { ingredient: 'Garlic', measure: '1 clove grated' }
+            ],
             steps: [
-              'Sear protein in a skillet for 5 minutes until golden brown on both sides.',
-              'Add soy sauce, sugar, a splash of water, and garlic; simmer for 3 minutes until glazed.',
-              'Slice and arrange over warm steamed Japanese short-grain rice.'
+              'Sear chicken thighs skin-side down in a skillet for 5 minutes until golden brown and crisp.',
+              'Add soy sauce, mirin or water, sugar, and grated garlic; simmer for 3 minutes until glossy.',
+              'Slice and arrange over warm steamed Japanese short-grain rice, drizzling extra glaze on top.'
             ]
           },
           {
@@ -797,12 +844,20 @@
             searchUrl: 'https://norecipes.com/?s=',
             tag: 'Tokyo Kitchen',
             thumb: 'https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Izakaya-Style Garlic Butter Skillet',
+            featuredTitle: 'Japanese Salmon Shioyaki & Garlic Mushroom Skillet',
+            dishQuery: 'salmon',
             calories: 440,
-            defaultIngredients: ['Chicken', 'Pork', 'Mushroom', 'Garlic', 'Soy Sauce', 'Butter', 'Pepper'],
+            defaultIngredients: [
+              { ingredient: 'Salmon', measure: '2 fillets' },
+              { ingredient: 'Mushroom', measure: '200g sliced' },
+              { ingredient: 'Garlic', measure: '2 cloves minced' },
+              { ingredient: 'Soy Sauce', measure: '1 tbsp' },
+              { ingredient: 'Salt', measure: '1/2 tsp' },
+              { ingredient: 'Pepper', measure: '1/4 tsp' }
+            ],
             steps: [
-              'Toss bite-sized pieces of meat or mushrooms in a hot pan for 5 minutes until browned.',
-              'Stir in minced garlic, butter, soy sauce, and black pepper for 1 minute until fragrant.'
+              'Season salmon fillets with salt and rest for 10 minutes, then pat dry and pan-sear for 4 minutes per side until crisp-skinned.',
+              'Toss sliced mushrooms in the pan with minced garlic, soy sauce, and black pepper for 2 minutes until fragrant.'
             ]
           }
         ]
@@ -818,13 +873,21 @@
             searchUrl: 'https://www.maangchi.com/search?q=',
             tag: 'Korean Cooking Queen',
             thumb: 'https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Crispy Yangnyeom Korean Garlic Chicken',
+            featuredTitle: 'Yangnyeom Tongdak (Crispy Korean Garlic Fried Chicken)',
+            dishQuery: 'yangnyeom chicken',
             calories: 540,
-            defaultIngredients: ['Chicken', 'Pork', 'Garlic', 'Sugar', 'Soy Sauce', 'Olive Oil', 'Salt', 'Pepper'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '600g bite-size pieces' },
+              { ingredient: 'Garlic', measure: '4 cloves minced' },
+              { ingredient: 'Sugar', measure: '2 tbsp' },
+              { ingredient: 'Soy Sauce', measure: '1 tbsp' },
+              { ingredient: 'Salt', measure: '1/2 tsp' },
+              { ingredient: 'Pepper', measure: '1/4 tsp' }
+            ],
             steps: [
-              'Coat bite-sized chicken or pork pieces lightly in starch and fry for 6 minutes until ultra-crisp.',
-              'Simmer minced garlic, soy sauce, sugar, and chili paste in a skillet for 2 minutes until bubbly.',
-              'Toss the crispy pieces in the sticky garlic glaze and serve immediately.'
+              'Coat bite-sized chicken pieces lightly in starch and fry for 6 minutes until ultra-crisp.',
+              'Simmer minced garlic, soy sauce, sugar, and gochujang chili paste in a skillet for 2 minutes until bubbly.',
+              'Toss the crispy chicken in the sticky sweet-spicy garlic glaze and serve immediately.'
             ]
           },
           {
@@ -832,11 +895,19 @@
             searchUrl: 'https://www.koreanbapsang.com/?s=',
             tag: 'Everyday Korean',
             thumb: 'https://images.unsplash.com/photo-1583224964978-2257b960c3d3?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Savory Korean Bulgogi Garlic BBQ Skillet',
+            featuredTitle: 'Korean Beef Bulgogi (Grilled Garlic Soy BBQ)',
+            dishQuery: 'beef bulgogi',
             calories: 470,
-            defaultIngredients: ['Beef', 'Pork', 'Chicken', 'Garlic', 'Soy Sauce', 'Sugar', 'Onion', 'Rice'],
+            defaultIngredients: [
+              { ingredient: 'Beef', measure: '500g thinly sliced' },
+              { ingredient: 'Garlic', measure: '4 cloves minced' },
+              { ingredient: 'Soy Sauce', measure: '3 tbsp' },
+              { ingredient: 'Sugar', measure: '1.5 tbsp' },
+              { ingredient: 'Onion', measure: '1/2 sliced' },
+              { ingredient: 'Rice', measure: '2 cups cooked' }
+            ],
             steps: [
-              'Marinate thinly sliced meat with minced garlic, soy sauce, sugar, and black pepper for 15 minutes.',
+              'Marinate thinly sliced beef with minced garlic, soy sauce, sugar, and black pepper for 15 minutes.',
               'Sear rapidly over high heat with sliced onions for 5 minutes until caramelized and tender.'
             ]
           },
@@ -845,12 +916,20 @@
             searchUrl: 'https://mykoreankitchen.com/?s=',
             tag: 'BBQ & Stews',
             thumb: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Sizzling Bibimbap Rice Bowl with Crispy Egg',
+            featuredTitle: 'Dolsot Bibimbap (Sizzling Korean Mixed Rice & Egg)',
+            dishQuery: 'bibimbap',
             calories: 490,
-            defaultIngredients: ['Rice', 'Egg', 'Beef', 'Chicken', 'Tofu', 'Spinach', 'Garlic', 'Salt'],
+            defaultIngredients: [
+              { ingredient: 'Rice', measure: '2 cups steamed' },
+              { ingredient: 'Egg', measure: '2 eggs' },
+              { ingredient: 'Spinach', measure: '150g blanched' },
+              { ingredient: 'Mushroom', measure: '100g sliced' },
+              { ingredient: 'Garlic', measure: '2 cloves minced' },
+              { ingredient: 'Salt', measure: '1/2 tsp' }
+            ],
             steps: [
-              'Sauté seasoned vegetables and protein separately with minced garlic and salt for 4 minutes.',
-              'Arrange over hot steamed rice and crown with a golden sunny-side-up fried egg.'
+              'Sauté mushrooms and blanched spinach separately with minced garlic and a pinch of salt for 3 minutes.',
+              'Arrange vegetables over hot steamed rice and crown with a golden sunny-side-up fried egg and gochujang.'
             ]
           }
         ]
@@ -866,13 +945,22 @@
             searchUrl: 'https://hot-thai-kitchen.com/?s=',
             tag: 'Chef Pailin',
             thumb: 'https://images.unsplash.com/photo-1559314809-0d155014e29e?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Street-Style Thai Basil Pad Kra Pao',
+            featuredTitle: 'Pad Kra Pao Gai (Street-Style Thai Holy Basil Chicken)',
+            dishQuery: 'pad kra pao',
             calories: 465,
-            defaultIngredients: ['Chicken', 'Pork', 'Beef', 'Tofu', 'Garlic', 'Sugar', 'Soy Sauce', 'Egg', 'Rice'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '450g minced or sliced' },
+              { ingredient: 'Garlic', measure: '5 cloves crushed' },
+              { ingredient: 'Chili', measure: '3 Thai chilies' },
+              { ingredient: 'Soy Sauce', measure: '2 tbsp' },
+              { ingredient: 'Sugar', measure: '1 tsp' },
+              { ingredient: 'Egg', measure: '2 fried eggs' },
+              { ingredient: 'Rice', measure: '2 cups jasmine rice' }
+            ],
             steps: [
-              'Pound or mince garlic with chili and stir-fry in hot oil for 1 minute until aromatic.',
-              'Add chopped chicken, pork, or tofu and stir-fry for 5 minutes with soy sauce and a pinch of sugar.',
-              'Toss in fresh basil leaves for 30 seconds and serve over jasmine rice with a crispy fried egg.'
+              'Pound or mince garlic with Thai chilies and stir-fry in hot oil for 1 minute until aromatic.',
+              'Add chopped chicken and stir-fry over high heat for 5 minutes with soy sauce, fish sauce, and a pinch of sugar.',
+              'Toss in fresh holy basil leaves for 30 seconds and serve over jasmine rice with a crispy fried egg.'
             ]
           },
           {
@@ -880,13 +968,21 @@
             searchUrl: 'https://shesimmers.com/?s=',
             tag: 'Classic Thai',
             thumb: 'https://images.unsplash.com/photo-1562565652-a0d8f0c59eb4?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Thai Crispy Garlic & Pepper Stir-Fry (Kratiem)',
+            featuredTitle: 'Gai Pad Kratiem (Thai Crispy Garlic Pepper Chicken)',
+            dishQuery: 'garlic pepper chicken',
             calories: 430,
-            defaultIngredients: ['Chicken', 'Pork', 'Shrimp', 'Garlic', 'Pepper', 'Sugar', 'Olive Oil', 'Rice'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '450g bite-size' },
+              { ingredient: 'Garlic', measure: '8 cloves minced' },
+              { ingredient: 'Pepper', measure: '1 tsp white/black pepper' },
+              { ingredient: 'Sugar', measure: '1 tsp' },
+              { ingredient: 'Soy Sauce', measure: '2 tbsp' },
+              { ingredient: 'Rice', measure: '2 cups cooked' }
+            ],
             steps: [
               'Fry generously minced garlic in oil for 2 minutes until golden and crisp, then scoop half out for garnish.',
-              'Sear sliced meat or shrimp in the garlic oil with cracked black pepper and sugar for 5 minutes.',
-              'Top with the reserved crispy golden garlic and serve with steamed rice.'
+              'Sear sliced chicken in the fragrant garlic oil with cracked pepper, soy sauce, and sugar for 5 minutes.',
+              'Top with the reserved crispy golden garlic and serve with steamed jasmine rice.'
             ]
           },
           {
@@ -894,12 +990,20 @@
             searchUrl: 'https://thaicaliente.com/?s=',
             tag: 'Street Favorites',
             thumb: 'https://images.unsplash.com/photo-1569562211093-4ed0d0758f12?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Creamy Thai Coconut Curry Skillet',
+            featuredTitle: 'Thai Red Coconut Curry with Shrimp & Tofu',
+            dishQuery: 'red curry',
             calories: 510,
-            defaultIngredients: ['Chicken', 'Tofu', 'Shrimp', 'Coconut Milk', 'Garlic', 'Sugar', 'Salt', 'Rice'],
+            defaultIngredients: [
+              { ingredient: 'Shrimp', measure: '350g peeled' },
+              { ingredient: 'Tofu', measure: '200g cubed' },
+              { ingredient: 'Coconut Milk', measure: '400ml can' },
+              { ingredient: 'Garlic', measure: '2 cloves minced' },
+              { ingredient: 'Sugar', measure: '1 tsp' },
+              { ingredient: 'Rice', measure: '2 cups cooked' }
+            ],
             steps: [
-              'Simmer curry paste and garlic in thick coconut cream for 3 minutes until fragrant.',
-              'Add protein and remaining coconut milk; simmer gently for 10 minutes until tender.'
+              'Simmer Thai red curry paste and garlic in thick coconut cream for 3 minutes until fragrant.',
+              'Add coconut milk, tofu, and shrimp; simmer gently for 6 minutes until the shrimp are pink and tender.'
             ]
           }
         ]
@@ -915,13 +1019,22 @@
             searchUrl: 'https://www.hungryhuy.com/?s=',
             tag: 'Vietnamese Classics',
             thumb: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Vietnamese Caramelized Garlic Claypot (Thit Kho / Ga Kho)',
-            calories: 475,
-            defaultIngredients: ['Pork', 'Chicken', 'Garlic', 'Sugar', 'Pepper', 'Water', 'Rice', 'Egg'],
+            featuredTitle: 'Thit Kho To (Vietnamese Caramelized Pork & Eggs)',
+            dishQuery: 'thit kho',
+            calories: 495,
+            defaultIngredients: [
+              { ingredient: 'Pork', measure: '500g pork belly/shoulder' },
+              { ingredient: 'Egg', measure: '4 hard-boiled eggs' },
+              { ingredient: 'Garlic', measure: '4 cloves minced' },
+              { ingredient: 'Sugar', measure: '2 tbsp caramelized' },
+              { ingredient: 'Pepper', measure: '1/2 tsp black pepper' },
+              { ingredient: 'Water', measure: '1.5 cups coconut water/water' },
+              { ingredient: 'Rice', measure: '2 cups steamed' }
+            ],
             steps: [
-              'Melt sugar with a splash of water in a pan for 3 minutes until amber caramel forms.',
-              'Add chicken or pork pieces with minced garlic and black pepper; sear for 5 minutes.',
-              'Add water and simmer covered for 15 minutes until tender in a savory-sweet glaze.'
+              'Melt sugar with a splash of water in a heavy pot for 3 minutes until deep amber caramel forms.',
+              'Add cubed pork with minced garlic and black pepper; sear for 5 minutes to coat in caramel.',
+              'Add water and peeled boiled eggs, then simmer covered for 25 minutes until tender.'
             ]
           },
           {
@@ -929,12 +1042,20 @@
             searchUrl: 'https://www.vietworldkitchen.com/?s=',
             tag: 'Andrea Nguyen',
             thumb: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Saigon Chargrilled Garlic Lemongrass Chop',
-            calories: 450,
-            defaultIngredients: ['Pork', 'Chicken', 'Garlic', 'Sugar', 'Olive Oil', 'Salt', 'Pepper', 'Rice'],
+            featuredTitle: 'Ga Nuong Xa (Vietnamese Lemongrass Garlic Chicken)',
+            dishQuery: 'lemongrass chicken',
+            calories: 445,
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '500g boneless thighs' },
+              { ingredient: 'Garlic', measure: '4 cloves minced' },
+              { ingredient: 'Sugar', measure: '1 tbsp' },
+              { ingredient: 'Salt', measure: '1/2 tsp' },
+              { ingredient: 'Pepper', measure: '1/2 tsp' },
+              { ingredient: 'Rice', measure: '2 cups cooked' }
+            ],
             steps: [
-              'Marinate pork chops or chicken thighs with minced garlic, sugar, salt, pepper, and oil for 20 minutes.',
-              'Pan-sear or broil for 5 minutes per side until caramelized and smoky.'
+              'Marinate chicken thighs with minced garlic, lemongrass, sugar, salt, and black pepper for 20 minutes.',
+              'Pan-sear or grill for 5 minutes per side until caramelized, smoky, and juicy.'
             ]
           },
           {
@@ -942,12 +1063,19 @@
             searchUrl: 'https://www.vickypham.com/search?q=',
             tag: 'Homestyle Viet',
             thumb: 'https://images.unsplash.com/photo-1503764654157-72d979d9af2f?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Shaking Beef / Chicken with Garlic Butter (Bo Luc Lac)',
+            featuredTitle: 'Bo Luc Lac (Vietnamese Garlic Butter Shaking Beef)',
+            dishQuery: 'bo luc lac',
             calories: 480,
-            defaultIngredients: ['Beef', 'Chicken', 'Garlic', 'Sugar', 'Soy Sauce', 'Olive Oil', 'Pepper'],
+            defaultIngredients: [
+              { ingredient: 'Beef', measure: '450g sirloin cubed' },
+              { ingredient: 'Garlic', measure: '5 cloves minced' },
+              { ingredient: 'Sugar', measure: '1 tbsp' },
+              { ingredient: 'Soy Sauce', measure: '2 tbsp' },
+              { ingredient: 'Pepper', measure: '1/2 tsp cracked' }
+            ],
             steps: [
-              'Cube protein into bite-sized pieces and toss with garlic, pepper, soy sauce, and sugar.',
-              'Sear in a smoking-hot skillet for 4 minutes shaking the pan until crusted.'
+              'Cube beef into bite-sized pieces and toss with garlic, cracked black pepper, soy sauce, and sugar.',
+              'Sear in a smoking-hot skillet for 4 minutes, shaking the pan to crust all sides, and finish with butter.'
             ]
           }
         ]
@@ -963,12 +1091,20 @@
             searchUrl: 'https://rasamalaysia.com/?s=',
             tag: 'Hawker & Nyonya',
             thumb: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Malaysian Hawker Crispy Garlic Soy Chicken & Rice',
+            featuredTitle: 'Hainanese Chicken Rice with Fragrant Garlic Oil',
+            dishQuery: 'hainanese chicken rice',
             calories: 515,
-            defaultIngredients: ['Chicken', 'Pork', 'Garlic', 'Soy Sauce', 'Sugar', 'Rice', 'Olive Oil', 'Salt'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '600g thighs/breast' },
+              { ingredient: 'Garlic', measure: '5 cloves minced' },
+              { ingredient: 'Ginger', measure: '2 tbsp sliced' },
+              { ingredient: 'Soy Sauce', measure: '2 tbsp' },
+              { ingredient: 'Rice', measure: '2 cups jasmine rice' },
+              { ingredient: 'Salt', measure: '1 tsp' }
+            ],
             steps: [
-              'Rub chicken or pork with garlic, salt, and soy sauce, then pan-roast for 12 minutes until skin is golden.',
-              'Sauté extra minced garlic in oil for 2 minutes and drizzle over the sliced meat with aromatic rice.'
+              'Poach or pan-roast seasoned chicken with ginger and garlic for 15 minutes until juicy and tender.',
+              'Sauté minced garlic in oil for 2 minutes, cook rice in the aromatic broth, and drizzle soy-sesame sauce over sliced chicken.'
             ]
           },
           {
@@ -976,12 +1112,20 @@
             searchUrl: 'https://ieatishootipost.sg/?s=',
             tag: 'Singapore Hawker',
             thumb: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Singapore Kopitiam Crispy Cutlet & Garlic Gravy',
+            featuredTitle: 'Singapore Hainanese Crispy Pork Chop',
+            dishQuery: 'hainanese pork chop',
             calories: 530,
-            defaultIngredients: ['Chicken', 'Pork', 'Breadcrumbs', 'Egg', 'Garlic', 'Pepper', 'Olive Oil', 'Salt'],
+            defaultIngredients: [
+              { ingredient: 'Pork', measure: '2 loin chops' },
+              { ingredient: 'Breadcrumbs', measure: '1 cup cracker/panko crumbs' },
+              { ingredient: 'Egg', measure: '1 beaten' },
+              { ingredient: 'Garlic', measure: '2 cloves minced' },
+              { ingredient: 'Pepper', measure: '1/2 tsp' },
+              { ingredient: 'Salt', measure: '1/2 tsp' }
+            ],
             steps: [
-              'Coat tenderized cutlet in egg and breadcrumbs; shallow-fry in oil for 4 minutes per side until golden.',
-              'Serve with cracked black pepper garlic gravy and crispy potatoes.'
+              'Tenderize pork chops, dip in beaten egg, and press firmly into crispy crumbs.',
+              'Shallow-fry in oil for 4 minutes per side until golden and serve with tangy tomato-onion gravy.'
             ]
           },
           {
@@ -989,12 +1133,21 @@
             searchUrl: 'https://whattocooktoday.com/?s=',
             tag: 'Southeast Asian',
             thumb: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Aromatic Indonesian Kecap Manis Garlic Skillet',
+            featuredTitle: 'Ayam Kecap (Indonesian Sweet Soy Garlic Chicken)',
+            dishQuery: 'ayam kecap',
             calories: 460,
-            defaultIngredients: ['Chicken', 'Pork', 'Tofu', 'Garlic', 'Soy Sauce', 'Sugar', 'Pepper', 'Water'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '500g pieces' },
+              { ingredient: 'Garlic', measure: '4 cloves sliced' },
+              { ingredient: 'Onion', measure: '1/2 sliced' },
+              { ingredient: 'Soy Sauce', measure: '3 tbsp sweet soy' },
+              { ingredient: 'Sugar', measure: '1 tsp' },
+              { ingredient: 'Pepper', measure: '1/2 tsp white pepper' },
+              { ingredient: 'Water', measure: '1/2 cup' }
+            ],
             steps: [
-              'Brown protein or tofu with sliced garlic in oil for 5 minutes.',
-              'Simmer with sweet soy sauce, water, and cracked white pepper for 8 minutes until richly glazed.'
+              'Brown chicken pieces with sliced onion and garlic in warm oil for 5 minutes.',
+              'Simmer with sweet soy sauce (kecap manis), water, and white pepper for 10 minutes until richly glazed.'
             ]
           }
         ]
@@ -1010,13 +1163,21 @@
             searchUrl: 'https://www.indianhealthyrecipes.com/?s=',
             tag: 'Indian Healthy',
             thumb: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Homestyle Indian Garlic Masala Curry',
+            featuredTitle: 'Homestyle Chicken Curry (Garlic & Onion Masala)',
+            dishQuery: 'chicken curry',
             calories: 460,
-            defaultIngredients: ['Chicken', 'Chickpeas', 'Onion', 'Garlic', 'Tomato', 'Olive Oil', 'Salt', 'Rice'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '500g curry cut' },
+              { ingredient: 'Onion', measure: '2 finely chopped' },
+              { ingredient: 'Garlic', measure: '4 cloves minced' },
+              { ingredient: 'Tomato', measure: '2 pureed' },
+              { ingredient: 'Salt', measure: '1 tsp' },
+              { ingredient: 'Rice', measure: '2 cups basmati' }
+            ],
             steps: [
-              'Sauté finely chopped onions and garlic in oil for 6 minutes until deep golden brown.',
-              'Add tomatoes and warm spices, cooking for 4 minutes into a rich masala base.',
-              'Add chicken or chickpeas with a splash of water and simmer covered for 12 minutes.'
+              'Sauté finely chopped onions, ginger, and garlic in oil for 6 minutes until deep golden brown.',
+              'Add chopped tomatoes and warm masala spices, cooking for 4 minutes until oil separates.',
+              'Add chicken and a splash of water; simmer covered for 15 minutes until tender.'
             ]
           },
           {
@@ -1024,12 +1185,20 @@
             searchUrl: 'https://www.vegrecipesofindia.com/?s=',
             tag: '100% Vegetarian',
             thumb: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Dhaba-Style Garlic Tadka Dal & Spiced Skillet',
-            calories: 380,
-            defaultIngredients: ['Tofu', 'Potato', 'Spinach', 'Garlic', 'Onion', 'Tomato', 'Olive Oil', 'Salt'],
+            featuredTitle: 'Dal Tadka (Dhaba-Style Tempered Garlic Lentils)',
+            dishQuery: 'dal tadka',
+            calories: 360,
+            defaultIngredients: [
+              { ingredient: 'Garlic', measure: '5 cloves sliced' },
+              { ingredient: 'Onion', measure: '1 chopped' },
+              { ingredient: 'Tomato', measure: '1 chopped' },
+              { ingredient: 'Spinach', measure: '1 cup optional' },
+              { ingredient: 'Salt', measure: '1 tsp' },
+              { ingredient: 'Water', measure: '3 cups' }
+            ],
             steps: [
-              'Simmer cubed vegetables, lentils, or tofu with turmeric and salt for 10 minutes.',
-              'Sizzle sliced garlic and cumin in hot oil for 1 minute and pour the fragrant tadka over the dish.'
+              'Simmer lentils with chopped tomato, onion, turmeric, and salt for 15 minutes until creamy.',
+              'Sizzle sliced garlic, cumin seeds, and dried chili in hot oil for 1 minute and pour the fragrant tadka over the dal.'
             ]
           },
           {
@@ -1037,12 +1206,20 @@
             searchUrl: 'https://ministryofcurry.com/?s=',
             tag: 'Modern Indian',
             thumb: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'One-Pot Roasted Garlic & Pepper Masala',
-            calories: 485,
-            defaultIngredients: ['Chicken', 'Lamb', 'Potato', 'Garlic', 'Pepper', 'Olive Oil', 'Salt', 'Water'],
+            featuredTitle: 'Black Pepper & Roasted Garlic Chicken Masala (Murgh Kali Mirch)',
+            dishQuery: 'pepper chicken',
+            calories: 475,
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '500g boneless' },
+              { ingredient: 'Garlic', measure: '5 cloves crushed' },
+              { ingredient: 'Pepper', measure: '1.5 tsp freshly cracked' },
+              { ingredient: 'Onion', measure: '1 diced' },
+              { ingredient: 'Salt', measure: '1 tsp' },
+              { ingredient: 'Water', measure: '1/2 cup' }
+            ],
             steps: [
-              'Sear protein in oil with whole spices and crushed garlic for 5 minutes.',
-              'Add freshly ground black pepper and water; simmer for 12 minutes until thick and aromatic.'
+              'Sear chicken in oil with onions and crushed garlic for 5 minutes until golden.',
+              'Add freshly cracked black pepper and water; simmer covered for 12 minutes until thick and aromatic.'
             ]
           }
         ]
@@ -1058,12 +1235,20 @@
             searchUrl: 'https://panlasangpinoy.com/?s=',
             tag: '#1 Pinoy Kitchen',
             thumb: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Classic Filipino Chicken & Pork Garlic Adobo',
-            calories: 510,
-            defaultIngredients: ['Chicken', 'Pork', 'Garlic', 'Soy Sauce', 'Pepper', 'Sugar', 'Water', 'Olive Oil'],
+            featuredTitle: 'Filipino Chicken Adobo with Crushed Garlic',
+            dishQuery: 'chicken adobo',
+            calories: 485,
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '600g pieces' },
+              { ingredient: 'Garlic', measure: '6 cloves crushed' },
+              { ingredient: 'Soy Sauce', measure: '1/3 cup' },
+              { ingredient: 'Pepper', measure: '1 tsp peppercorns' },
+              { ingredient: 'Sugar', measure: '1 tsp' },
+              { ingredient: 'Water', measure: '1/2 cup' }
+            ],
             steps: [
-              'Sear chicken and pork pieces with crushed garlic in oil for 5 minutes until lightly browned.',
-              'Pour in soy sauce, vinegar, water, whole peppercorns, and a pinch of sugar; simmer for 20 minutes until tender.',
+              'Sear chicken pieces with crushed garlic in oil for 5 minutes until lightly browned.',
+              'Pour in soy sauce, vinegar, water, whole peppercorns, and bay leaves; simmer for 20 minutes until tender.',
               'Spoon the rich garlic adobo glaze over warm Sinangag garlic fried rice.'
             ]
           },
@@ -1072,11 +1257,19 @@
             searchUrl: 'https://www.kawalingpinoy.com/?s=',
             tag: 'Lutong Bahay',
             thumb: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Crispy Pinoy Breaded Pork / Chicken Tonkatsu',
+            featuredTitle: 'Crispy Pork Tonkatsu (Pinoy Breaded Pork Chop)',
+            dishQuery: 'pork tonkatsu',
             calories: 525,
-            defaultIngredients: ['Pork', 'Chicken', 'Breadcrumbs', 'Egg', 'Garlic', 'Salt', 'Pepper', 'Olive Oil'],
+            defaultIngredients: [
+              { ingredient: 'Pork', measure: '4 boneless chops' },
+              { ingredient: 'Breadcrumbs', measure: '1.5 cups panko' },
+              { ingredient: 'Egg', measure: '2 beaten' },
+              { ingredient: 'Garlic', measure: '2 cloves minced' },
+              { ingredient: 'Salt', measure: '1/2 tsp' },
+              { ingredient: 'Pepper', measure: '1/2 tsp' }
+            ],
             steps: [
-              'Season cutlets with garlic, salt, and pepper, then dredge in egg and crispy breadcrumbs.',
+              'Season pork chops with garlic, salt, and pepper, then dredge in flour, beaten egg, and crispy breadcrumbs.',
               'Pan-fry in hot oil for 4 minutes per side until golden and crisp.'
             ]
           },
@@ -1085,12 +1278,20 @@
             searchUrl: 'https://www.foxyfolksy.com/?s=',
             tag: 'Modern Filipino',
             thumb: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Bistek Tagalog Garlic Citrus Skillet',
+            featuredTitle: 'Bistek Tagalog (Filipino Garlic Citrus Beef Steak)',
+            dishQuery: 'bistek tagalog',
             calories: 455,
-            defaultIngredients: ['Beef', 'Pork', 'Chicken', 'Garlic', 'Onion', 'Soy Sauce', 'Pepper', 'Sugar'],
+            defaultIngredients: [
+              { ingredient: 'Beef', measure: '500g thinly sliced' },
+              { ingredient: 'Garlic', measure: '4 cloves minced' },
+              { ingredient: 'Onion', measure: '2 sliced into rings' },
+              { ingredient: 'Soy Sauce', measure: '1/4 cup' },
+              { ingredient: 'Pepper', measure: '1/2 tsp' },
+              { ingredient: 'Sugar', measure: '1 tsp' }
+            ],
             steps: [
-              'Pan-sear thinly sliced meat with garlic and pepper for 4 minutes.',
-              'Simmer briefly in soy sauce and citrus juice, then top with caramelized onion rings.'
+              'Pan-sear thinly sliced beef marinated in garlic, soy sauce, and black pepper for 4 minutes.',
+              'Simmer briefly in the savory citrus-soy pan sauce and top with caramelized onion rings.'
             ]
           }
         ]
@@ -1106,13 +1307,22 @@
             searchUrl: 'https://www.sipandfeast.com/?s=',
             tag: 'NY Italian Classics',
             thumb: 'https://images.unsplash.com/photo-1621996346565-e3d5d6281298?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Crispy Italian Cutlet Milanese with Garlic & Olive Oil',
+            featuredTitle: 'Crispy Italian Chicken Milanese with Garlic & Olive Oil',
+            dishQuery: 'chicken milanese',
             calories: 535,
-            defaultIngredients: ['Chicken', 'Pork', 'Breadcrumbs', 'Egg', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '2 breasts butterflied' },
+              { ingredient: 'Breadcrumbs', measure: '1.5 cups seasoned' },
+              { ingredient: 'Egg', measure: '2 beaten' },
+              { ingredient: 'Garlic', measure: '2 cloves grated' },
+              { ingredient: 'Olive Oil', measure: '1/3 cup for frying' },
+              { ingredient: 'Salt', measure: '1/2 tsp' },
+              { ingredient: 'Pepper', measure: '1/4 tsp' }
+            ],
             steps: [
-              'Coat thin chicken or pork cutlets in beaten egg and seasoned breadcrumbs with finely grated garlic.',
+              'Coat thin chicken cutlets in beaten egg and seasoned breadcrumbs mixed with finely grated garlic.',
               'Pan-fry in generous olive oil for 4 minutes per side until golden brown and crisp.',
-              'Finish with a sprinkle of sea salt and serve warm.'
+              'Finish with a sprinkle of sea salt and lemon wedges.'
             ]
           },
           {
@@ -1120,12 +1330,19 @@
             searchUrl: 'https://www.insidetherustickitchen.com/?s=',
             tag: 'Authentic Trattoria',
             thumb: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Trattoria Garlic, Olive Oil & Herb Skillet',
-            calories: 470,
-            defaultIngredients: ['Pasta', 'Chicken', 'Tomato', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            featuredTitle: 'Spaghetti Aglio e Olio (Roman Garlic & Olive Oil Pasta)',
+            dishQuery: 'aglio e olio',
+            calories: 440,
+            defaultIngredients: [
+              { ingredient: 'Pasta', measure: '350g spaghetti' },
+              { ingredient: 'Garlic', measure: '6 cloves thinly sliced' },
+              { ingredient: 'Olive Oil', measure: '1/3 cup extra-virgin' },
+              { ingredient: 'Salt', measure: '1 tsp' },
+              { ingredient: 'Pepper', measure: '1/2 tsp chili/black pepper' }
+            ],
             steps: [
-              'Warm extra-virgin olive oil in a wide pan and gently toast sliced garlic for 2 minutes until golden.',
-              'Toss with al dente pasta or seared protein, pasta water, and freshly cracked black pepper.'
+              'Warm extra-virgin olive oil in a wide skillet and gently toast thinly sliced garlic for 2 minutes until golden.',
+              'Toss with al dente spaghetti, a splash of starchy pasta water, parsley, and cracked black pepper.'
             ]
           },
           {
@@ -1133,12 +1350,20 @@
             searchUrl: 'https://memoriediangelina.com/?s=',
             tag: 'Traditional Regional',
             thumb: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Roman Garlic & Rosemary Pan-Roasted Medallions',
+            featuredTitle: 'Pollo alla Romana (Roman Garlic & Herb Pan-Roasted Chicken)',
+            dishQuery: 'pollo alla romana',
             calories: 460,
-            defaultIngredients: ['Pork', 'Chicken', 'Potato', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '600g pieces' },
+              { ingredient: 'Tomato', measure: '200g chopped' },
+              { ingredient: 'Garlic', measure: '3 cloves smashed' },
+              { ingredient: 'Olive Oil', measure: '3 tbsp' },
+              { ingredient: 'Salt', measure: '1/2 tsp' },
+              { ingredient: 'Pepper', measure: '1/4 tsp' }
+            ],
             steps: [
-              'Sear medallions in olive oil with smashed garlic cloves for 6 minutes until golden.',
-              'Baste with pan juices and rest for 3 minutes before slicing.'
+              'Sear chicken in olive oil with smashed garlic cloves for 6 minutes until golden.',
+              'Add tomatoes and herbs; braise for 15 minutes until tender and flavorful.'
             ]
           }
         ]
@@ -1154,11 +1379,20 @@
             searchUrl: 'https://www.mexicoinmykitchen.com/?s=',
             tag: 'Authentic Mexican',
             thumb: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Crispy Mexican Milanesa Cutlet with Garlic & Lime',
+            featuredTitle: 'Milanesa de Pollo (Crispy Mexican Breaded Cutlet)',
+            dishQuery: 'milanesa de pollo',
             calories: 515,
-            defaultIngredients: ['Chicken', 'Pork', 'Beef', 'Breadcrumbs', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '4 thin cutlets' },
+              { ingredient: 'Breadcrumbs', measure: '1.5 cups crispy crumbs' },
+              { ingredient: 'Egg', measure: '2 beaten' },
+              { ingredient: 'Garlic', measure: '2 cloves crushed' },
+              { ingredient: 'Olive Oil', measure: '1/4 cup' },
+              { ingredient: 'Salt', measure: '1/2 tsp' },
+              { ingredient: 'Pepper', measure: '1/4 tsp' }
+            ],
             steps: [
-              'Season thin chicken, pork, or beef cutlets with crushed garlic, salt, and pepper, then press into crispy breadcrumbs.',
+              'Season thin chicken cutlets with crushed garlic, salt, and pepper, then dip in egg and press into crispy breadcrumbs.',
               'Fry in warm oil for 4 minutes per side until golden and crunchy.'
             ]
           },
@@ -1167,12 +1401,20 @@
             searchUrl: 'https://www.isabeleats.com/?s=',
             tag: 'Easy Mexican',
             thumb: 'https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Sizzling Charred Garlic Carnitas / Pollo Asado',
+            featuredTitle: 'Crispy Pork Carnitas (Mexican Citrus & Garlic Pork)',
+            dishQuery: 'pork carnitas',
             calories: 490,
-            defaultIngredients: ['Pork', 'Chicken', 'Garlic', 'Onion', 'Olive Oil', 'Salt', 'Pepper', 'Rice'],
+            defaultIngredients: [
+              { ingredient: 'Pork', measure: '600g pork shoulder' },
+              { ingredient: 'Garlic', measure: '4 cloves minced' },
+              { ingredient: 'Onion', measure: '1 diced' },
+              { ingredient: 'Olive Oil', measure: '2 tbsp' },
+              { ingredient: 'Salt', measure: '1 tsp' },
+              { ingredient: 'Pepper', measure: '1/2 tsp' }
+            ],
             steps: [
-              'Toss cubed pork or chicken with minced garlic, olive oil, salt, and pepper.',
-              'Sear in a hot cast-iron skillet for 8 minutes until deeply golden and crispy on the edges.'
+              'Simmer or braise seasoned pork with garlic, onion, salt, and pepper until fork-tender.',
+              'Crisp the shredded pork in a hot cast-iron skillet for 5 minutes until golden on the edges.'
             ]
           },
           {
@@ -1180,12 +1422,20 @@
             searchUrl: 'https://muybuenoblog.com/?s=',
             tag: 'Family Heritage',
             thumb: 'https://images.unsplash.com/photo-1613514785940-daed07799d9b?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Sonoran Garlic & Chile Skillet Bowl',
+            featuredTitle: 'Arroz con Pollo (Mexican Garlic Chicken & Rice Skillet)',
+            dishQuery: 'arroz con pollo',
             calories: 465,
-            defaultIngredients: ['Chicken', 'Beef', 'Beans', 'Rice', 'Garlic', 'Tomato', 'Salt'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '500g thighs' },
+              { ingredient: 'Rice', measure: '1.5 cups long-grain' },
+              { ingredient: 'Garlic', measure: '3 cloves minced' },
+              { ingredient: 'Tomato', measure: '2 diced' },
+              { ingredient: 'Onion', measure: '1/2 chopped' },
+              { ingredient: 'Salt', measure: '1 tsp' }
+            ],
             steps: [
-              'Sauté garlic, onions, and tomatoes in oil for 4 minutes.',
-              'Simmer with shredded chicken or beef for 6 minutes and serve warm.'
+              'Sear seasoned chicken thighs in a deep skillet for 5 minutes, then toast the rice with garlic and onions.',
+              'Simmer covered with tomatoes and broth for 18 minutes until the rice is fluffy and tender.'
             ]
           }
         ]
@@ -1201,12 +1451,19 @@
             searchUrl: 'https://www.davidlebovitz.com/?s=',
             tag: 'Parisian Chef',
             thumb: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'French Bistro Crispy Garlic Breadcrumb Cutlet',
+            featuredTitle: 'French Bistro Mustard & Garlic Roast Chicken',
+            dishQuery: 'mustard chicken',
             calories: 510,
-            defaultIngredients: ['Chicken', 'Pork', 'Breadcrumbs', 'Garlic', 'Olive Oil', 'Butter', 'Salt', 'Pepper'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '4 thighs' },
+              { ingredient: 'Garlic', measure: '4 cloves crushed' },
+              { ingredient: 'Olive Oil', measure: '2 tbsp' },
+              { ingredient: 'Salt', measure: '1/2 tsp' },
+              { ingredient: 'Pepper', measure: '1/2 tsp' }
+            ],
             steps: [
-              'Crust chicken or pork cutlets with garlic-scented breadcrumbs, salt, and cracked black pepper.',
-              'Sauté in olive oil for 5 minutes per side until crisp and golden.'
+              'Season chicken thighs with garlic, Dijon mustard, olive oil, salt, and cracked black pepper.',
+              'Pan-roast for 20 minutes until crisp, golden, and bubbling in its pan sauce.'
             ]
           },
           {
@@ -1214,12 +1471,20 @@
             searchUrl: 'https://cnz.to/?s=',
             tag: 'Paris Home Bistro',
             thumb: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Provencal Roasted Garlic & Olive Oil Pan Roast',
-            calories: 450,
-            defaultIngredients: ['Chicken', 'Potato', 'Tomato', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            featuredTitle: 'Provençal Ratatouille & Roasted Garlic Skillet',
+            dishQuery: 'ratatouille',
+            calories: 340,
+            defaultIngredients: [
+              { ingredient: 'Tomato', measure: '4 ripe tomatoes' },
+              { ingredient: 'Onion', measure: '1 sliced' },
+              { ingredient: 'Garlic', measure: '4 cloves sliced' },
+              { ingredient: 'Olive Oil', measure: '3 tbsp extra-virgin' },
+              { ingredient: 'Salt', measure: '1/2 tsp' },
+              { ingredient: 'Pepper', measure: '1/4 tsp' }
+            ],
             steps: [
-              'Arrange protein and vegetables in a baking dish with whole garlic cloves and olive oil.',
-              'Roast or pan-sear for 15 minutes until caramelized and tender.'
+              'Sauté onions, garlic, and summer vegetables in olive oil until tender and fragrant.',
+              'Simmer gently with tomatoes and Provençal herbs for 15 minutes.'
             ]
           },
           {
@@ -1227,12 +1492,21 @@
             searchUrl: 'https://www.onceuponachef.com/?s=',
             tag: 'French-Trained',
             thumb: 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Golden Pan-Seared Garlic Herb Medallions',
+            featuredTitle: 'Classic Chicken Piccata with Lemon & Garlic Pan Sauce',
+            dishQuery: 'chicken piccata',
             calories: 475,
-            defaultIngredients: ['Pork', 'Chicken', 'Salmon', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '500g cutlets' },
+              { ingredient: 'Flour', measure: '1/4 cup for dredging' },
+              { ingredient: 'Garlic', measure: '2 cloves minced' },
+              { ingredient: 'Olive Oil', measure: '2 tbsp' },
+              { ingredient: 'Lemon', measure: '2 tbsp juice' },
+              { ingredient: 'Salt', measure: '1/2 tsp' },
+              { ingredient: 'Pepper', measure: '1/4 tsp' }
+            ],
             steps: [
-              'Pat medallions dry and season generously with salt and pepper.',
-              'Sear in hot olive oil with crushed garlic for 4 minutes per side.'
+              'Pat chicken cutlets dry, season with salt and pepper, dredge lightly, and sear in olive oil for 3 minutes per side.',
+              'Simmer garlic, lemon juice, and pan juices for 2 minutes and spoon over the cutlets.'
             ]
           }
         ]
@@ -1248,12 +1522,20 @@
             searchUrl: 'https://www.themediterraneandish.com/?s=',
             tag: 'Healthy Med Diet',
             thumb: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Mediterranean Olive Oil & Garlic Skillet Souvlaki',
+            featuredTitle: 'Greek Chicken Souvlaki with Garlic & Olive Oil',
+            dishQuery: 'chicken souvlaki',
             calories: 440,
-            defaultIngredients: ['Chicken', 'Pork', 'Lamb', 'Garlic', 'Olive Oil', 'Lemon', 'Salt', 'Pepper'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '500g cubed' },
+              { ingredient: 'Garlic', measure: '4 cloves minced' },
+              { ingredient: 'Olive Oil', measure: '3 tbsp extra-virgin' },
+              { ingredient: 'Lemon', measure: '1 juiced' },
+              { ingredient: 'Salt', measure: '1 tsp' },
+              { ingredient: 'Pepper', measure: '1/2 tsp' }
+            ],
             steps: [
-              'Whisk extra-virgin olive oil, minced garlic, salt, and black pepper in a bowl and coat the meat.',
-              'Sear in a hot skillet for 6 minutes until golden brown and juicy.'
+              'Whisk extra-virgin olive oil, minced garlic, lemon, oregano, salt, and black pepper to coat the chicken.',
+              'Sear in a hot skillet or grill for 6 minutes until golden brown and juicy.'
             ]
           },
           {
@@ -1261,12 +1543,20 @@
             searchUrl: 'https://www.mygreekdish.com/?s=',
             tag: 'Greek Island',
             thumb: 'https://images.unsplash.com/photo-1529059997568-3d847b1154f0?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Greek Tavern Lemon Garlic Roasted Cutlets',
+            featuredTitle: 'Greek Lemon Garlic Roast Chicken & Potatoes (Kotopoulo Lemonato)',
+            dishQuery: 'lemon chicken potatoes',
             calories: 465,
-            defaultIngredients: ['Pork', 'Chicken', 'Potato', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '600g pieces' },
+              { ingredient: 'Potato', measure: '400g wedges' },
+              { ingredient: 'Garlic', measure: '4 cloves crushed' },
+              { ingredient: 'Olive Oil', measure: '1/4 cup' },
+              { ingredient: 'Salt', measure: '1 tsp' },
+              { ingredient: 'Pepper', measure: '1/2 tsp' }
+            ],
             steps: [
-              'Toss cutlets with olive oil, crushed garlic, oregano, salt, and pepper.',
-              'Pan-roast for 8 minutes until tender and golden.'
+              'Toss chicken and potato wedges with olive oil, crushed garlic, oregano, salt, and pepper.',
+              'Roast or pan-braise until tender and golden.'
             ]
           },
           {
@@ -1274,12 +1564,19 @@
             searchUrl: 'https://spanishsabores.com/?s=',
             tag: 'Tapas & Paella',
             thumb: 'https://images.unsplash.com/photo-1534080564583-6be75777b70a?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Spanish Pollo / Cerdo al Ajillo (Sizzling Garlic Oil)',
+            featuredTitle: 'Pollo al Ajillo (Spanish Sizzling Garlic Oil Chicken)',
+            dishQuery: 'pollo al ajillo',
             calories: 480,
-            defaultIngredients: ['Chicken', 'Pork', 'Shrimp', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '500g pieces' },
+              { ingredient: 'Garlic', measure: '8 cloves sliced' },
+              { ingredient: 'Olive Oil', measure: '1/3 cup' },
+              { ingredient: 'Salt', measure: '1 tsp' },
+              { ingredient: 'Pepper', measure: '1/2 tsp' }
+            ],
             steps: [
-              'Sizzle thinly sliced garlic in generous olive oil for 2 minutes until golden.',
-              'Add bite-sized chicken, pork, or shrimp and cook briskly for 5 minutes.'
+              'Sizzle thinly sliced garlic in generous olive oil for 2 minutes until golden and fragrant.',
+              'Add seasoned chicken pieces and cook briskly for 8 minutes until crisp and tender.'
             ]
           }
         ]
@@ -1296,10 +1593,19 @@
             tag: 'Levantine & Fresh',
             thumb: 'https://images.unsplash.com/photo-1540914124281-342587941389?auto=format&fit=crop&w=700&q=80',
             featuredTitle: 'Crispy Garlic & Sesame Chicken Schnitzel Cutlet',
+            dishQuery: 'chicken schnitzel',
             calories: 495,
-            defaultIngredients: ['Chicken', 'Breadcrumbs', 'Egg', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '2 breasts pounded thin' },
+              { ingredient: 'Breadcrumbs', measure: '1.5 cups panko/crumbs' },
+              { ingredient: 'Egg', measure: '2 beaten' },
+              { ingredient: 'Garlic', measure: '1 tsp garlic/2 cloves' },
+              { ingredient: 'Olive Oil', measure: '1/4 cup' },
+              { ingredient: 'Salt', measure: '1/2 tsp' },
+              { ingredient: 'Pepper', measure: '1/4 tsp' }
+            ],
             steps: [
-              'Coat pounded chicken breast in seasoned breadcrumbs with garlic powder, salt, and pepper.',
+              'Coat pounded chicken breast in beaten egg and seasoned breadcrumbs with garlic, salt, and pepper.',
               'Shallow-fry in olive oil for 4 minutes per side until crisp and golden.'
             ]
           },
@@ -1308,11 +1614,19 @@
             searchUrl: 'https://middleeats.com/?s=',
             tag: 'Authentic Middle East',
             thumb: 'https://images.unsplash.com/photo-1590577976322-3d2d6e2130d5?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Street-Style Roasted Garlic Shawarma Skillet',
+            featuredTitle: 'Street-Style Roasted Garlic Chicken Shawarma Skillet',
+            dishQuery: 'chicken shawarma',
             calories: 470,
-            defaultIngredients: ['Chicken', 'Beef', 'Lamb', 'Garlic', 'Olive Oil', 'Salt', 'Pepper', 'Rice'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '500g sliced thighs' },
+              { ingredient: 'Garlic', measure: '4 cloves crushed' },
+              { ingredient: 'Olive Oil', measure: '3 tbsp' },
+              { ingredient: 'Salt', measure: '1 tsp' },
+              { ingredient: 'Pepper', measure: '1/2 tsp' },
+              { ingredient: 'Rice', measure: '2 cups' }
+            ],
             steps: [
-              'Marinate sliced meat with crushed garlic, olive oil, warm spices, salt, and pepper.',
+              'Marinate sliced chicken with crushed garlic, olive oil, warm shawarma spices, salt, and pepper.',
               'Sear in a hot skillet for 7 minutes until charred on the edges and serve with garlic toum.'
             ]
           },
@@ -1321,12 +1635,22 @@
             searchUrl: 'https://tasteofmaroc.com/?s=',
             tag: 'Tagines & Couscous',
             thumb: 'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Moroccan Garlic & Olive Oil Braised Skillet',
-            calories: 455,
-            defaultIngredients: ['Chicken', 'Chickpeas', 'Potato', 'Garlic', 'Olive Oil', 'Salt', 'Pepper', 'Water'],
+            featuredTitle: 'Moroccan Chickpea, Potato & Garlic Braised Tagine',
+            dishQuery: 'chickpea tagine',
+            calories: 410,
+            defaultIngredients: [
+              { ingredient: 'Chickpeas', measure: '400g cooked' },
+              { ingredient: 'Potato', measure: '2 cubed' },
+              { ingredient: 'Tomato', measure: '2 chopped' },
+              { ingredient: 'Garlic', measure: '3 cloves minced' },
+              { ingredient: 'Olive Oil', measure: '2 tbsp' },
+              { ingredient: 'Salt', measure: '1 tsp' },
+              { ingredient: 'Pepper', measure: '1/2 tsp' },
+              { ingredient: 'Water', measure: '1 cup' }
+            ],
             steps: [
-              'Brown chicken or vegetables in olive oil with minced garlic for 5 minutes.',
-              'Add water and spices; simmer covered for 15 minutes until tender.'
+              'Sauté minced garlic, tomatoes, and cubed potatoes in olive oil for 5 minutes.',
+              'Add chickpeas, water, and spices; simmer covered for 15 minutes until tender.'
             ]
           }
         ]
@@ -1342,12 +1666,21 @@
             searchUrl: 'https://www.seriouseats.com/search?q=',
             tag: 'Food Science & Lab',
             thumb: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'Extra-Crispy Pan-Fried Garlic Cutlet & Pan Sauce',
+            featuredTitle: 'Extra-Crispy Pan-Fried Chicken Cutlets',
+            dishQuery: 'chicken cutlets',
             calories: 530,
-            defaultIngredients: ['Chicken', 'Pork', 'Breadcrumbs', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '2 breasts sliced thin' },
+              { ingredient: 'Breadcrumbs', measure: '1.5 cups panko' },
+              { ingredient: 'Egg', measure: '1 beaten' },
+              { ingredient: 'Garlic', measure: '2 cloves minced' },
+              { ingredient: 'Olive Oil', measure: '1/3 cup' },
+              { ingredient: 'Salt', measure: '1/2 tsp' },
+              { ingredient: 'Pepper', measure: '1/4 tsp' }
+            ],
             steps: [
-              'Toast breadcrumbs briefly in a tablespoon of olive oil with minced garlic, then press onto seasoned chicken or pork cutlets.',
-              'Sear in a skillet for 4 minutes per side until ultra-crisp and juicy.'
+              'Season chicken cutlets with salt and pepper, then coat in flour, egg, and breadcrumbs.',
+              'Sear in olive oil for 4 minutes per side until ultra-crisp and juicy.'
             ]
           },
           {
@@ -1355,12 +1688,20 @@
             searchUrl: 'https://www.bbcgoodfood.com/search?q=',
             tag: 'Tested Everyday',
             thumb: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: 'One-Pan Golden Garlic & Herb Crusted Roast',
+            featuredTitle: 'One-Pan Garlic & Herb Crusted Roast Chicken',
+            dishQuery: 'garlic herb roast chicken',
             calories: 465,
-            defaultIngredients: ['Chicken', 'Pork', 'Salmon', 'Breadcrumbs', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '4 breasts or thighs' },
+              { ingredient: 'Breadcrumbs', measure: '1 cup herbed crumbs' },
+              { ingredient: 'Garlic', measure: '3 cloves crushed' },
+              { ingredient: 'Olive Oil', measure: '2 tbsp' },
+              { ingredient: 'Salt', measure: '1/2 tsp' },
+              { ingredient: 'Pepper', measure: '1/4 tsp' }
+            ],
             steps: [
-              'Mix breadcrumbs, minced garlic, olive oil, salt, and pepper into a crunchy herb crust.',
-              'Press onto chicken, pork, or salmon and bake or pan-roast for 15 minutes until golden.'
+              'Mix breadcrumbs, crushed garlic, olive oil, salt, and pepper into a crunchy herb crust.',
+              'Press onto chicken and bake or pan-roast for 18 minutes until golden.'
             ]
           },
           {
@@ -1368,12 +1709,20 @@
             searchUrl: 'https://www.recipetineats.com/?s=',
             tag: 'Foolproof Dinners',
             thumb: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=700&q=80',
-            featuredTitle: '20-Minute Caramelized Garlic Skillet Tenderloin',
+            featuredTitle: 'Golden Caramelized Garlic Butter Chicken Breast',
+            dishQuery: 'garlic butter chicken breast',
             calories: 480,
-            defaultIngredients: ['Pork', 'Chicken', 'Beef', 'Garlic', 'Olive Oil', 'Sugar', 'Salt', 'Pepper'],
+            defaultIngredients: [
+              { ingredient: 'Chicken', measure: '500g breasts' },
+              { ingredient: 'Garlic', measure: '4 cloves minced' },
+              { ingredient: 'Olive Oil', measure: '2 tbsp' },
+              { ingredient: 'Sugar', measure: '1/2 tsp' },
+              { ingredient: 'Salt', measure: '1/2 tsp' },
+              { ingredient: 'Pepper', measure: '1/4 tsp' }
+            ],
             steps: [
-              'Season protein with salt, pepper, and a touch of sugar for caramelization.',
-              'Sear in olive oil with smashed garlic for 6 minutes until golden and rested.'
+              'Season chicken with salt, pepper, and a touch of sugar for golden caramelization.',
+              'Sear in olive oil with minced garlic for 5 minutes until golden and glossy.'
             ]
           }
         ]
@@ -1513,10 +1862,42 @@
         const savedBookmarks = localStorage.getItem(STORAGE_KEYS.BOOKMARKS);
         if (savedBookmarks) {
           bookmarkedRecipesMap = JSON.parse(savedBookmarks) || {};
+          repairSavedBookmarksUrls();
         }
       } catch (err) {
         activeStaples = new Set(['Garlic']);
         userIngredients = ['Chicken'];
+      }
+    }
+
+    /**
+     * Automatically repairs any previously bookmarked web recipes so their `sourceUrl`
+     * searches for the ACTUAL DISH NAME instead of old raw ingredient lists.
+     */
+    function repairSavedBookmarksUrls() {
+      let updated = false;
+      Object.keys(bookmarkedRecipesMap).forEach(id => {
+        if (id.startsWith('web-')) {
+          const parts = id.split('-');
+          const groupId = parts[1];
+          const siteIdx = parseInt(parts[2], 10);
+          const group = GLOBAL_RECIPE_HUB.find(g => g.id === groupId);
+          const site = group && group.sites ? group.sites[siteIdx] : null;
+          if (site) {
+            const dishUrl = buildDishSearchUrl(site.searchUrl, site.dishQuery || site.featuredTitle);
+            if (bookmarkedRecipesMap[id].sourceUrl !== dishUrl || bookmarkedRecipesMap[id].strMeal !== site.featuredTitle) {
+              bookmarkedRecipesMap[id].strMeal = site.featuredTitle;
+              bookmarkedRecipesMap[id].sourceUrl = dishUrl;
+              bookmarkedRecipesMap[id].ingredients = site.defaultIngredients;
+              updated = true;
+            }
+          }
+        }
+      });
+      if (updated) {
+        try {
+          localStorage.setItem(STORAGE_KEYS.BOOKMARKS, JSON.stringify(bookmarkedRecipesMap));
+        } catch (e) {}
       }
     }
 
@@ -1555,7 +1936,8 @@
           strArea: recipeObj.strArea || 'Global',
           strCategory: recipeObj.strCategory || 'Main Dish',
           source: recipeObj.source || 'TheMealDB',
-          sourceUrl: recipeObj.sourceUrl || '',
+          sourceUrl: recipeObj.sourceUrl || recipeObj.strSource || '',
+          ingredientSearchUrl: recipeObj.ingredientSearchUrl || '',
           isExternal: Boolean(recipeObj.isExternal),
           calories: recipeObj.calories || estimateCalories(recipeObj),
           ingredients: recipeObj.ingredients || extractIngredientsFromMeal(recipeObj),
@@ -1928,29 +2310,50 @@
       suggestionsList.classList.add('hidden');
     }
 
-    // --- 9. BUILD CURATED WEB RECIPE CARDS FOR "RECOMMENDED RECIPES" + GLOBAL HUB ---
+    // --- 9. BUILD CURATED WEB RECIPE CARDS (DISH-NAME LINKS) & GLOBAL HUB ---
+
+    /**
+     * Returns clean primary search terms for ingredient-only directory searches
+     * (never pollutes blog search queries with Olive Oil, Salt, Pepper, Water, or Sugar).
+     */
     function getSearchQueryTerms() {
       if (userIngredients.length > 0) {
-        const meaningfulStaples = [...activeStaples].filter(s => !['Water', 'Salt', 'Pepper'].includes(s));
-        return [...userIngredients, ...meaningfulStaples.slice(0, 2)];
+        return [...userIngredients];
       }
-      const nonTrivialStaples = [...activeStaples].filter(s => s !== 'Water');
-      return nonTrivialStaples.length > 0 ? nonTrivialStaples : ['Chicken', 'Garlic'];
+      const customActive = [...activeStaples].filter(s => !DEFAULT_STAPLES.includes(s));
+      if (customActive.length > 0) return customActive;
+      return ['Chicken'];
     }
 
     function buildDirectSearchUrl(baseUrl, terms) {
-      const encodedTerms = terms.map(t => encodeURIComponent(t.trim().toLowerCase())).join('+');
+      const encodedTerms = terms
+        .map(t => encodeURIComponent(t.trim().toLowerCase()))
+        .join('+');
       return `${baseUrl}${encodedTerms}`;
     }
 
     /**
-     * Generates Curated Web Recipe Cards from our 42 Websites so they appear directly in "Recommended Recipes"!
+     * Builds a URL that searches the host recipe website for the ACTUAL DISH NAME
+     * (e.g., "ginger scallion chicken" on The Woks of Life, "tonkatsu" on Just One Cookbook).
+     */
+    function buildDishSearchUrl(baseUrl, dishNameOrQuery) {
+      const words = String(dishNameOrQuery || '')
+        .replace(/[()\/]/g, ' ')
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
+      return buildDirectSearchUrl(baseUrl, words);
+    }
+
+    /**
+     * Generates Curated Web Recipe Cards from our 42 Websites so they appear directly in "Recommended Recipes".
+     * - `sourceUrl` points to the ACTUAL DISH NAME on the host website!
+     * - `ingredientSearchUrl` provides an optional secondary link to search by user ingredients.
      */
     function generateCuratedWebRecipeCards(allActiveIngredients) {
       const queryTerms = getSearchQueryTerms();
       const cards = [];
 
-      // Filter the 14 cuisine groups based on the user's selectedCuisine
       const matchingGroups = GLOBAL_RECIPE_HUB.filter(group => {
         if (selectedCuisine === 'All') return true;
         if (selectedCuisine === 'Asian') return ASIAN_AREAS.includes(group.areaMatch);
@@ -1959,23 +2362,32 @@
 
       matchingGroups.forEach(group => {
         group.sites.forEach((site, idx) => {
-          const deepLink = buildDirectSearchUrl(site.searchUrl, queryTerms);
+          // Primary link ("Site" & "View Full Recipe on [Host Website]"): searches the ACTUAL DISH NAME!
+          const dishUrl = buildDishSearchUrl(site.searchUrl, site.dishQuery || site.featuredTitle);
+          // Secondary link: searches the user's active fridge ingredients
+          const ingredientSearchUrl = buildDirectSearchUrl(site.searchUrl, queryTerms);
           const idMeal = `web-${group.id}-${idx}`;
 
-          // Merge site's default ingredients with user's active ingredients so the modal checklist & matcher work seamlessly
-          const combinedIngList = [...new Set([...allActiveIngredients, ...(site.defaultIngredients || [])])];
-          const ingredientObjs = combinedIngList.map(ing => ({
-            ingredient: ing,
-            measure: allActiveIngredients.includes(ing) ? 'In Your Pantry' : 'To taste / as needed'
-          }));
-
-          // Calculate how many of the user's active ingredients match this dish/site
-          const matchedNames = allActiveIngredients.filter(userIng => {
-            const lower = userIng.toLowerCase();
-            return (site.defaultIngredients || []).some(d => d.toLowerCase().includes(lower) || lower.includes(d.toLowerCase()));
+          const ingredientObjs = (site.defaultIngredients || []).map(item => {
+            if (typeof item === 'string') {
+              return { ingredient: item, measure: 'As needed' };
+            }
+            return { ingredient: item.ingredient, measure: item.measure || 'As needed' };
           });
 
-          const effectiveMatches = matchedNames.length > 0 ? matchedNames : queryTerms;
+          // Calculate how many of the user's active ingredients match this dish
+          const matchedNames = allActiveIngredients.filter(userIng => {
+            const lower = userIng.toLowerCase();
+            const titleMatch = site.featuredTitle.toLowerCase().includes(lower);
+            const ingMatch = ingredientObjs.some(d =>
+              d.ingredient.toLowerCase().includes(lower) || lower.includes(d.ingredient.toLowerCase())
+            );
+            return titleMatch || ingMatch;
+          });
+
+          const effectiveMatches = matchedNames.length > 0
+            ? matchedNames
+            : ingredientObjs.slice(0, 3).map(i => i.ingredient);
 
           const cardObj = {
             idMeal,
@@ -1984,17 +2396,17 @@
             strArea: group.areaMatch,
             strCategory: `${site.tag} • ${site.name}`,
             source: site.name,
-            sourceUrl: deepLink,
+            sourceUrl: dishUrl,
+            ingredientSearchUrl,
             isExternal: true,
             isAsian: ASIAN_AREAS.includes(group.areaMatch),
             calories: site.calories || 460,
-            matchCount: Math.max(effectiveMatches.length, 1),
+            matchCount: matchedNames.length,
             matchedIngredients: effectiveMatches,
             totalQueried: Math.max(allActiveIngredients.length, 1),
             ingredients: ingredientObjs,
             steps: site.steps || [
-              `Prepare your ${queryTerms.join(', ')} and pantry aromatics.`,
-              `Open ${site.name} using the button above for the full original recipe proportions and photos.`
+              `Open ${site.name} using the button above for the full original recipe proportions and step-by-step photos.`
             ]
           };
 
@@ -2003,8 +2415,11 @@
         });
       });
 
+      // Filter by dietary requirement first (using accurate dish-specific ingredients)
+      const dietFiltered = cards.filter(c => passesDietaryFilter(c, selectedDiet));
+
       // Sort by ingredient match count first, then Asian priority when 'All' is selected
-      cards.sort((a, b) => {
+      dietFiltered.sort((a, b) => {
         if (b.matchCount !== a.matchCount) return b.matchCount - a.matchCount;
         if (selectedCuisine === 'All') {
           return (b.isAsian ? 1 : 0) - (a.isAsian ? 1 : 0);
@@ -2012,10 +2427,6 @@
         return 0;
       });
 
-      // Filter by dietary requirement
-      const dietFiltered = cards.filter(c => passesDietaryFilter(c, selectedDiet));
-
-      // When 'All' cuisines is selected, return top 12 curated web cards so the grid is balanced; when a specific cuisine is selected, return all matching web cards
       return selectedCuisine === 'All' ? dietFiltered.slice(0, 12) : dietFiltered;
     }
 
@@ -2069,22 +2480,25 @@
 
           <div class="${isOpen ? 'block' : 'hidden'} px-5 pb-5 pt-2 border-t border-mint-100/80 space-y-2.5 bg-white">
             ${group.sites.map((site, idx) => {
-              const deepLink = buildDirectSearchUrl(site.searchUrl, queryTerms);
+              const dishUrl = buildDishSearchUrl(site.searchUrl, site.dishQuery || site.featuredTitle);
+              const ingSearchUrl = buildDirectSearchUrl(site.searchUrl, queryTerms);
               const bookmarkId = `web-${group.id}-${idx}`;
               const isSaved = isRecipeBookmarked(bookmarkId);
 
               return `
-                <div class="flex items-center justify-between gap-2 p-3 rounded-2xl bg-canvas border border-mint-100 hover:border-mint-300 transition-all group/site">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3 rounded-2xl bg-canvas border border-mint-100 hover:border-mint-300 transition-all group/site">
                   <a
-                    href="${escapeHtml(deepLink)}"
+                    href="${escapeHtml(dishUrl)}"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="flex-grow min-w-0 flex items-center gap-3"
+                    title="View ${escapeHtml(site.featuredTitle)} on ${escapeHtml(site.name)}"
                   >
                     <img
                       src="${escapeHtml(site.thumb)}"
                       alt="${escapeHtml(site.name)}"
                       loading="lazy"
+                      onerror="this.onerror=null; this.src='${FALLBACK_RECIPE_SVG}';"
                       class="w-11 h-11 rounded-full object-cover flex-shrink-0 border border-mint-200"
                     />
                     <div class="min-w-0">
@@ -2096,25 +2510,38 @@
                           ${escapeHtml(site.tag)}
                         </span>
                       </div>
-                      <p class="text-xs text-forest-600 truncate mt-0.5">
-                        Search <strong class="text-forest-800">"${escapeHtml(readableQuery)}"</strong>
+                      <p class="text-xs text-forest-700 truncate mt-0.5">
+                        Dish: <strong class="text-forest-900">${escapeHtml(site.featuredTitle)}</strong>
                         <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1 text-mint-600"></i>
                       </p>
                     </div>
                   </a>
 
-                  <button
-                    type="button"
-                    data-hub-id="${escapeHtml(bookmarkId)}"
-                    class="hub-bookmark-btn w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 active:scale-90 duration-200 ${
-                      isSaved
-                        ? 'bg-apricot-400 text-white shadow-sm'
-                        : 'bg-white hover:bg-apricot-50 text-forest-600 hover:text-apricot-500 border border-mint-100'
-                    }"
-                    title="${isSaved ? 'Remove from Saved Bookmarks' : 'Save to Bookmarks'}"
-                  >
-                    <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-heart text-xs"></i>
-                  </button>
+                  <div class="flex items-center gap-1.5 self-end sm:self-center flex-shrink-0">
+                    <a
+                      href="${escapeHtml(ingSearchUrl)}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="px-3 py-1.5 rounded-full bg-white hover:bg-mint-50 text-forest-700 hover:text-mint-700 border border-mint-200 text-[11px] font-bold inline-flex items-center gap-1"
+                      title="Search ${escapeHtml(readableQuery)} on ${escapeHtml(site.name)}"
+                    >
+                      <i class="fa-solid fa-magnifying-glass text-[10px] text-mint-600"></i>
+                      <span>Search "${escapeHtml(readableQuery)}"</span>
+                    </a>
+
+                    <button
+                      type="button"
+                      data-hub-id="${escapeHtml(bookmarkId)}"
+                      class="hub-bookmark-btn w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 active:scale-90 duration-200 ${
+                        isSaved
+                          ? 'bg-apricot-400 text-white shadow-sm'
+                          : 'bg-white hover:bg-apricot-50 text-forest-600 hover:text-apricot-500 border border-mint-100'
+                      }"
+                      title="${isSaved ? 'Remove from Saved Bookmarks' : 'Save to Bookmarks'}"
+                    >
+                      <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-heart text-xs"></i>
+                    </button>
+                  </div>
                 </div>
               `;
             }).join('')}
@@ -2162,7 +2589,9 @@
 
     function extractIngredientsFromMeal(meal) {
       if (Array.isArray(meal.ingredients) && meal.ingredients.length > 0) {
-        return meal.ingredients;
+        return meal.ingredients.map(item =>
+          typeof item === 'string' ? { ingredient: item, measure: 'As needed' } : item
+        );
       }
       const list = [];
       for (let i = 1; i <= 20; i++) {
@@ -2185,11 +2614,11 @@
       const title = (meal.strMeal || '').toLowerCase();
       const ingText = `${title} ${cat} ${getMealIngredientsString(meal)}`;
 
-      const meatWords = ['chicken', 'beef', 'pork', 'bacon', 'ham', 'lamb', 'mutton', 'duck', 'turkey', 'sausage', 'chorizo', 'prosciutto', 'veal', 'mince', 'lard'];
+      const meatWords = ['chicken', 'beef', 'pork', 'bacon', 'ham', 'lamb', 'mutton', 'duck', 'turkey', 'sausage', 'chorizo', 'prosciutto', 'veal', 'mince', 'lard', 'tonkatsu', 'bulgogi', 'carnitas', 'pollo'];
       const seafoodWords = ['salmon', 'tuna', 'fish', 'cod', 'prawn', 'shrimp', 'crab', 'lobster', 'mussel', 'clam', 'anchov', 'squid', 'oyster'];
       const dairyEggWords = ['milk', 'cheese', 'butter', 'cream', 'yogurt', 'ghee', 'parmesan', 'cheddar', 'mozzarella', 'egg', 'mayonnaise', 'honey'];
-      const porkWords = ['pork', 'bacon', 'ham', 'prosciutto', 'chorizo', 'sausage', 'lard', 'pancetta', 'gammon'];
-      const glutenWords = ['flour', 'bread', 'pasta', 'spaghetti', 'noodle', 'macaroni', 'penne', 'lasagne', 'wheat', 'couscous', 'soy sauce', 'tortilla', 'bun', 'puff pastry'];
+      const porkWords = ['pork', 'bacon', 'ham', 'prosciutto', 'chorizo', 'sausage', 'lard', 'pancetta', 'gammon', 'tonkatsu', 'carnitas', 'thit kho'];
+      const glutenWords = ['flour', 'bread', 'breadcrumbs', 'panko', 'pasta', 'spaghetti', 'noodle', 'macaroni', 'penne', 'lasagne', 'wheat', 'couscous', 'soy sauce', 'tortilla', 'bun', 'puff pastry'];
 
       const hasAny = (words) => words.some(w => ingText.includes(w));
 
@@ -2212,7 +2641,13 @@
         const res = await fetch(`${API_BASE}/lookup.php?i=${encodeURIComponent(key)}`);
         const data = await res.json();
         if (data && data.meals && data.meals[0]) {
-          const full = { ...data.meals[0], source: 'TheMealDB', isExternal: false };
+          const rawMeal = data.meals[0];
+          const full = {
+            ...rawMeal,
+            source: 'TheMealDB',
+            sourceUrl: rawMeal.strSource || rawMeal.strYoutube || '',
+            isExternal: false
+          };
           mealDetailsCache.set(key, full);
           return full;
         }
@@ -2235,11 +2670,10 @@
     }
 
     async function fetchMealsByCuisineArea(cuisineId) {
-      // Korean is supported via our Curated Web Recipes; for TheMealDB, fetch Asian or matching area
       const mealDbAreas = cuisineId === 'Asian'
         ? ['Chinese', 'Japanese', 'Thai', 'Malaysian', 'Vietnamese', 'Indian', 'Filipino']
         : cuisineId === 'Korean'
-          ? []
+          ? ['Chinese', 'Japanese']
           : [cuisineId];
 
       if (mealDbAreas.length === 0) return [];
@@ -2309,7 +2743,7 @@
         let nativeMeals = [];
         let usedRegionalSuggestions = false;
 
-        // 1. Generate Curated Web Recipe Cards from the 42 Websites so they always show in "Recommended Recipes"!
+        // 1. Generate Curated Web Recipe Cards from the 42 Websites
         const curatedWebCards = generateCuratedWebRecipeCards(allActive);
 
         // 2. Fetch Native TheMealDB Recipes
@@ -2421,7 +2855,6 @@
           const remaining = [...asianList.slice(3), ...nonAsianList].sort((a, b) => (b.matchCount || 0) - (a.matchCount || 0));
           blended = [...asianList.slice(0, 3), ...remaining];
         } else {
-          // Put Curated Web Recipes for that cuisine alongside TheMealDB matches
           blended = [...curatedWebCards, ...nativeMeals].sort((a, b) => {
             if (a.isFallbackSuggestion && !b.isFallbackSuggestion) return 1;
             if (!a.isFallbackSuggestion && b.isFallbackSuggestion) return -1;
@@ -2458,7 +2891,7 @@
       if (filtered.length === 0) {
         renderFeedbackState(
           'No dishes in this source tab',
-          'Switch to "All Recommended" or "Curated Web Sites" to view matching recipes for your ingredients.',
+          'Switch to "All Recommended" or "Curated Web Sites" to view matching recipes for your filters.',
           'Show All Recommended',
           () => {
             selectedSourceTab = 'All';
@@ -2516,9 +2949,11 @@
         const res = await fetch(`${API_BASE}/random.php`);
         const data = await res.json();
         if (data && data.meals && data.meals[0]) {
+          const raw = data.meals[0];
           const randomMeal = {
-            ...data.meals[0],
+            ...raw,
             source: 'TheMealDB',
+            sourceUrl: raw.strSource || raw.strYoutube || '',
             isExternal: false,
             matchCount: 1,
             matchedIngredients: ['Surprise Pick!'],
@@ -2564,6 +2999,12 @@
             ? `Popular ${meal.strArea || ''} Dish`
             : 'Saved Favorite';
 
+        const matchLabel = meal.isFallbackSuggestion
+          ? `${escapeHtml(meal.strArea || 'Regional')} Pick`
+          : (meal.matchCount && meal.matchCount > 0)
+            ? `Matches ${meal.matchCount}/${meal.totalQueried || Math.max(queriedIngredients.length, 1)}`
+            : `Curated ${escapeHtml(meal.strArea || '')} Dish`;
+
         const card = document.createElement('article');
         card.className = 'group bg-white rounded-3xl border border-mint-100 overflow-hidden shadow-soft hover:-translate-y-1 hover:shadow-lg transition-all duration-200 flex flex-col justify-between';
 
@@ -2576,6 +3017,7 @@
                 alt="${escapeHtml(meal.strMeal)}"
                 loading="lazy"
                 onload="this.classList.add('loaded'); this.parentElement.classList.remove('shimmer-bg');"
+                onerror="this.onerror=null; this.src='${FALLBACK_RECIPE_SVG}'; this.classList.add('loaded'); this.parentElement.classList.remove('shimmer-bg');"
                 class="recipe-img-fade w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-forest-900/75 via-transparent to-transparent"></div>
@@ -2608,15 +3050,11 @@
                 <i class="${bookmarked ? 'fa-solid' : 'fa-regular'} fa-heart text-base"></i>
               </button>
 
-              <!-- Bottom Overlay: Match Count & Clean Cuisine Badge (No Flag Emojis) -->
+              <!-- Bottom Overlay: Match Count & Clean Cuisine Badge -->
               <div class="absolute bottom-3 left-3.5 right-3.5 flex items-center justify-between gap-2">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-mint-500 text-white shadow-sm">
                   <i class="fa-solid fa-check text-[10px]"></i>
-                  ${
-                    meal.isFallbackSuggestion
-                      ? `${escapeHtml(meal.strArea || 'Regional')} Pick`
-                      : `Matches ${meal.matchCount || 1}/${meal.totalQueried || Math.max(queriedIngredients.length, 1)}`
-                  }
+                  ${matchLabel}
                 </span>
 
                 ${
@@ -2640,7 +3078,7 @@
                 ${escapeHtml(meal.strMeal)}
               </h3>
               <p class="text-xs text-forest-600 mt-1 line-clamp-1">
-                Uses: <span class="font-semibold text-forest-800">${escapeHtml(matchedList)}</span>
+                Key items: <span class="font-semibold text-forest-800">${escapeHtml(matchedList)}</span>
               </p>
             </div>
           </div>
@@ -2661,7 +3099,7 @@
                     target="_blank"
                     rel="noopener noreferrer"
                     class="py-3 px-4 min-h-[44px] rounded-full bg-apricot-400 hover:bg-apricot-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 duration-200 flex-shrink-0"
-                    title="Open live ingredient search on ${escapeHtml(sourceName)}"
+                    title="Open '${escapeHtml(meal.strMeal)}' on ${escapeHtml(sourceName)}"
                   >
                     <span>Site</span>
                     <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
@@ -2670,6 +3108,13 @@
             }
           </div>
         `;
+
+        // Ensure cached images immediately unblur
+        const imgEl = card.querySelector('img');
+        if (imgEl && imgEl.complete) {
+          imgEl.classList.add('loaded');
+          imgEl.parentElement.classList.remove('shimmer-bg');
+        }
 
         // Bookmark Heart Click
         const heartBtn = card.querySelector('.bookmark-card-btn');
@@ -2856,6 +3301,7 @@
       const activeSet = new Set(getAllActiveQueryIngredients().map(i => i.toLowerCase()));
       const isExternal = Boolean(meal.isExternal);
       const sourceName = meal.source || 'Source Website';
+      const externalDishUrl = meal.sourceUrl || meal.strSource || '';
 
       modalBody.innerHTML = `
         <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
@@ -2865,6 +3311,7 @@
                 src="${escapeHtml(meal.strMealThumb)}"
                 alt="${escapeHtml(meal.strMeal)}"
                 onload="this.classList.add('loaded'); this.parentElement.classList.remove('shimmer-bg');"
+                onerror="this.onerror=null; this.src='${FALLBACK_RECIPE_SVG}'; this.classList.add('loaded'); this.parentElement.classList.remove('shimmer-bg');"
                 class="recipe-img-fade w-full h-full object-cover"
               />
             </div>
@@ -2878,14 +3325,14 @@
             </p>
             <div class="flex flex-wrap gap-2.5 pt-1">
               ${
-                isExternal && meal.sourceUrl
+                externalDishUrl
                   ? `<a
-                      href="${escapeHtml(meal.sourceUrl)}"
+                      href="${escapeHtml(externalDishUrl)}"
                       target="_blank"
                       rel="noopener noreferrer"
                       class="px-5 py-3 min-h-[44px] rounded-full bg-apricot-400 hover:bg-apricot-500 text-white text-xs font-bold shadow-apricot-glow inline-flex items-center gap-2 active:scale-95 duration-200"
                     >
-                      <span>View Full Recipes on ${escapeHtml(sourceName)}</span>
+                      <span>View Full Recipe on ${escapeHtml(sourceName)}</span>
                       <i class="fa-solid fa-arrow-up-right-from-square"></i>
                     </a>`
                   : ''
@@ -2898,6 +3345,19 @@
                 <i class="fa-solid fa-kitchen-set"></i>
                 <span>Start Hands-Free Cooking Mode (${currentModalSteps.length} Steps)</span>
               </button>
+              ${
+                isExternal && meal.ingredientSearchUrl
+                  ? `<a
+                      href="${escapeHtml(meal.ingredientSearchUrl)}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="px-4 py-3 min-h-[44px] rounded-full bg-mint-50 hover:bg-mint-100 text-forest-800 border border-mint-200 text-xs font-bold inline-flex items-center gap-1.5"
+                    >
+                      <i class="fa-solid fa-magnifying-glass text-mint-600"></i>
+                      <span>Search My Ingredients on ${escapeHtml(sourceName)}</span>
+                    </a>`
+                  : ''
+              }
               ${
                 meal.strYoutube
                   ? `<a href="${escapeHtml(meal.strYoutube)}" target="_blank" rel="noopener noreferrer"
@@ -2965,6 +3425,12 @@
         </div>
       `;
 
+      const modalImg = modalBody.querySelector('img');
+      if (modalImg && modalImg.complete) {
+        modalImg.classList.add('loaded');
+        modalImg.parentElement.classList.remove('shimmer-bg');
+      }
+
       document.getElementById('launch-handsfree-inline')?.addEventListener('click', () => {
         isHandsFreeMode = true;
         updateHandsFreeToggleButton();
@@ -2994,7 +3460,7 @@
           <div class="flex items-center justify-between gap-4">
             <div>
               <span class="text-xs font-bold uppercase tracking-wider text-mint-600">
-                Hands-Free Interactive Cooking Mode
+                Hands-Free Interactive Cooking Mode (Use ← / → Arrow Keys)
               </span>
               <h2 class="font-display text-xl sm:text-2xl font-bold text-forest-900">
                 Step ${currentStepIndex + 1} of ${total}
@@ -3318,8 +3784,19 @@
       });
 
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !recipeModal.classList.contains('hidden')) {
+        if (recipeModal.classList.contains('hidden')) return;
+        if (e.key === 'Escape') {
           closeRecipeModal();
+        } else if (e.key === 'ArrowRight' && isHandsFreeMode) {
+          if (currentStepIndex < currentModalSteps.length - 1) {
+            currentStepIndex++;
+            renderHandsFreeModalView();
+          }
+        } else if (e.key === 'ArrowLeft' && isHandsFreeMode) {
+          if (currentStepIndex > 0) {
+            currentStepIndex--;
+            renderHandsFreeModalView();
+          }
         }
       });
     }
