@@ -74,7 +74,6 @@
       overflow-x: hidden;
     }
 
-    /* Smooth 0.2s transitions on interactive elements */
     button, a, input, select {
       transition: all 0.2s ease-in-out;
     }
@@ -179,7 +178,7 @@
       <!-- Top Utility Bar: Saved Bookmarks Toggle, Reset Memory & Surprise Me Button -->
       <div class="relative z-10 flex flex-wrap items-center justify-between gap-3 mb-6">
         <div class="flex flex-wrap items-center gap-2.5">
-          <!-- ❤️ Saved Bookmarks Toggle Button -->
+          <!-- Saved Bookmarks Toggle Button -->
           <button
             id="bookmarks-toggle-btn"
             type="button"
@@ -193,13 +192,13 @@
             </span>
           </button>
 
-          <!-- Jump to Global 42-Site Hub Pill -->
+          <!-- Jump to Global 42-Site Directory Pill -->
           <a
             href="#global-recipe-hub"
             class="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-full bg-white/90 hover:bg-white text-forest-800 hover:text-mint-600 border border-mint-200 text-xs sm:text-sm font-bold shadow-sm active:scale-95 duration-200"
           >
-            <i class="fa-solid fa-globe text-mint-500"></i>
-            <span>42-Site Global Hub</span>
+            <i class="fa-solid fa-compass text-mint-500"></i>
+            <span>42-Site Directory</span>
           </a>
         </div>
 
@@ -215,7 +214,7 @@
             <span class="hidden sm:inline">Reset Memory</span>
           </button>
 
-          <!-- 🎲 "Surprise Me!" Randomizer Button -->
+          <!-- "Surprise Me!" Randomizer Button -->
           <button
             id="surprise-me-btn"
             type="button"
@@ -230,14 +229,14 @@
         </div>
       </div>
 
-      <!-- Main Title & Subtitle (Custom GitHub Logo Preserved) -->
+      <!-- Main Title & Subtitle -->
       <div class="max-w-3xl">
         <div class="flex items-center gap-4 mb-3">
           <img
             src="images/logo.png"
             alt="Pantry to Plate logo"
             class="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover shadow-md shrink-0"
-            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%233EB489%22/><text x=%2250%25%22 y=%2254%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2236%22>🥗</text></svg>';"
+            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><circle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%233EB489%22/><text x=%2250%25%22 y=%2254%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2234%22 fill=%22white%22 font-family=%22sans-serif%22 font-weight=%22bold%22>P2P</text></svg>';"
           />
           <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight text-forest-900">
             Pantry to <span class="text-mint-500">Plate</span>
@@ -280,7 +279,7 @@
                     id="ingredient-input"
                     type="text"
                     autocomplete="off"
-                    placeholder="e.g., Chicken, Rice, Tofu, Salmon, Egg..."
+                    placeholder="e.g., Chicken, Pork, Rice, Tofu, Salmon, Egg..."
                     class="w-full pl-11 pr-5 py-3.5 min-h-[48px] bg-canvas border-2 border-mint-100 rounded-full text-forest-900 placeholder-forest-500/70 focus:outline-none focus:border-mint-500 focus:bg-white text-sm sm:text-base"
                   />
                 </div>
@@ -335,7 +334,7 @@
               </span>
             </div>
             <p class="text-xs text-forest-600 mb-3.5 leading-relaxed">
-              Toggle your everyday staples to include them in recipe matching and global web searches.
+              Toggle your everyday staples to include them in recipe matching and web searches.
             </p>
 
             <!-- Responsive Mobile-First Staples Grid (Never clips or shrinks) -->
@@ -370,7 +369,7 @@
           <!-- Primary CTA Button (Warm Apricot Accent) -->
           <div class="mt-5 pt-3 border-t border-mint-200/60 flex items-center justify-between gap-3">
             <span class="text-xs text-forest-600 font-medium">
-              Auto-syncs on change
+              Updates automatically
             </span>
             <button
               id="find-recipes-btn"
@@ -385,44 +384,29 @@
 
       </div>
 
-      <!-- ================= CUISINE DROPDOWN + QUICK PILLS & DIETARY FILTERS ================= -->
-      <div class="mt-7 pt-6 border-t border-mint-100 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <!-- ================= ALL 14 CUISINE FILTERS & DIETARY FILTERS ================= -->
+      <div class="mt-7 pt-6 border-t border-mint-100 space-y-6">
 
-        <!-- Cuisine Dropdown + Quick Filter Pills (7 cols) -->
-        <div class="lg:col-span-7">
-          <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
-            <label for="cuisine-select" class="text-xs font-bold uppercase tracking-wider text-forest-700 flex items-center gap-1.5">
-              <i class="fa-solid fa-earth-asia text-mint-500"></i>
-              <span>3. Filter by Global Cuisine (Client-Side Smart Match)</span>
-            </label>
+        <!-- All 14 Cuisines Displayed on Top -->
+        <div>
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-forest-700 flex items-center gap-1.5">
+              <i class="fa-solid fa-utensils text-mint-500"></i>
+              <span>3. Filter by Cuisine (All 14 Global Cuisines)</span>
+            </span>
             <span class="text-[11px] font-semibold text-mint-600">
-              Asian spotlight on Row 1 by default
+              Asian spotlight on Row 1 when "All Cuisines" is active
             </span>
           </div>
 
-          <div class="flex flex-col sm:flex-row gap-3 mb-3">
-            <!-- Rounded Pill Cuisine Dropdown -->
-            <div class="relative sm:w-64 flex-shrink-0">
-              <select
-                id="cuisine-select"
-                class="w-full appearance-none pl-4 pr-10 py-2.5 min-h-[44px] bg-canvas border-2 border-mint-200 hover:border-mint-400 focus:border-mint-500 rounded-full text-xs sm:text-sm font-bold text-forest-900 focus:outline-none cursor-pointer"
-              >
-                <!-- Populated by JS -->
-              </select>
-              <span class="pointer-events-none absolute inset-y-0 right-0 pr-4 flex items-center text-forest-700">
-                <i class="fa-solid fa-chevron-down text-xs"></i>
-              </span>
-            </div>
-
-            <!-- Quick Cuisine Pills -->
-            <div id="cuisine-pills-container" class="flex flex-wrap gap-1.5 items-center">
-              <!-- Populated by JS -->
-            </div>
+          <!-- Full Pill Bar with ALL Cuisines (Malaysian, Vietnamese, Korean, Thai, Chinese, Japanese, Filipino, Indian, etc.) -->
+          <div id="cuisine-pills-container" class="flex flex-wrap gap-2 items-center">
+            <!-- Populated by JS with all 14+ cuisines -->
           </div>
         </div>
 
-        <!-- Dietary Requirement Filter (5 cols) -->
-        <div class="lg:col-span-5">
+        <!-- Dietary Requirement Filter -->
+        <div class="pt-4 border-t border-mint-100/70">
           <div class="flex items-center justify-between mb-2.5">
             <span class="text-xs font-bold uppercase tracking-wider text-forest-700 flex items-center gap-1.5">
               <i class="fa-solid fa-leaf text-mint-500"></i>
@@ -432,7 +416,7 @@
               Showing all diets
             </span>
           </div>
-          <div id="diet-filter-container" class="flex flex-wrap gap-1.5">
+          <div id="diet-filter-container" class="flex flex-wrap gap-2">
             <!-- Populated by JS -->
           </div>
         </div>
@@ -440,25 +424,52 @@
       </div>
     </section>
 
-    <!-- ================= RESULTS STATUS BAR ================= -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 px-1">
+    <!-- ================= RECOMMENDED RECIPES HEADER & SOURCE TABS ================= -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 px-1">
       <div>
         <div class="flex items-center gap-2.5 flex-wrap">
           <h2 id="results-heading" class="font-display text-2xl font-bold text-forest-900">
             Recommended Recipes
           </h2>
           <span id="asian-priority-pill" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-apricot-100 text-apricot-600 border border-apricot-400/30">
-            🥢 Asian Spotlight First Row
+            <i class="fa-solid fa-bowl-rice"></i> Asian Spotlight First Row
           </span>
         </div>
         <p id="results-subtitle" class="text-sm text-forest-600 mt-0.5">
-          Matching dishes from TheMealDB & curated culinary sources.
+          Showing matching dishes from TheMealDB and the 42 curated global recipe websites.
         </p>
       </div>
 
-      <div id="match-badge" class="hidden inline-flex items-center gap-2 px-4 py-2 bg-mint-50 border border-mint-200 text-forest-800 rounded-full text-xs font-bold self-start sm:self-auto">
-        <span class="w-2 h-2 rounded-full bg-mint-500"></span>
-        <span id="match-badge-text">0 recipes found</span>
+      <!-- Source Filter Tabs + Match Count Badge -->
+      <div class="flex flex-wrap items-center gap-2.5">
+        <div id="source-tabs-container" class="inline-flex p-1 bg-white border border-mint-200 rounded-full shadow-sm">
+          <button
+            type="button"
+            data-source="All"
+            class="source-tab-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-mint-500 text-white shadow-sm"
+          >
+            All Recommended
+          </button>
+          <button
+            type="button"
+            data-source="TheMealDB"
+            class="source-tab-btn px-3.5 py-1.5 rounded-full text-xs font-bold text-forest-700 hover:text-forest-900"
+          >
+            TheMealDB
+          </button>
+          <button
+            type="button"
+            data-source="Web"
+            class="source-tab-btn px-3.5 py-1.5 rounded-full text-xs font-bold text-forest-700 hover:text-forest-900"
+          >
+            Curated Web Sites
+          </button>
+        </div>
+
+        <div id="match-badge" class="hidden inline-flex items-center gap-2 px-4 py-2 bg-mint-50 border border-mint-200 text-forest-800 rounded-full text-xs font-bold">
+          <span class="w-2 h-2 rounded-full bg-mint-500"></span>
+          <span id="match-badge-text">0 recipes found</span>
+        </div>
       </div>
     </div>
 
@@ -471,10 +482,10 @@
           </div>
           <div>
             <h3 id="cuisine-fallback-title" class="font-display text-base sm:text-lg font-bold text-forest-900">
-              Showing popular dishes for this cuisine
+              Showing Curated Web Recipes & Regional Favorites
             </h3>
             <p id="cuisine-fallback-desc" class="text-xs sm:text-sm text-forest-700 mt-0.5 leading-relaxed">
-              No dish in this cuisine contained every single active ingredient, so we loaded top dishes from this region below—or check the <strong>42-Site Global Recipe Hub</strong> further down for exact web matches!
+              We combined curated dishes from our specialist recipe websites with popular regional picks below.
             </p>
           </div>
         </div>
@@ -488,12 +499,12 @@
       </div>
     </div>
 
-    <!-- ================= RECIPE RESULTS GRID ================= -->
+    <!-- ================= RECOMMENDED RECIPES GRID (Both TheMealDB + Curated Web Recipes) ================= -->
     <div id="recipes-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
       <!-- Recipe Cards injected here by JS -->
     </div>
 
-    <!-- ================= 🫙 EMPTY PANTRY / FEEDBACK STATE ================= -->
+    <!-- ================= EMPTY PANTRY / FEEDBACK STATE ================= -->
     <div id="feedback-state" class="hidden bg-white rounded-3xl border border-mint-100 p-10 sm:p-16 text-center max-w-xl mx-auto my-6 shadow-soft">
       <div id="feedback-icon-wrapper" class="mx-auto mb-5 flex items-center justify-center">
         <!-- Populated dynamically with Floating Glass Jar SVG -->
@@ -512,17 +523,10 @@
         >
           Load Popular Picks
         </button>
-        <button
-          id="feedback-reset-filters-btn"
-          type="button"
-          class="hidden px-6 py-3.5 min-h-[44px] bg-mint-50 hover:bg-mint-100 active:scale-95 duration-200 text-forest-800 font-semibold rounded-full text-sm"
-        >
-          Reset Filters
-        </button>
       </div>
     </div>
 
-    <!-- ================= 🌐 CURATED GLOBAL RECIPE HUB (42 WEBSITES ACROSS 14 CUISINES) ================= -->
+    <!-- ================= CURATED GLOBAL RECIPE HUB (42 WEBSITES ACROSS 14 CUISINES) ================= -->
     <section id="global-recipe-hub" class="mt-16 pt-12 border-t-2 border-mint-100">
       <div class="bg-white rounded-3xl shadow-soft border border-mint-100 p-6 sm:p-9">
         <!-- Hub Header -->
@@ -533,10 +537,10 @@
               <span>42 Pre-Loaded Culinary Websites • 14 Global Cuisines</span>
             </div>
             <h2 class="font-display text-2xl sm:text-3xl font-bold text-forest-900">
-              🌐 Curated Global Recipe Hub
+              Curated Global Recipe Hub
             </h2>
             <p class="text-sm text-forest-600 mt-1 max-w-2xl">
-              Every link below dynamically embeds your active ingredients (<span id="hub-active-query-preview" class="font-bold text-mint-600">chicken + garlic</span>) directly into each culinary site’s search engine. Click any site to launch a live search or bookmark it for later!
+              Every link below dynamically embeds your active ingredients (<span id="hub-active-query-preview" class="font-bold text-mint-600">Chicken + Garlic</span>) directly into each culinary site’s search engine. Click any site to launch a live search or bookmark it for later!
             </p>
           </div>
 
@@ -599,7 +603,8 @@
             Cuisine
           </span>
           <span id="modal-calorie-badge" class="px-3.5 py-1 bg-white border border-mint-200 text-forest-800 rounded-full text-xs font-bold flex items-center gap-1">
-            🔥 <span id="modal-calorie-text">450 kcal</span>
+            <i class="fa-solid fa-fire-flame-curved text-apricot-500"></i>
+            <span id="modal-calorie-text">450 kcal</span>
           </span>
         </div>
 
@@ -645,222 +650,732 @@
   <script>
     /**
      * PANTRY TO PLATE — COMPLETE SINGLE-FILE SPA
-     * Includes:
-     * 1. Sleek Mint & Rounded Design System (#F4F9F6, #3EB489, #134030, #F09A7A)
-     * 2. Mobile-First Pantry Staples & Custom Staple Creator (localStorage)
-     * 3. Empty Pantry Floating Glass Jar SVG State & Shimmer Blur-Up Image Loading
-     * 4. Client-Side Cuisine Filter Fix + Asian First-Row Priority + Dietary Filter
-     * 5. ❤️ Saved Bookmarks System (localStorage, works offline for recipes & web links)
-     * 6. 🎲 Surprise Me Randomizer & Hands-Free Cooking Mode with Smart Timers
-     * 7. 🌐 Curated Global Recipe Hub (42 Pre-Loaded Websites Across 14 Cuisines)
+     * - Zero country flag emojis (clean typography & icons on all OS/browsers)
+     * - All 14 Cuisines visible directly in the top Cuisine Filter pill bar
+     * - Curated Web Recipes & 42-Site Deep-Link Cards shown directly inside "Recommended Recipes"
      */
 
     // --- 1. CONSTANTS & STORAGE KEYS ---
     const API_BASE = 'https://www.themealdb.com/api/json/v1/1';
 
     const STORAGE_KEYS = {
-      ACTIVE_STAPLES: 'pantryToPlate_activeStaples_v5',
-      CUSTOM_STAPLES: 'pantryToPlate_customStaples_v5',
-      USER_INGREDIENTS: 'pantryToPlate_userIngredients_v5',
-      CUISINE_FILTER: 'pantryToPlate_cuisineFilter_v5',
-      DIET_FILTER: 'pantryToPlate_dietFilter_v5',
-      BOOKMARKS: 'pantryToPlate_bookmarks_v5'
+      ACTIVE_STAPLES: 'pantryToPlate_activeStaples_v6',
+      CUSTOM_STAPLES: 'pantryToPlate_customStaples_v6',
+      USER_INGREDIENTS: 'pantryToPlate_userIngredients_v6',
+      CUISINE_FILTER: 'pantryToPlate_cuisineFilter_v6',
+      DIET_FILTER: 'pantryToPlate_dietFilter_v6',
+      BOOKMARKS: 'pantryToPlate_bookmarks_v6'
     };
 
-    // 6 Core Pantry Staples required by spec
+    // 6 Core Pantry Staples
     const DEFAULT_STAPLES = ['Salt', 'Pepper', 'Sugar', 'Olive Oil', 'Garlic', 'Water'];
 
     // Asian Cuisines for Row 1 Spotlight & Regional Grouping
-    const ASIAN_AREAS = ['Chinese', 'Japanese', 'Thai', 'Malaysian', 'Vietnamese', 'Indian', 'Filipino'];
+    const ASIAN_AREAS = ['Chinese', 'Japanese', 'Korean', 'Thai', 'Vietnamese', 'Malaysian', 'Indian', 'Filipino'];
 
-    // Cuisine Filter Options (Dropdown + Quick Pills)
+    // ALL 14+ Cuisines from the Curated Recipe Websites shown on top (No flag emojis!)
     const CUISINE_OPTIONS = [
-      { id: 'All', label: '🌍 All Global Cuisines', quick: true },
-      { id: 'Asian', label: '🥢 Asian (All Regions)', quick: true },
-      { id: 'Chinese', label: '🇨🇳 Chinese', quick: true },
-      { id: 'Japanese', label: '🇯🇵 Japanese', quick: true },
-      { id: 'Thai', label: '🇹🇭 Thai', quick: true },
-      { id: 'Indian', label: '🇮🇳 Indian', quick: true },
-      { id: 'Italian', label: '🇮🇹 Italian', quick: true },
-      { id: 'Mexican', label: '🇲🇽 Mexican', quick: true },
-      { id: 'Malaysian', label: '🇲🇾 Malaysian', quick: false },
-      { id: 'Vietnamese', label: '🇻🇳 Vietnamese', quick: false },
-      { id: 'Filipino', label: '🇵🇭 Filipino', quick: false },
-      { id: 'French', label: '🇫🇷 French', quick: false },
-      { id: 'Greek', label: '🇬🇷 Greek & Mediterranean', quick: false },
-      { id: 'Spanish', label: '🇪🇸 Spanish', quick: false },
-      { id: 'Moroccan', label: '🇲🇦 Moroccan & Middle Eastern', quick: false },
-      { id: 'American', label: '🇺🇸 American', quick: false },
-      { id: 'British', label: '🇬🇧 British', quick: false }
+      { id: 'All', label: 'All Cuisines' },
+      { id: 'Asian', label: 'Asian (All)' },
+      { id: 'Chinese', label: 'Chinese' },
+      { id: 'Japanese', label: 'Japanese' },
+      { id: 'Korean', label: 'Korean' },
+      { id: 'Thai', label: 'Thai' },
+      { id: 'Vietnamese', label: 'Vietnamese' },
+      { id: 'Malaysian', label: 'Malaysian & SE Asian' },
+      { id: 'Indian', label: 'Indian' },
+      { id: 'Filipino', label: 'Filipino' },
+      { id: 'Italian', label: 'Italian' },
+      { id: 'Mexican', label: 'Mexican' },
+      { id: 'French', label: 'French' },
+      { id: 'Greek', label: 'Mediterranean & Greek' },
+      { id: 'Moroccan', label: 'Middle Eastern' },
+      { id: 'American', label: 'American & Global' }
     ];
 
     const DIET_OPTIONS = [
       { id: 'All', label: 'All Diets' },
-      { id: 'Vegetarian', label: '🌱 Vegetarian' },
-      { id: 'Vegan', label: '🥑 Vegan' },
-      { id: 'NoPork', label: '🚫 No Pork / Halal' },
-      { id: 'Pescatarian', label: '🐟 Pescatarian' },
-      { id: 'DairyFree', label: '🥛 Dairy-Free' },
-      { id: 'GlutenFriendly', label: '🌾 Gluten-Friendly' }
+      { id: 'Vegetarian', label: 'Vegetarian' },
+      { id: 'Vegan', label: 'Vegan' },
+      { id: 'NoPork', label: 'No Pork / Halal' },
+      { id: 'Pescatarian', label: 'Pescatarian' },
+      { id: 'DairyFree', label: 'Dairy-Free' },
+      { id: 'GlutenFriendly', label: 'Gluten-Friendly' }
     ];
 
     /**
-     * 🌐 42 CURATED GLOBAL RECIPE WEBSITES ACROSS 14 CUISINES
-     * Each source has a verified search query base URL so ingredients dynamically build deep-links.
+     * 42 CURATED GLOBAL RECIPE WEBSITES ACROSS 14 CUISINES (No Flag Emojis)
+     * Each cuisine group has 3 top recipe websites AND signature curated dishes that appear directly in "Recommended Recipes"!
      */
     const GLOBAL_RECIPE_HUB = [
       {
         id: 'chinese',
         areaMatch: 'Chinese',
-        title: '1. Chinese Cuisine 🇨🇳',
+        title: '1. Chinese Cuisine',
         subtitle: 'Authentic wok stir-fries, Sichuan Mala classics, dim sum & homestyle Chinese cooking',
         sites: [
-          { name: 'The Woks of Life', searchUrl: 'https://thewoksoflife.com/?s=', tag: 'Family Wok Classics', thumb: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=80' },
-          { name: "Omnivore's Cookbook", searchUrl: 'https://omnivorescookbook.com/?s=', tag: 'Modern Chinese', thumb: 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=600&q=80' },
-          { name: 'China Sichuan Food', searchUrl: 'https://www.chinasichuanfood.com/?s=', tag: 'Sichuan & Spicy', thumb: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80' }
+          {
+            name: 'The Woks of Life',
+            searchUrl: 'https://thewoksoflife.com/?s=',
+            tag: 'Family Wok Classics',
+            thumb: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Cantonese Ginger Scallion Wok Stir-Fry',
+            calories: 430,
+            defaultIngredients: ['Chicken', 'Pork', 'Garlic', 'Ginger', 'Soy Sauce', 'Rice', 'Olive Oil', 'Salt', 'Sugar'],
+            steps: [
+              'Slice protein thinly against the grain and marinate with soy sauce, a pinch of sugar, and oil for 10 minutes.',
+              'Heat a wok over high heat until smoking, sear the protein for 4 minutes until golden on the edges.',
+              'Toss in minced garlic, ginger, and scallions; stir-fry for 2 minutes and serve piping hot over steamed rice.'
+            ]
+          },
+          {
+            name: "Omnivore's Cookbook",
+            searchUrl: 'https://omnivorescookbook.com/?s=',
+            tag: 'Modern Chinese',
+            thumb: 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Crispy Garlic & Savory Brown Sauce Skillet',
+            calories: 460,
+            defaultIngredients: ['Chicken', 'Beef', 'Tofu', 'Garlic', 'Soy Sauce', 'Sugar', 'Olive Oil', 'Pepper'],
+            steps: [
+              'Whisk soy sauce, water, sugar, and minced garlic in a small bowl to create the glossy savory glaze.',
+              'Pan-sear your main protein or tofu cubes in oil for 5 minutes until crisp.',
+              'Pour in the garlic sauce and simmer for 2 minutes until thickened and glossy.'
+            ]
+          },
+          {
+            name: 'China Sichuan Food',
+            searchUrl: 'https://www.chinasichuanfood.com/?s=',
+            tag: 'Sichuan & Spicy',
+            thumb: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Sichuan Chili Garlic Wok-Tossed Bowl',
+            calories: 490,
+            defaultIngredients: ['Pork', 'Chicken', 'Tofu', 'Garlic', 'Chili', 'Soy Sauce', 'Sugar', 'Salt'],
+            steps: [
+              'Sauté aromatic minced garlic and chilies in warm oil for 1 minute until fragrant.',
+              'Add diced protein or tofu and stir-fry over brisk heat for 6 minutes.',
+              'Season with soy sauce, a touch of sugar, and crushed pepper before serving.'
+            ]
+          }
         ]
       },
       {
         id: 'japanese',
         areaMatch: 'Japanese',
-        title: '2. Japanese Cuisine 🇯🇵',
-        subtitle: 'Ramen, donburi rice bowls, bento favorites, miso soups & izakaya small plates',
+        title: '2. Japanese Cuisine',
+        subtitle: 'Ramen, donburi rice bowls, katsu cutlets, bento favorites & izakaya small plates',
         sites: [
-          { name: 'Just One Cookbook', searchUrl: 'https://www.justonecookbook.com/?s=', tag: 'Authentic Japanese', thumb: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Chopstick Chronicles', searchUrl: 'https://www.chopstickchronicles.com/?s=', tag: 'Home Comforts', thumb: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Norecipes', searchUrl: 'https://norecipes.com/?s=', tag: 'Tokyo Kitchen', thumb: 'https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?auto=format&fit=crop&w=600&q=80' }
+          {
+            name: 'Just One Cookbook',
+            searchUrl: 'https://www.justonecookbook.com/?s=',
+            tag: 'Authentic Japanese',
+            thumb: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Golden Crispy Tonkatsu / Torikatsu Cutlet',
+            calories: 520,
+            defaultIngredients: ['Pork', 'Chicken', 'Breadcrumbs', 'Egg', 'Flour', 'Salt', 'Pepper', 'Olive Oil'],
+            steps: [
+              'Season pork loin or chicken breast with salt and pepper, then coat in flour, beaten egg, and airy panko breadcrumbs.',
+              'Shallow-fry in hot oil at 340°F for 4 minutes per side until deep golden and extra-crunchy.',
+              'Rest on a wire rack for 2 minutes, slice into strips, and serve with shredded cabbage and katsu sauce.'
+            ]
+          },
+          {
+            name: 'Chopstick Chronicles',
+            searchUrl: 'https://www.chopstickchronicles.com/?s=',
+            tag: 'Home Comforts',
+            thumb: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Savory Teriyaki Garlic Donburi Rice Bowl',
+            calories: 450,
+            defaultIngredients: ['Chicken', 'Salmon', 'Tofu', 'Rice', 'Soy Sauce', 'Sugar', 'Garlic'],
+            steps: [
+              'Sear protein in a skillet for 5 minutes until golden brown on both sides.',
+              'Add soy sauce, sugar, a splash of water, and garlic; simmer for 3 minutes until glazed.',
+              'Slice and arrange over warm steamed Japanese short-grain rice.'
+            ]
+          },
+          {
+            name: 'Norecipes',
+            searchUrl: 'https://norecipes.com/?s=',
+            tag: 'Tokyo Kitchen',
+            thumb: 'https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Izakaya-Style Garlic Butter Skillet',
+            calories: 440,
+            defaultIngredients: ['Chicken', 'Pork', 'Mushroom', 'Garlic', 'Soy Sauce', 'Butter', 'Pepper'],
+            steps: [
+              'Toss bite-sized pieces of meat or mushrooms in a hot pan for 5 minutes until browned.',
+              'Stir in minced garlic, butter, soy sauce, and black pepper for 1 minute until fragrant.'
+            ]
+          }
         ]
       },
       {
         id: 'korean',
-        areaMatch: 'Asian',
-        title: '3. Korean Cuisine 🇰🇷',
-        subtitle: 'Kimchi stews, bulgogi, bibimbap, crispy Korean fried chicken & banchan side dishes',
+        areaMatch: 'Korean',
+        title: '3. Korean Cuisine',
+        subtitle: 'Kimchi stews, bulgogi BBQ, bibimbap rice bowls, crispy Korean fried chicken & banchan',
         sites: [
-          { name: 'Maangchi', searchUrl: 'https://www.maangchi.com/search?q=', tag: 'Korean Cooking Queen', thumb: 'https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Korean Bapsang', searchUrl: 'https://www.koreanbapsang.com/?s=', tag: 'Everyday Korean', thumb: 'https://images.unsplash.com/photo-1583224964978-2257b960c3d3?auto=format&fit=crop&w=600&q=80' },
-          { name: 'My Korean Kitchen', searchUrl: 'https://mykoreankitchen.com/?s=', tag: 'BBQ & Stews', thumb: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80' }
+          {
+            name: 'Maangchi',
+            searchUrl: 'https://www.maangchi.com/search?q=',
+            tag: 'Korean Cooking Queen',
+            thumb: 'https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Crispy Yangnyeom Korean Garlic Chicken',
+            calories: 540,
+            defaultIngredients: ['Chicken', 'Pork', 'Garlic', 'Sugar', 'Soy Sauce', 'Olive Oil', 'Salt', 'Pepper'],
+            steps: [
+              'Coat bite-sized chicken or pork pieces lightly in starch and fry for 6 minutes until ultra-crisp.',
+              'Simmer minced garlic, soy sauce, sugar, and chili paste in a skillet for 2 minutes until bubbly.',
+              'Toss the crispy pieces in the sticky garlic glaze and serve immediately.'
+            ]
+          },
+          {
+            name: 'Korean Bapsang',
+            searchUrl: 'https://www.koreanbapsang.com/?s=',
+            tag: 'Everyday Korean',
+            thumb: 'https://images.unsplash.com/photo-1583224964978-2257b960c3d3?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Savory Korean Bulgogi Garlic BBQ Skillet',
+            calories: 470,
+            defaultIngredients: ['Beef', 'Pork', 'Chicken', 'Garlic', 'Soy Sauce', 'Sugar', 'Onion', 'Rice'],
+            steps: [
+              'Marinate thinly sliced meat with minced garlic, soy sauce, sugar, and black pepper for 15 minutes.',
+              'Sear rapidly over high heat with sliced onions for 5 minutes until caramelized and tender.'
+            ]
+          },
+          {
+            name: 'My Korean Kitchen',
+            searchUrl: 'https://mykoreankitchen.com/?s=',
+            tag: 'BBQ & Stews',
+            thumb: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Sizzling Bibimbap Rice Bowl with Crispy Egg',
+            calories: 490,
+            defaultIngredients: ['Rice', 'Egg', 'Beef', 'Chicken', 'Tofu', 'Spinach', 'Garlic', 'Salt'],
+            steps: [
+              'Sauté seasoned vegetables and protein separately with minced garlic and salt for 4 minutes.',
+              'Arrange over hot steamed rice and crown with a golden sunny-side-up fried egg.'
+            ]
+          }
         ]
       },
       {
         id: 'thai',
         areaMatch: 'Thai',
-        title: '4. Thai Cuisine 🇹🇭',
-        subtitle: 'Pad Thai, aromatic coconut curries, tom yum soups & vibrant Bangkok street food',
+        title: '4. Thai Cuisine',
+        subtitle: 'Pad Thai, aromatic coconut curries, holy basil stir-fries & Bangkok street food',
         sites: [
-          { name: 'Hot Thai Kitchen', searchUrl: 'https://hot-thai-kitchen.com/?s=', tag: 'Chef Pailin', thumb: 'https://images.unsplash.com/photo-1559314809-0d155014e29e?auto=format&fit=crop&w=600&q=80' },
-          { name: 'SheSimmers', searchUrl: 'https://shesimmers.com/?s=', tag: 'Classic Thai', thumb: 'https://images.unsplash.com/photo-1562565652-a0d8f0c59eb4?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Thai Caliente', searchUrl: 'https://thaicaliente.com/?s=', tag: 'Street Favorites', thumb: 'https://images.unsplash.com/photo-1569562211093-4ed0d0758f12?auto=format&fit=crop&w=600&q=80' }
+          {
+            name: 'Hot Thai Kitchen',
+            searchUrl: 'https://hot-thai-kitchen.com/?s=',
+            tag: 'Chef Pailin',
+            thumb: 'https://images.unsplash.com/photo-1559314809-0d155014e29e?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Street-Style Thai Basil Pad Kra Pao',
+            calories: 465,
+            defaultIngredients: ['Chicken', 'Pork', 'Beef', 'Tofu', 'Garlic', 'Sugar', 'Soy Sauce', 'Egg', 'Rice'],
+            steps: [
+              'Pound or mince garlic with chili and stir-fry in hot oil for 1 minute until aromatic.',
+              'Add chopped chicken, pork, or tofu and stir-fry for 5 minutes with soy sauce and a pinch of sugar.',
+              'Toss in fresh basil leaves for 30 seconds and serve over jasmine rice with a crispy fried egg.'
+            ]
+          },
+          {
+            name: 'SheSimmers',
+            searchUrl: 'https://shesimmers.com/?s=',
+            tag: 'Classic Thai',
+            thumb: 'https://images.unsplash.com/photo-1562565652-a0d8f0c59eb4?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Thai Crispy Garlic & Pepper Stir-Fry (Kratiem)',
+            calories: 430,
+            defaultIngredients: ['Chicken', 'Pork', 'Shrimp', 'Garlic', 'Pepper', 'Sugar', 'Olive Oil', 'Rice'],
+            steps: [
+              'Fry generously minced garlic in oil for 2 minutes until golden and crisp, then scoop half out for garnish.',
+              'Sear sliced meat or shrimp in the garlic oil with cracked black pepper and sugar for 5 minutes.',
+              'Top with the reserved crispy golden garlic and serve with steamed rice.'
+            ]
+          },
+          {
+            name: 'Thai Caliente',
+            searchUrl: 'https://thaicaliente.com/?s=',
+            tag: 'Street Favorites',
+            thumb: 'https://images.unsplash.com/photo-1569562211093-4ed0d0758f12?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Creamy Thai Coconut Curry Skillet',
+            calories: 510,
+            defaultIngredients: ['Chicken', 'Tofu', 'Shrimp', 'Coconut Milk', 'Garlic', 'Sugar', 'Salt', 'Rice'],
+            steps: [
+              'Simmer curry paste and garlic in thick coconut cream for 3 minutes until fragrant.',
+              'Add protein and remaining coconut milk; simmer gently for 10 minutes until tender.'
+            ]
+          }
         ]
       },
       {
         id: 'vietnamese',
         areaMatch: 'Vietnamese',
-        title: '5. Vietnamese Cuisine 🇻🇳',
-        subtitle: 'Fragrant pho noodle soups, banh mi, fresh spring rolls & caramel claypot dishes',
+        title: '5. Vietnamese Cuisine',
+        subtitle: 'Fragrant pho noodle soups, lemongrass grills, banh mi & caramel claypot dishes',
         sites: [
-          { name: 'Hungry Huy', searchUrl: 'https://www.hungryhuy.com/?s=', tag: 'Vietnamese Classics', thumb: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Viet World Kitchen', searchUrl: 'https://www.vietworldkitchen.com/?s=', tag: 'Andrea Nguyen', thumb: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Vicky Pham', searchUrl: 'https://www.vickypham.com/search?q=', tag: 'Homestyle Viet', thumb: 'https://images.unsplash.com/photo-1503764654157-72d979d9af2f?auto=format&fit=crop&w=600&q=80' }
+          {
+            name: 'Hungry Huy',
+            searchUrl: 'https://www.hungryhuy.com/?s=',
+            tag: 'Vietnamese Classics',
+            thumb: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Vietnamese Caramelized Garlic Claypot (Thit Kho / Ga Kho)',
+            calories: 475,
+            defaultIngredients: ['Pork', 'Chicken', 'Garlic', 'Sugar', 'Pepper', 'Water', 'Rice', 'Egg'],
+            steps: [
+              'Melt sugar with a splash of water in a pan for 3 minutes until amber caramel forms.',
+              'Add chicken or pork pieces with minced garlic and black pepper; sear for 5 minutes.',
+              'Add water and simmer covered for 15 minutes until tender in a savory-sweet glaze.'
+            ]
+          },
+          {
+            name: 'Viet World Kitchen',
+            searchUrl: 'https://www.vietworldkitchen.com/?s=',
+            tag: 'Andrea Nguyen',
+            thumb: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Saigon Chargrilled Garlic Lemongrass Chop',
+            calories: 450,
+            defaultIngredients: ['Pork', 'Chicken', 'Garlic', 'Sugar', 'Olive Oil', 'Salt', 'Pepper', 'Rice'],
+            steps: [
+              'Marinate pork chops or chicken thighs with minced garlic, sugar, salt, pepper, and oil for 20 minutes.',
+              'Pan-sear or broil for 5 minutes per side until caramelized and smoky.'
+            ]
+          },
+          {
+            name: 'Vicky Pham',
+            searchUrl: 'https://www.vickypham.com/search?q=',
+            tag: 'Homestyle Viet',
+            thumb: 'https://images.unsplash.com/photo-1503764654157-72d979d9af2f?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Shaking Beef / Chicken with Garlic Butter (Bo Luc Lac)',
+            calories: 480,
+            defaultIngredients: ['Beef', 'Chicken', 'Garlic', 'Sugar', 'Soy Sauce', 'Olive Oil', 'Pepper'],
+            steps: [
+              'Cube protein into bite-sized pieces and toss with garlic, pepper, soy sauce, and sugar.',
+              'Sear in a smoking-hot skillet for 4 minutes shaking the pan until crusted.'
+            ]
+          }
         ]
       },
       {
         id: 'malaysian',
         areaMatch: 'Malaysian',
-        title: '6. Malaysian, Singaporean & Indonesian 🇲🇾🇸🇬',
-        subtitle: 'Nasi lemak, laksa, rendang, char kway teow, satay & Nyonya Peranakan specialties',
+        title: '6. Malaysian, Singaporean & Indonesian Cuisine',
+        subtitle: 'Nasi lemak, laksa, rendang, char kway teow, Hainanese chicken & Nyonya dishes',
         sites: [
-          { name: 'Rasa Malaysia', searchUrl: 'https://rasamalaysia.com/?s=', tag: 'Hawker & Nyonya', thumb: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80' },
-          { name: 'ieatishootipost', searchUrl: 'https://ieatishootipost.sg/?s=', tag: 'Singapore Hawker', thumb: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=600&q=80' },
-          { name: 'What To Cook Today', searchUrl: 'https://whattocooktoday.com/?s=', tag: 'Southeast Asian', thumb: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=600&q=80' }
+          {
+            name: 'Rasa Malaysia',
+            searchUrl: 'https://rasamalaysia.com/?s=',
+            tag: 'Hawker & Nyonya',
+            thumb: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Malaysian Hawker Crispy Garlic Soy Chicken & Rice',
+            calories: 515,
+            defaultIngredients: ['Chicken', 'Pork', 'Garlic', 'Soy Sauce', 'Sugar', 'Rice', 'Olive Oil', 'Salt'],
+            steps: [
+              'Rub chicken or pork with garlic, salt, and soy sauce, then pan-roast for 12 minutes until skin is golden.',
+              'Sauté extra minced garlic in oil for 2 minutes and drizzle over the sliced meat with aromatic rice.'
+            ]
+          },
+          {
+            name: 'ieatishootipost',
+            searchUrl: 'https://ieatishootipost.sg/?s=',
+            tag: 'Singapore Hawker',
+            thumb: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Singapore Kopitiam Crispy Cutlet & Garlic Gravy',
+            calories: 530,
+            defaultIngredients: ['Chicken', 'Pork', 'Breadcrumbs', 'Egg', 'Garlic', 'Pepper', 'Olive Oil', 'Salt'],
+            steps: [
+              'Coat tenderized cutlet in egg and breadcrumbs; shallow-fry in oil for 4 minutes per side until golden.',
+              'Serve with cracked black pepper garlic gravy and crispy potatoes.'
+            ]
+          },
+          {
+            name: 'What To Cook Today',
+            searchUrl: 'https://whattocooktoday.com/?s=',
+            tag: 'Southeast Asian',
+            thumb: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Aromatic Indonesian Kecap Manis Garlic Skillet',
+            calories: 460,
+            defaultIngredients: ['Chicken', 'Pork', 'Tofu', 'Garlic', 'Soy Sauce', 'Sugar', 'Pepper', 'Water'],
+            steps: [
+              'Brown protein or tofu with sliced garlic in oil for 5 minutes.',
+              'Simmer with sweet soy sauce, water, and cracked white pepper for 8 minutes until richly glazed.'
+            ]
+          }
         ]
       },
       {
         id: 'indian',
         areaMatch: 'Indian',
-        title: '7. Indian Cuisine 🇮🇳',
-        subtitle: 'Rich masala curries, biryani, dal, tandoori grills & regional vegetarian feasts',
+        title: '7. Indian Cuisine',
+        subtitle: 'Rich masala curries, fragrant biryani, dal, tandoori grills & vegetarian feasts',
         sites: [
-          { name: "Swasthi's Recipes", searchUrl: 'https://www.indianhealthyrecipes.com/?s=', tag: 'Indian Healthy', thumb: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Veg Recipes of India', searchUrl: 'https://www.vegrecipesofindia.com/?s=', tag: '100% Vegetarian', thumb: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Ministry of Curry', searchUrl: 'https://ministryofcurry.com/?s=', tag: 'Modern Indian', thumb: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=600&q=80' }
+          {
+            name: "Swasthi's Recipes",
+            searchUrl: 'https://www.indianhealthyrecipes.com/?s=',
+            tag: 'Indian Healthy',
+            thumb: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Homestyle Indian Garlic Masala Curry',
+            calories: 460,
+            defaultIngredients: ['Chicken', 'Chickpeas', 'Onion', 'Garlic', 'Tomato', 'Olive Oil', 'Salt', 'Rice'],
+            steps: [
+              'Sauté finely chopped onions and garlic in oil for 6 minutes until deep golden brown.',
+              'Add tomatoes and warm spices, cooking for 4 minutes into a rich masala base.',
+              'Add chicken or chickpeas with a splash of water and simmer covered for 12 minutes.'
+            ]
+          },
+          {
+            name: 'Veg Recipes of India',
+            searchUrl: 'https://www.vegrecipesofindia.com/?s=',
+            tag: '100% Vegetarian',
+            thumb: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Dhaba-Style Garlic Tadka Dal & Spiced Skillet',
+            calories: 380,
+            defaultIngredients: ['Tofu', 'Potato', 'Spinach', 'Garlic', 'Onion', 'Tomato', 'Olive Oil', 'Salt'],
+            steps: [
+              'Simmer cubed vegetables, lentils, or tofu with turmeric and salt for 10 minutes.',
+              'Sizzle sliced garlic and cumin in hot oil for 1 minute and pour the fragrant tadka over the dish.'
+            ]
+          },
+          {
+            name: 'Ministry of Curry',
+            searchUrl: 'https://ministryofcurry.com/?s=',
+            tag: 'Modern Indian',
+            thumb: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'One-Pot Roasted Garlic & Pepper Masala',
+            calories: 485,
+            defaultIngredients: ['Chicken', 'Lamb', 'Potato', 'Garlic', 'Pepper', 'Olive Oil', 'Salt', 'Water'],
+            steps: [
+              'Sear protein in oil with whole spices and crushed garlic for 5 minutes.',
+              'Add freshly ground black pepper and water; simmer for 12 minutes until thick and aromatic.'
+            ]
+          }
         ]
       },
       {
         id: 'filipino',
         areaMatch: 'Filipino',
-        title: '8. Filipino Cuisine 🇵🇭',
-        subtitle: 'Savory chicken adobo, sinigang, pancit noodles, lumpia & Pinoy fiesta dishes',
+        title: '8. Filipino Cuisine',
+        subtitle: 'Savory chicken & pork adobo, sinigang, pancit noodles, lumpia & Pinoy classics',
         sites: [
-          { name: 'Panlasang Pinoy', searchUrl: 'https://panlasangpinoy.com/?s=', tag: '#1 Pinoy Kitchen', thumb: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Kawaling Pinoy', searchUrl: 'https://www.kawalingpinoy.com/?s=', tag: 'Lutong Bahay', thumb: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Foxy Folksy', searchUrl: 'https://www.foxyfolksy.com/?s=', tag: 'Modern Filipino', thumb: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80' }
+          {
+            name: 'Panlasang Pinoy',
+            searchUrl: 'https://panlasangpinoy.com/?s=',
+            tag: '#1 Pinoy Kitchen',
+            thumb: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Classic Filipino Chicken & Pork Garlic Adobo',
+            calories: 510,
+            defaultIngredients: ['Chicken', 'Pork', 'Garlic', 'Soy Sauce', 'Pepper', 'Sugar', 'Water', 'Olive Oil'],
+            steps: [
+              'Sear chicken and pork pieces with crushed garlic in oil for 5 minutes until lightly browned.',
+              'Pour in soy sauce, vinegar, water, whole peppercorns, and a pinch of sugar; simmer for 20 minutes until tender.',
+              'Spoon the rich garlic adobo glaze over warm Sinangag garlic fried rice.'
+            ]
+          },
+          {
+            name: 'Kawaling Pinoy',
+            searchUrl: 'https://www.kawalingpinoy.com/?s=',
+            tag: 'Lutong Bahay',
+            thumb: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Crispy Pinoy Breaded Pork / Chicken Tonkatsu',
+            calories: 525,
+            defaultIngredients: ['Pork', 'Chicken', 'Breadcrumbs', 'Egg', 'Garlic', 'Salt', 'Pepper', 'Olive Oil'],
+            steps: [
+              'Season cutlets with garlic, salt, and pepper, then dredge in egg and crispy breadcrumbs.',
+              'Pan-fry in hot oil for 4 minutes per side until golden and crisp.'
+            ]
+          },
+          {
+            name: 'Foxy Folksy',
+            searchUrl: 'https://www.foxyfolksy.com/?s=',
+            tag: 'Modern Filipino',
+            thumb: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Bistek Tagalog Garlic Citrus Skillet',
+            calories: 455,
+            defaultIngredients: ['Beef', 'Pork', 'Chicken', 'Garlic', 'Onion', 'Soy Sauce', 'Pepper', 'Sugar'],
+            steps: [
+              'Pan-sear thinly sliced meat with garlic and pepper for 4 minutes.',
+              'Simmer briefly in soy sauce and citrus juice, then top with caramelized onion rings.'
+            ]
+          }
         ]
       },
       {
         id: 'italian',
         areaMatch: 'Italian',
-        title: '9. Italian Cuisine 🇮🇹',
-        subtitle: 'Artisanal pasta, creamy risottos, wood-fired pizza, trattoria sauces & tiramisu',
+        title: '9. Italian Cuisine',
+        subtitle: 'Artisanal pasta, crispy cutlets, creamy risottos, trattoria sauces & olive oil classics',
         sites: [
-          { name: 'Sip and Feast', searchUrl: 'https://www.sipandfeast.com/?s=', tag: 'NY Italian Classics', thumb: 'https://images.unsplash.com/photo-1621996346565-e3d5d6281298?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Inside The Rustic Kitchen', searchUrl: 'https://www.insidetherustickitchen.com/?s=', tag: 'Authentic Trattoria', thumb: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Memorie di Angelina', searchUrl: 'https://memoriediangelina.com/?s=', tag: 'Traditional Regional', thumb: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?auto=format&fit=crop&w=600&q=80' }
+          {
+            name: 'Sip and Feast',
+            searchUrl: 'https://www.sipandfeast.com/?s=',
+            tag: 'NY Italian Classics',
+            thumb: 'https://images.unsplash.com/photo-1621996346565-e3d5d6281298?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Crispy Italian Cutlet Milanese with Garlic & Olive Oil',
+            calories: 535,
+            defaultIngredients: ['Chicken', 'Pork', 'Breadcrumbs', 'Egg', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            steps: [
+              'Coat thin chicken or pork cutlets in beaten egg and seasoned breadcrumbs with finely grated garlic.',
+              'Pan-fry in generous olive oil for 4 minutes per side until golden brown and crisp.',
+              'Finish with a sprinkle of sea salt and serve warm.'
+            ]
+          },
+          {
+            name: 'Inside The Rustic Kitchen',
+            searchUrl: 'https://www.insidetherustickitchen.com/?s=',
+            tag: 'Authentic Trattoria',
+            thumb: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Trattoria Garlic, Olive Oil & Herb Skillet',
+            calories: 470,
+            defaultIngredients: ['Pasta', 'Chicken', 'Tomato', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            steps: [
+              'Warm extra-virgin olive oil in a wide pan and gently toast sliced garlic for 2 minutes until golden.',
+              'Toss with al dente pasta or seared protein, pasta water, and freshly cracked black pepper.'
+            ]
+          },
+          {
+            name: 'Memorie di Angelina',
+            searchUrl: 'https://memoriediangelina.com/?s=',
+            tag: 'Traditional Regional',
+            thumb: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Roman Garlic & Rosemary Pan-Roasted Medallions',
+            calories: 460,
+            defaultIngredients: ['Pork', 'Chicken', 'Potato', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            steps: [
+              'Sear medallions in olive oil with smashed garlic cloves for 6 minutes until golden.',
+              'Baste with pan juices and rest for 3 minutes before slicing.'
+            ]
+          }
         ]
       },
       {
         id: 'mexican',
         areaMatch: 'Mexican',
-        title: '10. Mexican & Latin Cuisine 🇲🇽',
-        subtitle: 'Street tacos, enchiladas, smoky salsas, pozole, fajitas & authentic moles',
+        title: '10. Mexican & Latin Cuisine',
+        subtitle: 'Street tacos, sizzling fajitas, milanesa cutlets, enchiladas & smoky salsas',
         sites: [
-          { name: 'Mexico in My Kitchen', searchUrl: 'https://www.mexicoinmykitchen.com/?s=', tag: 'Authentic Mexican', thumb: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Isabel Eats', searchUrl: 'https://www.isabeleats.com/?s=', tag: 'Easy Mexican', thumb: 'https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Muy Bueno Cookbook', searchUrl: 'https://muybuenoblog.com/?s=', tag: 'Family Heritage', thumb: 'https://images.unsplash.com/photo-1613514785940-daed07799d9b?auto=format&fit=crop&w=600&q=80' }
+          {
+            name: 'Mexico in My Kitchen',
+            searchUrl: 'https://www.mexicoinmykitchen.com/?s=',
+            tag: 'Authentic Mexican',
+            thumb: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Crispy Mexican Milanesa Cutlet with Garlic & Lime',
+            calories: 515,
+            defaultIngredients: ['Chicken', 'Pork', 'Beef', 'Breadcrumbs', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            steps: [
+              'Season thin chicken, pork, or beef cutlets with crushed garlic, salt, and pepper, then press into crispy breadcrumbs.',
+              'Fry in warm oil for 4 minutes per side until golden and crunchy.'
+            ]
+          },
+          {
+            name: 'Isabel Eats',
+            searchUrl: 'https://www.isabeleats.com/?s=',
+            tag: 'Easy Mexican',
+            thumb: 'https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Sizzling Charred Garlic Carnitas / Pollo Asado',
+            calories: 490,
+            defaultIngredients: ['Pork', 'Chicken', 'Garlic', 'Onion', 'Olive Oil', 'Salt', 'Pepper', 'Rice'],
+            steps: [
+              'Toss cubed pork or chicken with minced garlic, olive oil, salt, and pepper.',
+              'Sear in a hot cast-iron skillet for 8 minutes until deeply golden and crispy on the edges.'
+            ]
+          },
+          {
+            name: 'Muy Bueno Cookbook',
+            searchUrl: 'https://muybuenoblog.com/?s=',
+            tag: 'Family Heritage',
+            thumb: 'https://images.unsplash.com/photo-1613514785940-daed07799d9b?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Sonoran Garlic & Chile Skillet Bowl',
+            calories: 465,
+            defaultIngredients: ['Chicken', 'Beef', 'Beans', 'Rice', 'Garlic', 'Tomato', 'Salt'],
+            steps: [
+              'Sauté garlic, onions, and tomatoes in oil for 4 minutes.',
+              'Simmer with shredded chicken or beef for 6 minutes and serve warm.'
+            ]
+          }
         ]
       },
       {
         id: 'french',
         areaMatch: 'French',
-        title: '11. French & European Bistro 🇫🇷',
-        subtitle: 'Coq au vin, ratatouille, buttery sauces, galettes, quiches & Parisian patisserie',
+        title: '11. French & European Bistro',
+        subtitle: 'Pan-seared cutlets, garlic herb butter bistro steaks, ratatouille & Parisian classics',
         sites: [
-          { name: 'David Lebovitz', searchUrl: 'https://www.davidlebovitz.com/?s=', tag: 'Parisian Chef', thumb: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Chocolate & Zucchini', searchUrl: 'https://cnz.to/?s=', tag: 'Paris Home Bistro', thumb: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Once Upon a Chef', searchUrl: 'https://www.onceuponachef.com/?s=', tag: 'French-Trained', thumb: 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=600&q=80' }
+          {
+            name: 'David Lebovitz',
+            searchUrl: 'https://www.davidlebovitz.com/?s=',
+            tag: 'Parisian Chef',
+            thumb: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'French Bistro Crispy Garlic Breadcrumb Cutlet',
+            calories: 510,
+            defaultIngredients: ['Chicken', 'Pork', 'Breadcrumbs', 'Garlic', 'Olive Oil', 'Butter', 'Salt', 'Pepper'],
+            steps: [
+              'Crust chicken or pork cutlets with garlic-scented breadcrumbs, salt, and cracked black pepper.',
+              'Sauté in olive oil for 5 minutes per side until crisp and golden.'
+            ]
+          },
+          {
+            name: 'Chocolate & Zucchini',
+            searchUrl: 'https://cnz.to/?s=',
+            tag: 'Paris Home Bistro',
+            thumb: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Provencal Roasted Garlic & Olive Oil Pan Roast',
+            calories: 450,
+            defaultIngredients: ['Chicken', 'Potato', 'Tomato', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            steps: [
+              'Arrange protein and vegetables in a baking dish with whole garlic cloves and olive oil.',
+              'Roast or pan-sear for 15 minutes until caramelized and tender.'
+            ]
+          },
+          {
+            name: 'Once Upon a Chef',
+            searchUrl: 'https://www.onceuponachef.com/?s=',
+            tag: 'French-Trained',
+            thumb: 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Golden Pan-Seared Garlic Herb Medallions',
+            calories: 475,
+            defaultIngredients: ['Pork', 'Chicken', 'Salmon', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            steps: [
+              'Pat medallions dry and season generously with salt and pepper.',
+              'Sear in hot olive oil with crushed garlic for 4 minutes per side.'
+            ]
+          }
         ]
       },
       {
         id: 'mediterranean',
         areaMatch: 'Greek',
-        title: '12. Mediterranean, Greek & Spanish 🇬🇷🇪🇸',
-        subtitle: 'Olive oil-rich mezze, souvlaki, paella, lemon roasted seafood & crisp grain salads',
+        title: '12. Mediterranean, Greek & Spanish Cuisine',
+        subtitle: 'Olive oil-rich souvlaki, lemon garlic roasted meats, paella & crisp mezze plates',
         sites: [
-          { name: 'The Mediterranean Dish', searchUrl: 'https://www.themediterraneandish.com/?s=', tag: 'Healthy Med Diet', thumb: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=600&q=80' },
-          { name: 'My Greek Dish', searchUrl: 'https://www.mygreekdish.com/?s=', tag: 'Greek Island', thumb: 'https://images.unsplash.com/photo-1529059997568-3d847b1154f0?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Spanish Sabores', searchUrl: 'https://spanishsabores.com/?s=', tag: 'Tapas & Paella', thumb: 'https://images.unsplash.com/photo-1534080564583-6be75777b70a?auto=format&fit=crop&w=600&q=80' }
+          {
+            name: 'The Mediterranean Dish',
+            searchUrl: 'https://www.themediterraneandish.com/?s=',
+            tag: 'Healthy Med Diet',
+            thumb: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Mediterranean Olive Oil & Garlic Skillet Souvlaki',
+            calories: 440,
+            defaultIngredients: ['Chicken', 'Pork', 'Lamb', 'Garlic', 'Olive Oil', 'Lemon', 'Salt', 'Pepper'],
+            steps: [
+              'Whisk extra-virgin olive oil, minced garlic, salt, and black pepper in a bowl and coat the meat.',
+              'Sear in a hot skillet for 6 minutes until golden brown and juicy.'
+            ]
+          },
+          {
+            name: 'My Greek Dish',
+            searchUrl: 'https://www.mygreekdish.com/?s=',
+            tag: 'Greek Island',
+            thumb: 'https://images.unsplash.com/photo-1529059997568-3d847b1154f0?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Greek Tavern Lemon Garlic Roasted Cutlets',
+            calories: 465,
+            defaultIngredients: ['Pork', 'Chicken', 'Potato', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            steps: [
+              'Toss cutlets with olive oil, crushed garlic, oregano, salt, and pepper.',
+              'Pan-roast for 8 minutes until tender and golden.'
+            ]
+          },
+          {
+            name: 'Spanish Sabores',
+            searchUrl: 'https://spanishsabores.com/?s=',
+            tag: 'Tapas & Paella',
+            thumb: 'https://images.unsplash.com/photo-1534080564583-6be75777b70a?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Spanish Pollo / Cerdo al Ajillo (Sizzling Garlic Oil)',
+            calories: 480,
+            defaultIngredients: ['Chicken', 'Pork', 'Shrimp', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            steps: [
+              'Sizzle thinly sliced garlic in generous olive oil for 2 minutes until golden.',
+              'Add bite-sized chicken, pork, or shrimp and cook briskly for 5 minutes.'
+            ]
+          }
         ]
       },
       {
         id: 'middleeastern',
         areaMatch: 'Moroccan',
-        title: '13. Middle Eastern & North African 🇱🇧🇲🇦',
-        subtitle: 'Shawarma, falafel, shakshuka, fragrant tagines, hummus & pomegranate-glazed meats',
+        title: '13. Middle Eastern & North African Cuisine',
+        subtitle: 'Spiced shawarma skillets, crispy schnitzel, shakshuka, fragrant tagines & mezze',
         sites: [
-          { name: 'Feel Good Foodie', searchUrl: 'https://feelgoodfoodie.net/?s=', tag: 'Levantine & Fresh', thumb: 'https://images.unsplash.com/photo-1540914124281-342587941389?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Middle Eats', searchUrl: 'https://middleeats.com/?s=', tag: 'Authentic Middle East', thumb: 'https://images.unsplash.com/photo-1590577976322-3d2d6e2130d5?auto=format&fit=crop&w=600&q=80' },
-          { name: 'Taste of Maroc', searchUrl: 'https://tasteofmaroc.com/?s=', tag: 'Tagines & Couscous', thumb: 'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=80' }
+          {
+            name: 'Feel Good Foodie',
+            searchUrl: 'https://feelgoodfoodie.net/?s=',
+            tag: 'Levantine & Fresh',
+            thumb: 'https://images.unsplash.com/photo-1540914124281-342587941389?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Crispy Garlic & Sesame Chicken Schnitzel Cutlet',
+            calories: 495,
+            defaultIngredients: ['Chicken', 'Breadcrumbs', 'Egg', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            steps: [
+              'Coat pounded chicken breast in seasoned breadcrumbs with garlic powder, salt, and pepper.',
+              'Shallow-fry in olive oil for 4 minutes per side until crisp and golden.'
+            ]
+          },
+          {
+            name: 'Middle Eats',
+            searchUrl: 'https://middleeats.com/?s=',
+            tag: 'Authentic Middle East',
+            thumb: 'https://images.unsplash.com/photo-1590577976322-3d2d6e2130d5?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Street-Style Roasted Garlic Shawarma Skillet',
+            calories: 470,
+            defaultIngredients: ['Chicken', 'Beef', 'Lamb', 'Garlic', 'Olive Oil', 'Salt', 'Pepper', 'Rice'],
+            steps: [
+              'Marinate sliced meat with crushed garlic, olive oil, warm spices, salt, and pepper.',
+              'Sear in a hot skillet for 7 minutes until charred on the edges and serve with garlic toum.'
+            ]
+          },
+          {
+            name: 'Taste of Maroc',
+            searchUrl: 'https://tasteofmaroc.com/?s=',
+            tag: 'Tagines & Couscous',
+            thumb: 'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Moroccan Garlic & Olive Oil Braised Skillet',
+            calories: 455,
+            defaultIngredients: ['Chicken', 'Chickpeas', 'Potato', 'Garlic', 'Olive Oil', 'Salt', 'Pepper', 'Water'],
+            steps: [
+              'Brown chicken or vegetables in olive oil with minced garlic for 5 minutes.',
+              'Add water and spices; simmer covered for 15 minutes until tender.'
+            ]
+          }
         ]
       },
       {
         id: 'global',
         areaMatch: 'American',
-        title: '14. Global & Everyday Cooking Powerhouses 🇺🇸🌍',
-        subtitle: 'Test-kitchen perfected weeknight dinners, roasts, skillets & crowd-pleasing classics',
+        title: '14. American & Global Everyday Classics',
+        subtitle: 'Test-kitchen perfected weeknight cutlets, skillets, roasts & crowd-pleasing dinners',
         sites: [
-          { name: 'Serious Eats', searchUrl: 'https://www.seriouseats.com/search?q=', tag: 'Food Science & Lab', thumb: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80' },
-          { name: 'BBC Good Food', searchUrl: 'https://www.bbcgoodfood.com/search?q=', tag: 'Tested Everyday', thumb: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=600&q=80' },
-          { name: 'RecipeTin Eats', searchUrl: 'https://www.recipetineats.com/?s=', tag: 'Foolproof Dinners', thumb: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80' }
+          {
+            name: 'Serious Eats',
+            searchUrl: 'https://www.seriouseats.com/search?q=',
+            tag: 'Food Science & Lab',
+            thumb: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'Extra-Crispy Pan-Fried Garlic Cutlet & Pan Sauce',
+            calories: 530,
+            defaultIngredients: ['Chicken', 'Pork', 'Breadcrumbs', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            steps: [
+              'Toast breadcrumbs briefly in a tablespoon of olive oil with minced garlic, then press onto seasoned chicken or pork cutlets.',
+              'Sear in a skillet for 4 minutes per side until ultra-crisp and juicy.'
+            ]
+          },
+          {
+            name: 'BBC Good Food',
+            searchUrl: 'https://www.bbcgoodfood.com/search?q=',
+            tag: 'Tested Everyday',
+            thumb: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: 'One-Pan Golden Garlic & Herb Crusted Roast',
+            calories: 465,
+            defaultIngredients: ['Chicken', 'Pork', 'Salmon', 'Breadcrumbs', 'Garlic', 'Olive Oil', 'Salt', 'Pepper'],
+            steps: [
+              'Mix breadcrumbs, minced garlic, olive oil, salt, and pepper into a crunchy herb crust.',
+              'Press onto chicken, pork, or salmon and bake or pan-roast for 15 minutes until golden.'
+            ]
+          },
+          {
+            name: 'RecipeTin Eats',
+            searchUrl: 'https://www.recipetineats.com/?s=',
+            tag: 'Foolproof Dinners',
+            thumb: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=700&q=80',
+            featuredTitle: '20-Minute Caramelized Garlic Skillet Tenderloin',
+            calories: 480,
+            defaultIngredients: ['Pork', 'Chicken', 'Beef', 'Garlic', 'Olive Oil', 'Sugar', 'Salt', 'Pepper'],
+            steps: [
+              'Season protein with salt, pepper, and a touch of sugar for caramelization.',
+              'Sear in olive oil with smashed garlic for 6 minutes until golden and rested.'
+            ]
+          }
         ]
       }
     ];
@@ -872,15 +1387,15 @@
     let activeStaples = new Set();
     let selectedCuisine = 'All';
     let selectedDiet = 'All';
+    let selectedSourceTab = 'All'; // 'All' | 'TheMealDB' | 'Web'
     let isBookmarksView = false;
-    let bookmarkedRecipesMap = {}; // idMeal -> saved recipe object
-    let openAccordionIds = new Set(['chinese', 'japanese', 'thai', 'global']); // Expanded by default
+    let bookmarkedRecipesMap = {};
+    let openAccordionIds = new Set(['chinese', 'japanese', 'thai', 'malaysian']);
 
-    // Caches so repeated cuisine/ingredient filtering is super fast
     const mealDetailsCache = new Map();
     const ingredientFilterCache = new Map();
 
-    let lastRenderedMeals = [];
+    let lastCombinedMeals = [];
     let activeModalMeal = null;
 
     // Hands-Free Cooking Mode State
@@ -911,11 +1426,11 @@
     const bookmarksToggleLabel = document.getElementById('bookmarks-toggle-label');
     const bookmarksCountBadge = document.getElementById('bookmarks-count-badge');
 
-    const cuisineSelect = document.getElementById('cuisine-select');
     const cuisinePillsContainer = document.getElementById('cuisine-pills-container');
     const dietFilterContainer = document.getElementById('diet-filter-container');
     const activeDietBadge = document.getElementById('active-diet-badge');
     const asianPriorityPill = document.getElementById('asian-priority-pill');
+    const sourceTabsContainer = document.getElementById('source-tabs-container');
 
     const cuisineFallbackBanner = document.getElementById('cuisine-fallback-banner');
     const cuisineFallbackTitle = document.getElementById('cuisine-fallback-title');
@@ -933,7 +1448,6 @@
     const feedbackTitle = document.getElementById('feedback-title');
     const feedbackMessage = document.getElementById('feedback-message');
     const feedbackActionBtn = document.getElementById('feedback-action-btn');
-    const feedbackResetFiltersBtn = document.getElementById('feedback-reset-filters-btn');
 
     // Global Hub DOM
     const hubActiveQueryPreview = document.getElementById('hub-active-query-preview');
@@ -1039,12 +1553,13 @@
           strMeal: recipeObj.strMeal,
           strMealThumb: recipeObj.strMealThumb,
           strArea: recipeObj.strArea || 'Global',
-          strCategory: recipeObj.strCategory || 'Recipe',
+          strCategory: recipeObj.strCategory || 'Main Dish',
           source: recipeObj.source || 'TheMealDB',
           sourceUrl: recipeObj.sourceUrl || '',
           isExternal: Boolean(recipeObj.isExternal),
           calories: recipeObj.calories || estimateCalories(recipeObj),
           ingredients: recipeObj.ingredients || extractIngredientsFromMeal(recipeObj),
+          steps: recipeObj.steps || null,
           strInstructions: recipeObj.strInstructions || ''
         };
       }
@@ -1055,7 +1570,6 @@
         syncModalBookmarkButton(id);
       }
 
-      // Refresh Global Hub heart states if a web search card was bookmarked
       renderGlobalRecipeHub();
 
       if (isBookmarksView) {
@@ -1086,18 +1600,20 @@
       userIngredients = ['Chicken'];
       selectedCuisine = 'All';
       selectedDiet = 'All';
+      selectedSourceTab = 'All';
       isBookmarksView = false;
       saveMemoryCache();
       renderPantryStaples();
       renderActiveTags();
       renderCuisineControls();
       renderDietFilters();
+      updateSourceTabsUI();
       updateBookmarksUI();
       renderGlobalRecipeHub();
       performRecipeSearch();
     }
 
-    // --- 6. PANTRY STAPLES & CUSTOM STAPLES (Mobile-First Responsive) ---
+    // --- 6. PANTRY STAPLES & CUSTOM STAPLES ---
     function getAllStaplesList() {
       return [...DEFAULT_STAPLES, ...customStaples];
     }
@@ -1191,28 +1707,18 @@
       performRecipeSearch();
     }
 
-    // --- 7. CUISINE DROPDOWN + QUICK PILLS & DIET FILTERS ---
+    // --- 7. ALL 14 CUISINE PILLS ON TOP & DIETARY FILTERS ---
     function renderCuisineControls() {
-      // Populate Dropdown
-      cuisineSelect.innerHTML = '';
-      CUISINE_OPTIONS.forEach(opt => {
-        const optionEl = document.createElement('option');
-        optionEl.value = opt.id;
-        optionEl.textContent = opt.label;
-        if (opt.id === selectedCuisine) optionEl.selected = true;
-        cuisineSelect.appendChild(optionEl);
-      });
-
-      // Populate Quick Pills
       cuisinePillsContainer.innerHTML = '';
-      CUISINE_OPTIONS.filter(o => o.quick).forEach(opt => {
+
+      CUISINE_OPTIONS.forEach(opt => {
         const active = selectedCuisine === opt.id;
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = `px-3.5 py-2 min-h-[38px] rounded-full text-xs font-bold active:scale-95 duration-200 ${
+        btn.className = `px-4 py-2 min-h-[40px] rounded-full text-xs font-bold active:scale-95 duration-200 ${
           active
             ? 'bg-forest-900 text-white shadow-sm'
-            : 'bg-canvas hover:bg-mint-100/70 text-forest-800 border border-mint-100'
+            : 'bg-canvas hover:bg-mint-100/80 text-forest-800 border border-mint-200/80'
         }`;
         btn.textContent = opt.label;
         btn.addEventListener('click', () => setCuisineFilter(opt.id));
@@ -1229,7 +1735,6 @@
       saveMemoryCache();
       renderCuisineControls();
 
-      // Automatically expand matching cuisine accordion in Global Hub
       const matchingHub = GLOBAL_RECIPE_HUB.find(h => h.areaMatch.toLowerCase() === cuisineId.toLowerCase());
       if (matchingHub) {
         openAccordionIds.add(matchingHub.id);
@@ -1244,10 +1749,10 @@
         const active = selectedDiet === opt.id;
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = `px-3.5 py-2 min-h-[38px] rounded-full text-xs font-bold active:scale-95 duration-200 ${
+        btn.className = `px-4 py-2 min-h-[40px] rounded-full text-xs font-bold active:scale-95 duration-200 ${
           active
             ? 'bg-mint-500 text-white shadow-mint-glow'
-            : 'bg-canvas hover:bg-mint-100/70 text-forest-800 border border-mint-100'
+            : 'bg-canvas hover:bg-mint-100/80 text-forest-800 border border-mint-200/80'
         }`;
         btn.textContent = opt.label;
         btn.addEventListener('click', () => {
@@ -1264,6 +1769,17 @@
       });
     }
 
+    function updateSourceTabsUI() {
+      sourceTabsContainer.querySelectorAll('.source-tab-btn').forEach(btn => {
+        const src = btn.getAttribute('data-source');
+        if (src === selectedSourceTab) {
+          btn.className = 'source-tab-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-mint-500 text-white shadow-sm';
+        } else {
+          btn.className = 'source-tab-btn px-3.5 py-1.5 rounded-full text-xs font-bold text-forest-700 hover:text-forest-900';
+        }
+      });
+    }
+
     // --- 8. DYNAMIC INGREDIENT TAGS & AUTO-SUGGEST ---
     async function fetchIngredientCatalog() {
       try {
@@ -1274,9 +1790,9 @@
         }
       } catch (err) {
         allKnownIngredients = [
-          'Chicken', 'Rice', 'Garlic', 'Onion', 'Egg', 'Salmon', 'Beef', 'Pork',
-          'Tofu', 'Shrimp', 'Noodles', 'Ginger', 'Soy Sauce', 'Tomato', 'Potato',
-          'Spinach', 'Mushroom', 'Coconut Milk', 'Lime', 'Chili', 'Bell Pepper', 'Cheese'
+          'Chicken', 'Pork', 'Rice', 'Garlic', 'Onion', 'Egg', 'Salmon', 'Beef',
+          'Tofu', 'Shrimp', 'Breadcrumbs', 'Noodles', 'Ginger', 'Soy Sauce', 'Tomato',
+          'Potato', 'Spinach', 'Mushroom', 'Coconut Milk', 'Lime', 'Chili', 'Bell Pepper'
         ];
       }
     }
@@ -1412,20 +1928,95 @@
       suggestionsList.classList.add('hidden');
     }
 
-    // --- 9. 🌐 CURATED GLOBAL RECIPE HUB (42 WEBSITES ACROSS 14 CUISINES) ---
+    // --- 9. BUILD CURATED WEB RECIPE CARDS FOR "RECOMMENDED RECIPES" + GLOBAL HUB ---
     function getSearchQueryTerms() {
-      // Prioritize user-entered ingredients; if none, use active staples (excluding plain 'Water' & 'Salt' unless they are the only ones)
       if (userIngredients.length > 0) {
         const meaningfulStaples = [...activeStaples].filter(s => !['Water', 'Salt', 'Pepper'].includes(s));
         return [...userIngredients, ...meaningfulStaples.slice(0, 2)];
       }
       const nonTrivialStaples = [...activeStaples].filter(s => s !== 'Water');
-      return nonTrivialStaples.length > 0 ? nonTrivialStaples : ['chicken', 'garlic'];
+      return nonTrivialStaples.length > 0 ? nonTrivialStaples : ['Chicken', 'Garlic'];
     }
 
     function buildDirectSearchUrl(baseUrl, terms) {
       const encodedTerms = terms.map(t => encodeURIComponent(t.trim().toLowerCase())).join('+');
       return `${baseUrl}${encodedTerms}`;
+    }
+
+    /**
+     * Generates Curated Web Recipe Cards from our 42 Websites so they appear directly in "Recommended Recipes"!
+     */
+    function generateCuratedWebRecipeCards(allActiveIngredients) {
+      const queryTerms = getSearchQueryTerms();
+      const cards = [];
+
+      // Filter the 14 cuisine groups based on the user's selectedCuisine
+      const matchingGroups = GLOBAL_RECIPE_HUB.filter(group => {
+        if (selectedCuisine === 'All') return true;
+        if (selectedCuisine === 'Asian') return ASIAN_AREAS.includes(group.areaMatch);
+        return group.areaMatch.toLowerCase() === selectedCuisine.toLowerCase();
+      });
+
+      matchingGroups.forEach(group => {
+        group.sites.forEach((site, idx) => {
+          const deepLink = buildDirectSearchUrl(site.searchUrl, queryTerms);
+          const idMeal = `web-${group.id}-${idx}`;
+
+          // Merge site's default ingredients with user's active ingredients so the modal checklist & matcher work seamlessly
+          const combinedIngList = [...new Set([...allActiveIngredients, ...(site.defaultIngredients || [])])];
+          const ingredientObjs = combinedIngList.map(ing => ({
+            ingredient: ing,
+            measure: allActiveIngredients.includes(ing) ? 'In Your Pantry' : 'To taste / as needed'
+          }));
+
+          // Calculate how many of the user's active ingredients match this dish/site
+          const matchedNames = allActiveIngredients.filter(userIng => {
+            const lower = userIng.toLowerCase();
+            return (site.defaultIngredients || []).some(d => d.toLowerCase().includes(lower) || lower.includes(d.toLowerCase()));
+          });
+
+          const effectiveMatches = matchedNames.length > 0 ? matchedNames : queryTerms;
+
+          const cardObj = {
+            idMeal,
+            strMeal: site.featuredTitle,
+            strMealThumb: site.thumb,
+            strArea: group.areaMatch,
+            strCategory: `${site.tag} • ${site.name}`,
+            source: site.name,
+            sourceUrl: deepLink,
+            isExternal: true,
+            isAsian: ASIAN_AREAS.includes(group.areaMatch),
+            calories: site.calories || 460,
+            matchCount: Math.max(effectiveMatches.length, 1),
+            matchedIngredients: effectiveMatches,
+            totalQueried: Math.max(allActiveIngredients.length, 1),
+            ingredients: ingredientObjs,
+            steps: site.steps || [
+              `Prepare your ${queryTerms.join(', ')} and pantry aromatics.`,
+              `Open ${site.name} using the button above for the full original recipe proportions and photos.`
+            ]
+          };
+
+          mealDetailsCache.set(idMeal, cardObj);
+          cards.push(cardObj);
+        });
+      });
+
+      // Sort by ingredient match count first, then Asian priority when 'All' is selected
+      cards.sort((a, b) => {
+        if (b.matchCount !== a.matchCount) return b.matchCount - a.matchCount;
+        if (selectedCuisine === 'All') {
+          return (b.isAsian ? 1 : 0) - (a.isAsian ? 1 : 0);
+        }
+        return 0;
+      });
+
+      // Filter by dietary requirement
+      const dietFiltered = cards.filter(c => passesDietaryFilter(c, selectedDiet));
+
+      // When 'All' cuisines is selected, return top 12 curated web cards so the grid is balanced; when a specific cuisine is selected, return all matching web cards
+      return selectedCuisine === 'All' ? dietFiltered.slice(0, 12) : dietFiltered;
     }
 
     function renderGlobalRecipeHub() {
@@ -1435,7 +2026,6 @@
 
       hubAccordionsContainer.innerHTML = '';
 
-      // Sort so that if a specific cuisine is selected, its matching accordion floats to top
       const sortedGroups = [...GLOBAL_RECIPE_HUB].sort((a, b) => {
         const aMatch = selectedCuisine !== 'All' && a.areaMatch.toLowerCase() === selectedCuisine.toLowerCase() ? 1 : 0;
         const bMatch = selectedCuisine !== 'All' && b.areaMatch.toLowerCase() === selectedCuisine.toLowerCase() ? 1 : 0;
@@ -1454,7 +2044,6 @@
         }`;
 
         accordion.innerHTML = `
-          <!-- Accordion Header -->
           <button
             type="button"
             class="accordion-toggle-btn w-full px-5 py-4 flex items-center justify-between gap-3 text-left hover:bg-mint-50/60 transition-colors"
@@ -1478,11 +2067,10 @@
             </span>
           </button>
 
-          <!-- Accordion Body (3 Curated Websites) -->
           <div class="${isOpen ? 'block' : 'hidden'} px-5 pb-5 pt-2 border-t border-mint-100/80 space-y-2.5 bg-white">
             ${group.sites.map((site, idx) => {
               const deepLink = buildDirectSearchUrl(site.searchUrl, queryTerms);
-              const bookmarkId = `hub-${group.id}-${idx}-${queryTerms.join('_').toLowerCase()}`;
+              const bookmarkId = `web-${group.id}-${idx}`;
               const isSaved = isRecipeBookmarked(bookmarkId);
 
               return `
@@ -1515,21 +2103,15 @@
                     </div>
                   </a>
 
-                  <!-- Save Web Search to Bookmarks Button -->
                   <button
                     type="button"
                     data-hub-id="${escapeHtml(bookmarkId)}"
-                    data-hub-name="${escapeHtml(site.name)}: ${escapeHtml(readableQuery)}"
-                    data-hub-source="${escapeHtml(site.name)}"
-                    data-hub-url="${escapeHtml(deepLink)}"
-                    data-hub-thumb="${escapeHtml(site.thumb)}"
-                    data-hub-area="${escapeHtml(group.areaMatch)}"
                     class="hub-bookmark-btn w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 active:scale-90 duration-200 ${
                       isSaved
                         ? 'bg-apricot-400 text-white shadow-sm'
                         : 'bg-white hover:bg-apricot-50 text-forest-600 hover:text-apricot-500 border border-mint-100'
                     }"
-                    title="${isSaved ? 'Remove from Saved Bookmarks' : 'Save this recipe search to Bookmarks'}"
+                    title="${isSaved ? 'Remove from Saved Bookmarks' : 'Save to Bookmarks'}"
                   >
                     <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-heart text-xs"></i>
                   </button>
@@ -1551,18 +2133,9 @@
         accordion.querySelectorAll('.hub-bookmark-btn').forEach(btn => {
           btn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const mealObj = {
-              idMeal: btn.getAttribute('data-hub-id'),
-              strMeal: btn.getAttribute('data-hub-name'),
-              strMealThumb: btn.getAttribute('data-hub-thumb'),
-              strArea: btn.getAttribute('data-hub-area'),
-              strCategory: 'Web Search Link',
-              source: btn.getAttribute('data-hub-source'),
-              sourceUrl: btn.getAttribute('data-hub-url'),
-              isExternal: true,
-              calories: 460
-            };
-            toggleBookmark(mealObj);
+            const id = btn.getAttribute('data-hub-id');
+            const cached = mealDetailsCache.get(id);
+            if (cached) toggleBookmark(cached);
           });
         });
 
@@ -1631,7 +2204,7 @@
       }
     }
 
-    // --- 11. CLIENT-SIDE CUISINE + INGREDIENT SEARCH ENGINE ---
+    // --- 11. UNIFIED MULTI-SOURCE SEARCH (TheMealDB + 42 Curated Websites in "Recommended Recipes") ---
     async function hydrateMealDetails(idMeal) {
       const key = String(idMeal);
       if (mealDetailsCache.has(key)) return mealDetailsCache.get(key);
@@ -1662,9 +2235,17 @@
     }
 
     async function fetchMealsByCuisineArea(cuisineId) {
-      const areas = cuisineId === 'Asian' ? ASIAN_AREAS : [cuisineId];
+      // Korean is supported via our Curated Web Recipes; for TheMealDB, fetch Asian or matching area
+      const mealDbAreas = cuisineId === 'Asian'
+        ? ['Chinese', 'Japanese', 'Thai', 'Malaysian', 'Vietnamese', 'Indian', 'Filipino']
+        : cuisineId === 'Korean'
+          ? []
+          : [cuisineId];
+
+      if (mealDbAreas.length === 0) return [];
+
       const responses = await Promise.all(
-        areas.map(area =>
+        mealDbAreas.map(area =>
           fetch(`${API_BASE}/filter.php?a=${encodeURIComponent(area)}`)
             .then(r => r.json())
             .then(d => (d && d.meals ? d.meals.map(m => ({ ...m, strArea: area })) : []))
@@ -1714,7 +2295,9 @@
         ? [...userIngredients]
         : [...activeStaples];
 
-      // 🫙 "EMPTY PANTRY" STATE when no ingredients are active and Cuisine is 'All'
+      const allActive = getAllActiveQueryIngredients();
+
+      // "EMPTY PANTRY" STATE when no ingredients are active and Cuisine is 'All'
       if (primaryIngredients.length === 0 && selectedCuisine === 'All') {
         renderEmptyPantryState();
         return;
@@ -1723,10 +2306,13 @@
       renderLoadingSkeletons();
 
       try {
-        let finalMeals = [];
-        let usedCuisineFallback = false;
+        let nativeMeals = [];
+        let usedRegionalSuggestions = false;
 
-        // CASE 1: Specific Cuisine Selected -> Fetch Area from TheMealDB & Filter Client-Side
+        // 1. Generate Curated Web Recipe Cards from the 42 Websites so they always show in "Recommended Recipes"!
+        const curatedWebCards = generateCuratedWebRecipeCards(allActive);
+
+        // 2. Fetch Native TheMealDB Recipes
         if (selectedCuisine !== 'All') {
           const [cuisineMeals, ...ingSets] = await Promise.all([
             fetchMealsByCuisineArea(selectedCuisine),
@@ -1748,12 +2334,10 @@
             return { item, quickScore };
           }).sort((a, b) => b.quickScore - a.quickScore);
 
-          // Hydrate top 24 cuisine dishes to check all 20 ingredients client-side
           const hydrated = (
-            await Promise.all(preScored.slice(0, 24).map(entry => hydrateMealDetails(entry.item.idMeal)))
+            await Promise.all(preScored.slice(0, 20).map(entry => hydrateMealDetails(entry.item.idMeal)))
           ).filter(Boolean);
 
-          const allActive = getAllActiveQueryIngredients();
           const scored = hydrated
             .filter(meal => passesDietaryFilter(meal, selectedDiet))
             .map(meal => {
@@ -1770,14 +2354,12 @@
 
           const exactMatches = scored.filter(m => m.matchCount > 0);
           if (exactMatches.length > 0 || allActive.length === 0) {
-            finalMeals = allActive.length === 0 ? scored : exactMatches;
+            nativeMeals = allActive.length === 0 ? scored : exactMatches;
           } else {
-            usedCuisineFallback = true;
-            finalMeals = scored.slice(0, 9).map(m => ({ ...m, isFallbackSuggestion: true }));
+            usedRegionalSuggestions = true;
+            nativeMeals = scored.slice(0, 6).map(m => ({ ...m, isFallbackSuggestion: true }));
           }
-        }
-        // CASE 2: All Cuisines -> Fetch by Ingredients & Spotlight Asian Dishes on First Row
-        else {
+        } else {
           const [ingredientResponses, asianPool] = await Promise.all([
             Promise.all(
               primaryIngredients.map(ing =>
@@ -1813,10 +2395,10 @@
           });
 
           const hydrated = (
-            await Promise.all(candidates.slice(0, 18).map(c => hydrateMealDetails(c.idMeal)))
+            await Promise.all(candidates.slice(0, 15).map(c => hydrateMealDetails(c.idMeal)))
           ).filter(Boolean);
 
-          const filtered = hydrated
+          nativeMeals = hydrated
             .map(full => {
               const meta = mealMap.get(full.idMeal) || { matchCount: 1, matchedIngredients: [] };
               return {
@@ -1828,69 +2410,85 @@
               };
             })
             .filter(meal => passesDietaryFilter(meal, selectedDiet));
-
-          // Asian Spotlight on First Row (top 3 slots)
-          const asianList = filtered.filter(m => m.isAsian);
-          const nonAsianList = filtered.filter(m => !m.isAsian);
-          finalMeals = [...asianList.slice(0, 3), ...asianList.slice(3), ...nonAsianList];
         }
 
-        if (usedCuisineFallback) {
+        // 3. Blend Native TheMealDB + Curated Web Recipes into "Recommended Recipes"
+        let blended = [];
+        if (selectedCuisine === 'All') {
+          const allPool = [...nativeMeals, ...curatedWebCards];
+          const asianList = allPool.filter(m => m.isAsian);
+          const nonAsianList = allPool.filter(m => !m.isAsian);
+          const remaining = [...asianList.slice(3), ...nonAsianList].sort((a, b) => (b.matchCount || 0) - (a.matchCount || 0));
+          blended = [...asianList.slice(0, 3), ...remaining];
+        } else {
+          // Put Curated Web Recipes for that cuisine alongside TheMealDB matches
+          blended = [...curatedWebCards, ...nativeMeals].sort((a, b) => {
+            if (a.isFallbackSuggestion && !b.isFallbackSuggestion) return 1;
+            if (!a.isFallbackSuggestion && b.isFallbackSuggestion) return -1;
+            return (b.matchCount || 0) - (a.matchCount || 0);
+          });
+        }
+
+        if (usedRegionalSuggestions && selectedCuisine !== 'All') {
           const cuisineObj = CUISINE_OPTIONS.find(c => c.id === selectedCuisine);
           const label = cuisineObj ? cuisineObj.label : selectedCuisine;
-          cuisineFallbackTitle.textContent = `Showing popular ${label} dishes`;
-          cuisineFallbackDesc.textContent = `No single ${label} dish in TheMealDB contained every selected ingredient, so we loaded top regional favorites below—or scroll down to the 42-Site Global Hub to search ${label} culinary websites directly!`;
+          cuisineFallbackTitle.textContent = `Showing ${label} Curated Web Recipes & Regional Dishes`;
+          cuisineFallbackDesc.textContent = `Displayed below are direct ${label} recipes from our curated culinary websites alongside popular regional dishes.`;
           cuisineFallbackBanner.classList.remove('hidden');
         }
 
-        if (finalMeals.length === 0) {
-          renderFeedbackState(
-            'No exact matches in TheMealDB',
-            `We couldn't find a dish matching all filters. Try clearing a filter or scroll down to the 42-Site Global Recipe Hub to search "${getSearchQueryTerms().join(' + ')}" across 42 major cooking sites!`,
-            'Reset Cuisine & Diet Filters',
-            () => {
-              selectedCuisine = 'All';
-              selectedDiet = 'All';
-              saveMemoryCache();
-              renderCuisineControls();
-              renderDietFilters();
-              performRecipeSearch();
-            }
-          );
-          return;
-        }
-
-        lastRenderedMeals = finalMeals;
-        renderRecipeCards(finalMeals, primaryIngredients);
+        lastCombinedMeals = blended;
+        renderByActiveSourceTab();
 
       } catch (err) {
         console.error('Recipe search error:', err);
-        renderFeedbackState(
-          'Connection hiccup',
-          'We had trouble reaching TheMealDB. You can still use the 42-Site Global Recipe Hub below!',
-          'Retry Search',
-          () => performRecipeSearch()
-        );
+        lastCombinedMeals = generateCuratedWebRecipeCards(allActive);
+        renderByActiveSourceTab();
       }
     }
 
-    // --- 12. ❤️ SAVED BOOKMARKS VIEW ---
+    function renderByActiveSourceTab() {
+      let filtered = lastCombinedMeals;
+      if (selectedSourceTab === 'TheMealDB') {
+        filtered = lastCombinedMeals.filter(m => !m.isExternal);
+      } else if (selectedSourceTab === 'Web') {
+        filtered = lastCombinedMeals.filter(m => m.isExternal);
+      }
+
+      if (filtered.length === 0) {
+        renderFeedbackState(
+          'No dishes in this source tab',
+          'Switch to "All Recommended" or "Curated Web Sites" to view matching recipes for your ingredients.',
+          'Show All Recommended',
+          () => {
+            selectedSourceTab = 'All';
+            updateSourceTabsUI();
+            renderByActiveSourceTab();
+          }
+        );
+        return;
+      }
+
+      renderRecipeCards(filtered, getAllActiveQueryIngredients());
+    }
+
+    // --- 12. SAVED BOOKMARKS VIEW ---
     function renderBookmarksView() {
       cuisineFallbackBanner.classList.add('hidden');
       const savedList = Object.values(bookmarkedRecipesMap);
 
-      resultsHeading.textContent = '❤️ Saved Bookmarks';
+      resultsHeading.textContent = 'Saved Bookmarks';
       asianPriorityPill.classList.add('hidden');
       resultsSubtitle.textContent = savedList.length > 0
         ? `You have ${savedList.length} saved recipe${savedList.length === 1 ? '' : 's'} stored in your browser.`
-        : 'Click the heart icon on any recipe card or Global Hub link to save it here.';
+        : 'Click the heart icon on any recipe card to save it here.';
 
       if (savedList.length === 0) {
         matchBadge.classList.add('hidden');
         renderFeedbackState(
           'No saved bookmarks yet',
           'Tap the circular heart icon on the top-right corner of any recipe card to bookmark your favorites permanently.',
-          'Browse All Recipes',
+          'Browse Recommended Recipes',
           () => {
             isBookmarksView = false;
             updateBookmarksUI();
@@ -1900,19 +2498,19 @@
         return;
       }
 
-      lastRenderedMeals = savedList;
+      lastCombinedMeals = savedList;
       renderRecipeCards(savedList, getAllActiveQueryIngredients(), true);
     }
 
-    // --- 13. 🎲 "SURPRISE ME!" RANDOM RECIPE FETCHER ---
+    // --- 13. "SURPRISE ME!" RANDOM RECIPE FETCHER ---
     async function fetchSurpriseRecipe() {
       isBookmarksView = false;
       updateBookmarksUI();
       cuisineFallbackBanner.classList.add('hidden');
       renderLoadingSkeletons();
 
-      resultsHeading.textContent = '🎲 Surprise Culinary Pick!';
-      resultsSubtitle.textContent = 'Here is a freshly rolled random recipe from TheMealDB.';
+      resultsHeading.textContent = 'Surprise Culinary Pick!';
+      resultsSubtitle.textContent = 'Freshly rolled random inspiration dish.';
 
       try {
         const res = await fetch(`${API_BASE}/random.php`);
@@ -1927,8 +2525,9 @@
             totalQueried: 1
           };
           mealDetailsCache.set(String(randomMeal.idMeal), randomMeal);
-          lastRenderedMeals = [randomMeal];
-          renderRecipeCards([randomMeal], ['Surprise Pick!']);
+          const webCards = generateCuratedWebRecipeCards(getAllActiveQueryIngredients()).slice(0, 2);
+          lastCombinedMeals = [randomMeal, ...webCards];
+          renderRecipeCards(lastCombinedMeals, ['Surprise Pick!']);
           openRecipeModal(randomMeal.idMeal);
         }
       } catch (e) {
@@ -1936,20 +2535,20 @@
       }
     }
 
-    // --- 14. RENDER RECIPE CARDS (Shimmer Blur-Up + Circular Heart Bookmark) ---
+    // --- 14. RENDER RECIPE CARDS IN "RECOMMENDED RECIPES" ---
     function renderRecipeCards(meals, queriedIngredients, isBookmarkMode = false) {
       feedbackState.classList.add('hidden');
       recipesGrid.classList.remove('hidden');
       recipesGrid.innerHTML = '';
 
       matchBadge.classList.remove('hidden');
-      matchBadgeText.textContent = `${meals.length} ${meals.length === 1 ? 'recipe' : 'recipes'} found`;
+      matchBadgeText.textContent = `${meals.length} ${meals.length === 1 ? 'recipe' : 'recipes'} shown`;
 
       if (!isBookmarkMode) {
         resultsHeading.textContent = 'Recommended Recipes';
         const cuisineLabel = CUISINE_OPTIONS.find(c => c.id === selectedCuisine)?.label || 'All Cuisines';
         const dietLabel = DIET_OPTIONS.find(d => d.id === selectedDiet)?.label || 'All Diets';
-        resultsSubtitle.textContent = `Showing ${cuisineLabel} • ${dietLabel}`;
+        resultsSubtitle.textContent = `Showing ${cuisineLabel} • ${dietLabel} • TheMealDB + Curated Web Recipes`;
       }
 
       meals.forEach(meal => {
@@ -1970,7 +2569,7 @@
 
         card.innerHTML = `
           <div>
-            <!-- 🖼️ Shimmer Blur-Up Image Container -->
+            <!-- Shimmer Blur-Up Image Container -->
             <div class="relative h-56 overflow-hidden shimmer-bg">
               <img
                 src="${escapeHtml(meal.strMealThumb)}"
@@ -1981,19 +2580,21 @@
               />
               <div class="absolute inset-0 bg-gradient-to-t from-forest-900/75 via-transparent to-transparent"></div>
 
-              <!-- Top Left: Source & Calorie Badges -->
+              <!-- Top Left: Source Website Badge & Calorie Pill -->
               <div class="absolute top-3.5 left-3.5 right-14 flex flex-wrap items-center gap-1.5">
-                <span class="px-3 py-1 rounded-full text-[11px] font-extrabold shadow-sm backdrop-blur-md ${
+                <span class="px-3 py-1 rounded-full text-[11px] font-extrabold shadow-sm backdrop-blur-md flex items-center gap-1.5 ${
                   isExternal ? 'bg-apricot-400 text-white' : 'bg-forest-900/90 text-white'
                 }">
-                  ${isExternal ? '🌐 ' : '🍲 '}${escapeHtml(sourceName)}
+                  <i class="${isExternal ? 'fa-solid fa-arrow-up-right-from-square' : 'fa-solid fa-utensils'} text-[10px]"></i>
+                  <span>${escapeHtml(sourceName)}</span>
                 </span>
-                <span class="px-3 py-1 rounded-full text-[11px] font-extrabold bg-white/95 text-forest-900 backdrop-blur-md shadow-sm">
-                  🔥 ${calories} kcal
+                <span class="px-3 py-1 rounded-full text-[11px] font-extrabold bg-white/95 text-forest-900 backdrop-blur-md shadow-sm flex items-center gap-1">
+                  <i class="fa-solid fa-fire-flame-curved text-apricot-500"></i>
+                  <span>${calories} kcal</span>
                 </span>
               </div>
 
-              <!-- Top Right: ❤️ Circular Bookmark Heart Icon -->
+              <!-- Top Right: Circular Bookmark Heart Icon -->
               <button
                 type="button"
                 class="bookmark-card-btn absolute top-3.5 right-3.5 w-10 h-10 rounded-full flex items-center justify-center shadow-md backdrop-blur-md active:scale-95 duration-200 ${
@@ -2007,16 +2608,14 @@
                 <i class="${bookmarked ? 'fa-solid' : 'fa-regular'} fa-heart text-base"></i>
               </button>
 
-              <!-- Bottom Overlay: Match Count & Cuisine Pill -->
+              <!-- Bottom Overlay: Match Count & Clean Cuisine Badge (No Flag Emojis) -->
               <div class="absolute bottom-3 left-3.5 right-3.5 flex items-center justify-between gap-2">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-mint-500 text-white shadow-sm">
                   <i class="fa-solid fa-check text-[10px]"></i>
                   ${
-                    isExternal
-                      ? 'Direct Web Search'
-                      : meal.isFallbackSuggestion
-                        ? `${escapeHtml(meal.strArea || 'Regional')} Pick`
-                        : `Matches ${meal.matchCount || 1}/${meal.totalQueried || Math.max(queriedIngredients.length, 1)}`
+                    meal.isFallbackSuggestion
+                      ? `${escapeHtml(meal.strArea || 'Regional')} Pick`
+                      : `Matches ${meal.matchCount || 1}/${meal.totalQueried || Math.max(queriedIngredients.length, 1)}`
                   }
                 </span>
 
@@ -2025,7 +2624,7 @@
                     ? `<span class="px-3 py-1 rounded-full text-[11px] font-bold backdrop-blur-md shadow-sm ${
                         isAsian ? 'bg-apricot-400/95 text-white' : 'bg-white/90 text-forest-800'
                       }">
-                        ${isAsian ? '🥢 ' : ''}${escapeHtml(meal.strArea)}
+                        ${escapeHtml(meal.strArea)}
                       </span>`
                     : ''
                 }
@@ -2034,7 +2633,7 @@
 
             <!-- Card Body -->
             <div class="p-5">
-              <div class="text-[11px] font-bold uppercase tracking-wider text-mint-600 mb-1">
+              <div class="text-[11px] font-bold uppercase tracking-wider text-mint-600 mb-1 truncate">
                 ${escapeHtml(meal.strCategory || 'Main Dish')}
               </div>
               <h3 class="font-display text-lg font-bold text-forest-900 group-hover:text-mint-600 transition-colors line-clamp-1">
@@ -2046,26 +2645,28 @@
             </div>
           </div>
 
-          <!-- Card Footer Button -->
-          <div class="px-5 pb-5 pt-1">
+          <!-- Card Footer Actions -->
+          <div class="px-5 pb-5 pt-1 flex items-center gap-2">
+            <button
+              type="button"
+              class="view-recipe-btn flex-1 py-3 px-4 min-h-[44px] rounded-full bg-mint-50 hover:bg-mint-500 text-forest-900 hover:text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 active:scale-95 duration-200"
+            >
+              <span>${isExternal ? 'Quick View & Steps' : 'View Recipe & Cook Mode'}</span>
+              <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
             ${
               isExternal && meal.sourceUrl
                 ? `<a
                     href="${escapeHtml(meal.sourceUrl)}"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="w-full py-3 px-5 min-h-[44px] rounded-full bg-apricot-50 hover:bg-apricot-400 text-apricot-600 hover:text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 active:scale-95 duration-200"
+                    class="py-3 px-4 min-h-[44px] rounded-full bg-apricot-400 hover:bg-apricot-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 duration-200 flex-shrink-0"
+                    title="Open live ingredient search on ${escapeHtml(sourceName)}"
                   >
-                    <span>Open on ${escapeHtml(sourceName)}</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    <span>Site</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
                   </a>`
-                : `<button
-                    type="button"
-                    class="view-recipe-btn w-full py-3 px-5 min-h-[44px] rounded-full bg-mint-50 hover:bg-mint-500 text-forest-900 hover:text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 active:scale-95 duration-200"
-                  >
-                    <span>View Recipe & Cook Mode</span>
-                    <i class="fa-solid fa-chevron-right text-xs"></i>
-                  </button>`
+                : ''
             }
           </div>
         `;
@@ -2086,11 +2687,7 @@
           }
         });
 
-        const viewBtn = card.querySelector('.view-recipe-btn');
-        if (viewBtn) {
-          viewBtn.addEventListener('click', () => openRecipeModal(meal.idMeal));
-        }
-
+        card.querySelector('.view-recipe-btn').addEventListener('click', () => openRecipeModal(meal.idMeal));
         recipesGrid.appendChild(card);
       });
     }
@@ -2116,7 +2713,7 @@
       }
     }
 
-    // --- 15. 🫙 "EMPTY PANTRY" GLASS JAR SVG & FEEDBACK STATES ---
+    // --- 15. "EMPTY PANTRY" GLASS JAR SVG & FEEDBACK STATES ---
     function renderEmptyPantryState() {
       recipesGrid.classList.add('hidden');
       matchBadge.classList.add('hidden');
@@ -2152,7 +2749,6 @@
         renderGlobalRecipeHub();
         performRecipeSearch();
       };
-      feedbackResetFiltersBtn.classList.add('hidden');
     }
 
     function renderFeedbackState(title, message, buttonLabel, onAction) {
@@ -2170,7 +2766,6 @@
       feedbackMessage.textContent = message;
       feedbackActionBtn.textContent = buttonLabel;
       feedbackActionBtn.onclick = onAction;
-      feedbackResetFiltersBtn.classList.add('hidden');
     }
 
     // --- 16. RECIPE MODAL & HANDS-FREE INTERACTIVE COOKING MODE ---
@@ -2222,7 +2817,7 @@
       currentStepIndex = 0;
       completedSteps = new Set();
 
-      modalSourceBadge.textContent = `🍲 ${meal.source || 'TheMealDB'}`;
+      modalSourceBadge.textContent = meal.source || 'TheMealDB';
       modalCategoryBadge.textContent = meal.strCategory || 'Main Dish';
       modalAreaBadge.textContent = meal.strArea || 'Global';
       modalCalorieText.textContent = `${estimateCalories(meal)} kcal / serving`;
@@ -2232,6 +2827,9 @@
     }
 
     function parseStepsFromMeal(meal) {
+      if (Array.isArray(meal.steps) && meal.steps.length > 0) {
+        return meal.steps;
+      }
       const rawText = meal.strInstructions || '';
       if (!rawText) return ['Follow the preparation guidelines for this dish.'];
       const lines = rawText
@@ -2256,6 +2854,8 @@
       const meal = currentModalMeal;
       const ingredients = extractIngredientsFromMeal(meal);
       const activeSet = new Set(getAllActiveQueryIngredients().map(i => i.toLowerCase()));
+      const isExternal = Boolean(meal.isExternal);
+      const sourceName = meal.source || 'Source Website';
 
       modalBody.innerHTML = `
         <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
@@ -2274,9 +2874,22 @@
               ${escapeHtml(meal.strMeal)}
             </h2>
             <p class="text-xs sm:text-sm text-forest-600 leading-relaxed">
-              Green highlights show ingredients already in your active pantry. Launch <strong>Hands-Free Mode</strong> for step-by-step checkable cards and clickable countdown timers!
+              Green highlights show ingredients already in your active pantry. Launch <strong>Hands-Free Mode</strong> for step-by-step checkable cards and built-in timers!
             </p>
             <div class="flex flex-wrap gap-2.5 pt-1">
+              ${
+                isExternal && meal.sourceUrl
+                  ? `<a
+                      href="${escapeHtml(meal.sourceUrl)}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="px-5 py-3 min-h-[44px] rounded-full bg-apricot-400 hover:bg-apricot-500 text-white text-xs font-bold shadow-apricot-glow inline-flex items-center gap-2 active:scale-95 duration-200"
+                    >
+                      <span>View Full Recipes on ${escapeHtml(sourceName)}</span>
+                      <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>`
+                  : ''
+              }
               <button
                 type="button"
                 id="launch-handsfree-inline"
@@ -2299,7 +2912,7 @@
 
         <div class="bg-canvas rounded-3xl p-5 sm:p-6 border border-mint-100">
           <h3 class="font-display text-lg font-bold text-forest-900 mb-3.5">
-            🧺 Ingredients Required (${ingredients.length})
+            Ingredients Required (${ingredients.length})
           </h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
             ${ingredients.map(({ ingredient, measure }) => {
@@ -2325,7 +2938,7 @@
 
         <div>
           <h3 class="font-display text-lg font-bold text-forest-900 mb-3.5">
-            👩‍🍳 Step-by-Step Instructions
+            Step-by-Step Instructions
           </h3>
           <div class="space-y-3">
             ${currentModalSteps.map((step, index) => {
@@ -2340,7 +2953,7 @@
                     ${
                       timerInfo
                         ? `<button type="button" data-step-idx="${index}" class="jump-timer-btn inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-apricot-100 hover:bg-apricot-400 text-apricot-600 hover:text-white text-xs font-bold">
-                             ⏱️ ${timerInfo.label} (Open in Hands-Free Mode)
+                             <i class="fa-regular fa-clock"></i> ${timerInfo.label} (Open in Hands-Free Mode)
                            </button>`
                         : ''
                     }
@@ -2392,7 +3005,7 @@
               id="speak-step-btn"
               class="px-4 py-2 rounded-full bg-mint-50 hover:bg-mint-100 text-forest-800 text-xs font-bold flex items-center gap-1.5 border border-mint-200"
             >
-              🔊 Read Step Aloud
+              <i class="fa-solid fa-volume-high"></i> Read Step Aloud
             </button>
           </div>
 
@@ -2424,7 +3037,7 @@
                   data-seconds="${timerInfo ? timerInfo.seconds : 300}"
                   class="px-5 py-2.5 rounded-full bg-apricot-400 hover:bg-apricot-500 text-white font-bold text-xs sm:text-sm shadow-apricot-glow flex items-center gap-2 active:scale-95 duration-200"
                 >
-                  <span>⏱️</span>
+                  <i class="fa-regular fa-clock"></i>
                   <span id="timer-display-text">
                     ${timerInfo ? `Start ${timerInfo.label} (${formatSeconds(timerInfo.seconds)})` : 'Start 5:00 Quick Timer'}
                   </span>
@@ -2458,7 +3071,7 @@
               id="next-step-btn"
               class="px-7 py-3.5 rounded-full bg-mint-500 hover:bg-mint-600 text-white font-bold text-xs sm:text-sm shadow-mint-glow active:scale-95 duration-200"
             >
-              ${currentStepIndex === total - 1 ? '🎉 Finish Cooking' : 'Next Step →'}
+              ${currentStepIndex === total - 1 ? 'Finish Cooking' : 'Next Step →'}
             </button>
           </div>
         </div>
@@ -2529,7 +3142,7 @@
             activeTimerSecondsLeft--;
             if (activeTimerSecondsLeft <= 0) {
               stopActiveTimer();
-              timerDisplayText.textContent = '🔔 Time is up! Step ready!';
+              timerDisplayText.textContent = 'Time is up! Step ready!';
               playTimerChime();
             } else {
               timerDisplayText.textContent = `Running: ${formatSeconds(activeTimerSecondsLeft)} (Tap to Pause)`;
@@ -2621,8 +3234,6 @@
         }
       });
 
-      cuisineSelect.addEventListener('change', (e) => setCuisineFilter(e.target.value));
-
       document.addEventListener('click', (e) => {
         if (!ingredientInput.contains(e.target) && !suggestionsList.contains(e.target)) {
           hideSuggestions();
@@ -2662,7 +3273,19 @@
 
       fallbackClearCuisineBtn.addEventListener('click', () => setCuisineFilter('All'));
 
-      // Expand / Collapse All 14 Cuisines in Global Hub
+      // Source Filter Tabs (All Recommended / TheMealDB / Curated Web Sites)
+      sourceTabsContainer.querySelectorAll('.source-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedSourceTab = btn.getAttribute('data-source') || 'All';
+          updateSourceTabsUI();
+          if (isBookmarksView) {
+            renderBookmarksView();
+          } else {
+            renderByActiveSourceTab();
+          }
+        });
+      });
+
       expandAllHubBtn.addEventListener('click', () => {
         GLOBAL_RECIPE_HUB.forEach(g => openAccordionIds.add(g.id));
         renderGlobalRecipeHub();
@@ -2676,7 +3299,7 @@
         if (activeModalMeal) {
           toggleBookmark(activeModalMeal);
           if (!isBookmarksView) {
-            renderRecipeCards(lastRenderedMeals, getAllActiveQueryIngredients());
+            renderByActiveSourceTab();
           }
         }
       });
